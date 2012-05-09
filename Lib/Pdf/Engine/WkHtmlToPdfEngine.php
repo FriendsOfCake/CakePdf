@@ -3,19 +3,36 @@ App::uses('AbstractPdfEngine', 'CakePdf.Pdf/Engine');
 
 class WkHtmlToPdfEngine extends AbstractPdfEngine {
 
-	protected $output = null;
+/**
+ * Path to the wkhtmltopdf executable binary
+ *
+ * @access protected
+ * @var string
+ */
+	protected $binary = '/usr/bin/wkhtmltopdf';
 
-	/**
-	 * @brief the default options for WkHtmlToPdf View class
-	 * 
-	 * @access protected
-	 * @var array
-	 */
+/**
+ * @brief the default options for WkHtmlToPdf View class
+ * 
+ * @access protected
+ * @var array
+ */
 	protected $options = array(
 		'orientation' => 'Portrait',
-		'pageSize' => 'A4',
-		'binary' => '/usr/bin/wkhtmltopdf',
+		'pageSize' => 'A4'
 	);
+
+	public function __construct() {
+		$binary = Configure::read('WkHtmlToPdf.binary');
+
+		if ($binary) {
+			$this->binary = $binary;
+		}
+
+		if (!is_executable($this->binary)) {
+			throw new Exception(sprintf('wkhtmltopdf binary is not found or not executable: %s', $this->binary));
+		}
+	}
 
 	public function output($html) {
 
@@ -32,15 +49,15 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine {
 	protected function _renderPdf($html) {
 		$content = $this->__exec($this->__getCommand(), $html);
 
-		if(strpos(mb_strtolower($content['stderr']), 'error')) {
+		if (strpos(mb_strtolower($content['stderr']), 'error')) {
 			throw new Exception("System error <pre>" . $content['stderr'] . "</pre>");
 		}
 
-		if(mb_strlen($content['stdout'], 'utf-8') === 0) {
+		if (mb_strlen($content['stdout'], 'utf-8') === 0) {
 			throw new Exception("WKHTMLTOPDF didn't return any data");
 		}
 
-		if((int)$content['return'] > 1) {
+		if ((int)$content['return'] > 1) {
 			throw new Exception("Shell error, return code: " . (int)$content['return']);
 		}
 
@@ -82,7 +99,7 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine {
 	 * @return string the command for generating the pdf
 	 */
 	private function __getCommand() {
-		$command = $this->options['binary'];
+		$command = $this->binary;
 
 		$command .= " --orientation " . $this->options['orientation'];
 		$command .= " --page-size " . $this->options['pageSize'];
