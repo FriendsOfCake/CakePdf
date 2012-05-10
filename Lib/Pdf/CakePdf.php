@@ -1,6 +1,7 @@
 <?php
 App::uses('File', 'Utility');
 App::uses('View', 'View');
+
 class CakePdf {
 
 /**
@@ -59,6 +60,11 @@ class CakePdf {
  */
 	protected $_engineClass = null;
 
+/**
+ * Constructor
+ *
+ * @param string $engine PdfEngine to use
+ */
 	public function __construct($engine = null) {
 		if ($engine) {
 			$this->_engineName = $engine;
@@ -66,22 +72,41 @@ class CakePdf {
 		$this->engine($this->_engineName);
 	}
 
-	public function render($content = null) {
+/**
+ * Create pdf content from html. Can be used to write to file or with PdfView to display
+ *
+ * @param mixed $html Html content to render. If left empty, the template will be rendered with viewVars and layout that have been set.
+ * @return string
+ */
+	public function output($html = null) {
 		if (!isset($this->_engineClass)) {
 			throw new Exception(__d('cake_dev', 'No Pdf engine is set!', $name));
 		}
-		if (!$content) {
-			$content = $this->_render();
+		if (!$html) {
+			$html = $this->_render();
 		}
-		return $this->engine()->output($content);
+		return $this->engine()->output($html);
 	}
 
-	public function write($destination, $create = true) {
-		$content = $this->render();
+/**
+ * Writes output to file
+ *
+ * @param srting $destination Absolute file path to write to
+ * @param boolean $create Create file if it does not exist (if true)
+ * @return boolean
+ */
+	public function write($destination, $create = true, $html = null) {
+		$ouput = $this->output($html);
 		$File = new File($destination, $create);
-		return $File->write($content) && $File->close();
+		return $File->write($output) && $File->close();
 	}
 
+/**
+ * Load PdfEngine
+ *
+ * @param string $name Classname of pdf engine without `Engine` suffix. For example `CakePdf.DomPdf`
+ * @return object PdfEngine
+ */
 	public function engine($name = null) {
 		if (!$name) {
 			if ($this->_engineClass) {
@@ -97,7 +122,7 @@ class CakePdf {
 			throw new Exception(__d('cake_dev', 'Pdf engine "%s" not found', $name));
 		}
 		if (!is_subclass_of($engineClassName, 'AbstractPdfEngine')) {
-			throw new Exception(__d('cake_dev', 'Pdf engines must extends "AbstractPdfEngine"'));
+			throw new Exception(__d('cake_dev', 'Pdf engines must extend "AbstractPdfEngine"'));
 		}
 
 		return $this->_engineClass = new $engineClassName();
