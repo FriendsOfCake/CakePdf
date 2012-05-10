@@ -49,9 +49,6 @@ class PdfView extends View {
 	public function __construct(Controller $controller = null) {
 		parent::__construct($controller);
 
-		if (isset($controller->response) && $controller->response instanceof CakeResponse) {
-			$controller->response->type('pdf');
-		}
 		$engine = Configure::read('Pdf.engine');
 		if (!empty($controller->pdfEngine)) {
 			$engine = $controller->pdfEngine;
@@ -60,6 +57,9 @@ class PdfView extends View {
 			$this->_engine = $engine;
 		}
 		$this->renderer($this->_engine);
+		if (isset($controller->response) && $controller->response instanceof CakeResponse) {
+			$controller->response->type('pdf');
+		}
 	}
 
 /**
