@@ -54,12 +54,19 @@ class CakePdf {
 	protected $_engineClass = null;
 
 /**
+ * Html to be rendered
+ *
+ * @var string
+ */
+	protected $_html = null;
+
+/**
  * Constructor
  *
  * @param array $config Pdf configs to use
  */
 	public function __construct($config = array()) {
-		$config = array_merge(array('engine' => null), $config);
+		$config = array_merge(array('engine' => Configure::read('Pdf.engine')), $config);
 		$this->engine($config['engine'])->config($config);
 	}
 
@@ -73,10 +80,29 @@ class CakePdf {
 		if (!isset($this->_engineClass)) {
 			throw new Exception(__d('cakepdf', 'No Pdf engine is set!'));
 		}
-		if (!$html) {
-			$html = $this->_render();
+
+		if ($html) {
+			$this->html($html);
 		}
-		return $this->engine()->output($html);
+
+		if (!$this->_html) {
+			$this->html($this->_render());
+		}
+		return $this->engine()->output($this);
+	}
+
+/**
+ * Get/Set Html.
+ *
+ * @param null|string $subject
+ * @return mixed
+ */
+	public function html($html = null) {
+		if ($html === null) {
+			return $this->_html;
+		}
+		$this->_html = $html;
+		return $this;
 	}
 
 /**

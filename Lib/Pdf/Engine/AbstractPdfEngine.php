@@ -8,7 +8,7 @@ Abstract class AbstractPdfEngine {
  */
 	protected $_config = array();
 
-	abstract public function output($html);
+	abstract public function output(CakePdf $pdf);
 
 /**
  * Set the config

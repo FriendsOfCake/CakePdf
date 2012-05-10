@@ -34,9 +34,9 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine {
 		}
 	}
 
-	public function output($html) {
+	public function output(CakePdf $pdf) {
 
-		return $this->_renderPdf($html);
+		return $this->_renderPdf($pdf->html());
 	}
 
 	/**
