@@ -75,6 +75,34 @@ class CakePdf {
 	protected $_orientation = 'portrait';
 
 /**
+ * Bottom margin in mm
+ *
+ * @var number
+ */
+	protected $_marginBottom = null;
+
+/**
+ * Left margin in mm
+ *
+ * @var number
+ */
+	protected $_marginLeft = null;
+
+/**
+ * Right margin in mm
+ *
+ * @var number
+ */
+	protected $_marginRight = null;
+
+/**
+ * Top margin in mm
+ *
+ * @var number
+ */
+	protected $_marginTop = null;
+
+/**
  * Constructor
  *
  * @param array $config Pdf configs to use
@@ -83,7 +111,7 @@ class CakePdf {
 		$config = array_merge(array('engine' => Configure::read('Pdf.engine')), $config);
 		$this->engine($config['engine'])->config($config);
 
-		$options = array('pageSize', 'orientation');
+		$options = array('pageSize', 'orientation', 'margin');
 		foreach($options as $option) {
 			if(isset($config[$option])) {
 				$this->{$option}($config[$option]);
@@ -150,6 +178,125 @@ class CakePdf {
 			return $this->_orientation;
 		}
 		$this->_orientation = $orientation;
+		return $this;
+	}
+
+/**
+ * Get/Set page margins.
+ *
+ * Several options are available
+ *
+ * Array format
+ * ------------
+ * First param can be an array with the following options:
+ * - bottom
+ * - left
+ * - right
+ * - top
+ * 
+ * Set margin for all borders
+ * --------------------------
+ * $bottom is set to a string
+ * Leave all other parameters empty
+ * 
+ * Set margin for horizontal and vertical
+ * --------------------------------------
+ * $bottom value will be set to bottom and top
+ * $left value will be set to left and right
+ * 
+ * @param null|string|array $bottom
+ * @param null|string $left
+ * @param null|string $right
+ * @param null|string $top
+ * @return mixed
+ */
+	public function margin($bottom = null, $left = null, $right = null, $top = null) {
+		if ($bottom === null) {
+			return array(
+				'bottom' => $this->_marginBottom,
+				'left' => $this->_marginLeft,
+				'right' => $this->_marginRight,
+				'top' => $this->_marginTop
+			);
+		}
+
+		if (is_array($bottom)) {
+			extract($bottom, EXTR_IF_EXISTS);
+		}
+
+		if($bottom && $left === null && $right === null && $top === null) {
+			$left = $right = $top = $bottom;
+		}
+
+		if($bottom && $top === null) {
+			$top = $bottom;
+		}
+
+		if($left && $right === null) {
+			$right = $left;
+		}
+
+		$this->marginBottom($bottom);
+		$this->marginLeft($left);
+		$this->marginRight($right);
+		$this->marginTop($top);
+		
+		return $this;
+	}
+
+/**
+ * Get/Set bottom margin.
+ *
+ * @param null|string $margin
+ * @return mixed
+ */
+	public function marginBottom($margin = null) {
+		if ($margin === null) {
+			return $this->_marginBottom;
+		}
+		$this->_marginBottom = $margin;
+		return $this;
+	}
+
+/**
+ * Get/Set left margin.
+ *
+ * @param null|string $margin
+ * @return mixed
+ */
+	public function marginLeft($margin = null) {
+		if ($margin === null) {
+			return $this->_marginLeft;
+		}
+		$this->_marginLeft = $margin;
+		return $this;
+	}
+
+/**
+ * Get/Set right margin.
+ *
+ * @param null|string $margin
+ * @return mixed
+ */
+	public function marginRight($margin = null) {
+		if ($margin === null) {
+			return $this->_marginRight;
+		}
+		$this->_marginRight = $margin;
+		return $this;
+	}
+
+/**
+ * Get/Set bottom margin.
+ *
+ * @param null|string $margin
+ * @return mixed
+ */
+	public function marginTop($margin = null) {
+		if ($margin === null) {
+			return $this->_marginTop;
+		}
+		$this->_marginTop = $margin;
 		return $this;
 	}
 
