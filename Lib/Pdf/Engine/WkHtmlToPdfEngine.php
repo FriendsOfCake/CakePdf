@@ -11,6 +11,14 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine {
  */
 	protected $binary = '/usr/bin/wkhtmltopdf';
 
+
+/**
+ * Instance of CakePdf class
+ *
+ * @var CakePdf
+ */
+	protected $_pdf = null;
+
 /**
  * @brief the default options for WkHtmlToPdf View class
  * 
@@ -35,6 +43,7 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine {
 	}
 
 	public function output(CakePdf $pdf) {
+		$this->_pdf = $pdf;
 
 		return $this->_renderPdf($pdf->html());
 	}
@@ -101,8 +110,8 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine {
 	private function __getCommand() {
 		$command = $this->binary;
 
-		$command .= " --orientation " . $this->options['orientation'];
-		$command .= " --page-size " . $this->options['pageSize'];
+		$command .= " --orientation " . $this->_pdf->orientation();
+		$command .= " --page-size " . $this->_pdf->pageSize();
 
 		$command .= " - -";
 

@@ -14,7 +14,8 @@ class DomPdfEngine extends AbstractPdfEngine {
 	}
 
 	public function output(CakePdf $pdf) {
-		$DomPDF = new DOMPDF('A4');
+		$DomPDF = new DOMPDF();
+		$DomPDF->set_paper($pdf->pageSize(), $pdf->orientation());
 		$DomPDF->load_html($pdf->html());
 		$DomPDF->render();
 		return $DomPDF->output();

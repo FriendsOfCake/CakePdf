@@ -61,6 +61,20 @@ class CakePdf {
 	protected $_html = null;
 
 /**
+ * Page size of the pdf
+ *
+ * @var string
+ */
+	protected $_pageSize = 'A4';
+
+/**
+ * Orientation of the pdf
+ *
+ * @var string
+ */
+	protected $_orientation = 'portrait';
+
+/**
  * Constructor
  *
  * @param array $config Pdf configs to use
@@ -93,7 +107,7 @@ class CakePdf {
 /**
  * Get/Set Html.
  *
- * @param null|string $subject
+ * @param null|string $html
  * @return mixed
  */
 	public function html($html = null) {
@@ -101,6 +115,34 @@ class CakePdf {
 			return $this->_html;
 		}
 		$this->_html = $html;
+		return $this;
+	}
+
+/**
+ * Get/Set Page size.
+ *
+ * @param null|string $pageSize
+ * @return mixed
+ */
+	public function pageSize($pageSize = null) {
+		if ($pageSize === null) {
+			return $this->_pageSize;
+		}
+		$this->_pageSize = $pageSize;
+		return $this;
+	}
+
+/**
+ * Get/Set Orientation.
+ *
+ * @param null|string $orientation
+ * @return mixed
+ */
+	public function orientation($orientation = null) {
+		if ($orientation === null) {
+			return $this->_orientation;
+		}
+		$this->_orientation = $orientation;
 		return $this;
 	}
 
