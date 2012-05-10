@@ -82,6 +82,13 @@ class CakePdf {
 	public function __construct($config = array()) {
 		$config = array_merge(array('engine' => Configure::read('Pdf.engine')), $config);
 		$this->engine($config['engine'])->config($config);
+
+		$options = array('pageSize', 'orientation');
+		foreach($options as $option) {
+			if(isset($config[$option])) {
+				$this->{$option}($config[$option]);
+			}
+		}
 	}
 
 /**
