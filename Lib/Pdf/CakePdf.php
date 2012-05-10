@@ -83,11 +83,10 @@ class CakePdf {
 
 		if ($html) {
 			$this->html($html);
-		}
-
-		if (!$this->_html) {
+		} else {
 			$this->html($this->_render());
 		}
+
 		return $this->engine()->output($this);
 	}
 
