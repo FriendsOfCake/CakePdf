@@ -1,6 +1,17 @@
 <?php
 
-App::uses('CakePdf', 'CakePdf.Lib/Pdf');
+App::uses('CakePdf', 'CakePdf.Pdf');
+App::uses('AbstractPdfEngine', 'CakePdf.Pdf/Engine');
+
+/**
+ * Dummy engine
+ */
+class PdfTestEngine extends AbstractPdfEngine {
+
+	public function output() {
+		return 'Pdf data';
+	}
+}
 
 /**
  * CakePdfTest class
@@ -9,8 +20,26 @@ App::uses('CakePdf', 'CakePdf.Lib/Pdf');
  */
 class CakePdfTest extends CakeTestCase {
 
-	public function testMargin() {
-		$pdf = new CakePdf();
+/**
+ *
+ */
+	public static function provider() {
+		return array(array(array(
+				'engine' => 'PdfTest',
+				'margin' => array(
+					'bottom' => 15,
+					'left' => 50,
+					'right' => 30,
+					'top' => 45
+		))));
+	}
+
+/**
+ *
+ * @dataProvider provider
+ */
+	public function testMargin($config) {
+		$pdf = new CakePdf($config);
 		$pdf->margin(15, 20, 25, 30);
 		$expected = array(
 			'bottom' => 15,
@@ -20,7 +49,7 @@ class CakePdfTest extends CakeTestCase {
 		);
 		$this->assertEqual($expected, $pdf->margin());
 
-		$pdf = new CakePdf();
+		$pdf = new CakePdf($config);
 		$pdf->margin(75);
 		$expected = array(
 			'bottom' => 75,
@@ -30,7 +59,7 @@ class CakePdfTest extends CakeTestCase {
 		);
 		$this->assertEqual($expected, $pdf->margin());
 
-		$pdf = new CakePdf();
+		$pdf = new CakePdf($config);
 		$pdf->margin(20, 50);
 		$expected = array(
 			'bottom' => 20,
@@ -40,7 +69,7 @@ class CakePdfTest extends CakeTestCase {
 		);
 		$this->assertEqual($expected, $pdf->margin());
 
-		$pdf = new CakePdf();
+		$pdf = new CakePdf($config);
 		$pdf->margin(array('left' => 120, 'right' => 30, 'top' => 34, 'bottom' => 15));
 		$expected = array(
 			'bottom' => 15,
@@ -49,17 +78,7 @@ class CakePdfTest extends CakeTestCase {
 			'top' => 34
 		);
 		$this->assertEqual($expected, $pdf->margin());
-	}
 
-	public function testMarginFromConfig() {
-		$config = array(
-			'margin' => array(
-				'bottom' => 15,
-				'left' => 50,
-				'right' => 30,
-				'top' => 45
-			)
-		);
 		$pdf = new CakePdf($config);
 		$expected = array(
 			'bottom' => 15,
