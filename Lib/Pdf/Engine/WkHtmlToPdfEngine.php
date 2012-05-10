@@ -11,27 +11,14 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine {
  */
 	protected $binary = '/usr/bin/wkhtmltopdf';
 
-
 /**
- * Instance of CakePdf class
+ * Constructor
  *
- * @var CakePdf
+ * @param $Pdf CakePdf instance
  */
-	protected $_pdf = null;
-
-/**
- * @brief the default options for WkHtmlToPdf View class
- * 
- * @access protected
- * @var array
- */
-	protected $options = array(
-		'orientation' => 'Portrait',
-		'pageSize' => 'A4'
-	);
-
-	public function __construct() {
-		$binary = Configure::read('WkHtmlToPdf.binary');
+	public function __construct(CakePdf $Pdf) {
+		parent::__construct($Pdf);
+		$binary = $this->config('binary');
 
 		if ($binary) {
 			$this->binary = $binary;
@@ -42,21 +29,13 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine {
 		}
 	}
 
-	public function output(CakePdf $pdf) {
-		$this->_pdf = $pdf;
-
-		return $this->_renderPdf($pdf->html());
-	}
-
-	/**
-	 * @brief render a pdf document from some html
-	 * 
-	 * @access protected
-	 * 
-	 * @return the data from the rendering
-	 */
-	protected function _renderPdf($html) {
-		$content = $this->__exec($this->__getCommand(), $html);
+/**
+ * Generates Pdf from html
+ *
+ * @return string raw pdf data
+ */
+	public function output() {
+		$content = $this->_exec($this->_getCommand(), $this->_Pdf->html());
 
 		if (strpos(mb_strtolower($content['stderr']), 'error')) {
 			throw new Exception("System error <pre>" . $content['stderr'] . "</pre>");
@@ -73,16 +52,14 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine {
 		return $content['stdout'];
 	}
 
-	/**
-	 * @brief execute the WkHtmlToPdf commands for rendering pdfs
-	 * 
-	 * @access private
-	 * 
-	 * @param string $cmd the command to execute
-	 * 
-	 * @return string the result of running the command to generate the pdf 
-	 */
-	private function __exec($cmd, $input) {
+/**
+ * Execute the WkHtmlToPdf commands for rendering pdfs
+ *
+ * @param string $cmd the command to execute
+ * @param string $input
+ * @return string the result of running the command to generate the pdf
+ */
+	protected function _exec($cmd, $input) {
 		$result = array('stdout' => '', 'stderr' => '', 'return' => '');
 
 		$proc = proc_open($cmd, array(0 => array('pipe', 'r'), 1 => array('pipe', 'w'), 2 => array('pipe', 'w')), $pipes);
@@ -100,14 +77,12 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine {
 		return $result;
 	}
 
-	/**
-	 * @brief get the command to render a pdf 
-	 * 
-	 * @access private
-	 * 
-	 * @return string the command for generating the pdf
-	 */
-	private function __getCommand() {
+/**
+ * Get the command to render a pdf
+ *
+ * @return string the command for generating the pdf
+ */
+	protected function _getCommand() {
 		$command = $this->binary;
 
 		$command .= " --orientation " . $this->_pdf->orientation();

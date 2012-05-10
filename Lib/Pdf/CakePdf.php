@@ -130,13 +130,12 @@ class CakePdf {
 			throw new Exception(__d('cakepdf', 'No Pdf engine is set!'));
 		}
 
-		if ($html) {
-			$this->html($html);
-		} else {
-			$this->html($this->_render());
+		if (!$html) {
+			$html = $this->_render();
 		}
+		$this->html($html);
 
-		return $this->engine()->output($this);
+		return $this->engine()->output();
 	}
 
 /**
@@ -193,17 +192,17 @@ class CakePdf {
  * - left
  * - right
  * - top
- * 
+ *
  * Set margin for all borders
  * --------------------------
  * $bottom is set to a string
  * Leave all other parameters empty
- * 
+ *
  * Set margin for horizontal and vertical
  * --------------------------------------
  * $bottom value will be set to bottom and top
  * $left value will be set to left and right
- * 
+ *
  * @param null|string|array $bottom
  * @param null|string $left
  * @param null|string $right
@@ -240,7 +239,7 @@ class CakePdf {
 		$this->marginLeft($left);
 		$this->marginRight($right);
 		$this->marginTop($top);
-		
+
 		return $this;
 	}
 
@@ -336,7 +335,7 @@ class CakePdf {
 		if (!is_subclass_of($engineClassName, 'AbstractPdfEngine')) {
 			throw new Exception(__d('cake_pdf', 'Pdf engines must extend "AbstractPdfEngine"'));
 		}
-		return $this->_engineClass = new $engineClassName();
+		return $this->_engineClass = new $engineClassName($this);
 	}
 
 /**

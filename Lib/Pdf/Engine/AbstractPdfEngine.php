@@ -2,13 +2,33 @@
 
 Abstract class AbstractPdfEngine {
 /**
+ * Instance of CakePdf class
+ *
+ * @var CakePdf
+ */
+	protected $_Pdf = null;
+
+/**
  * Configurations
  *
  * @var array
  */
 	protected $_config = array();
 
-	abstract public function output(CakePdf $pdf);
+/**
+ * Constructor
+ *
+ * @param $Pdf CakePdf instance
+ */
+	public function __construct(CakePdf $Pdf) {
+		$this->_Pdf = $Pdf;
+	}
+
+/**
+ * Implement in subclass to return raw pdf data.
+ *
+ */
+	abstract public function output();
 
 /**
  * Set the config
