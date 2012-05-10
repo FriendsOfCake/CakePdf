@@ -13,9 +13,10 @@ class DomPdfEngine extends AbstractPdfEngine {
 		App::import('Vendor', 'CakePdf.DomPDF', array('file' => 'dompdf' . DS . 'dompdf_config.inc.php'));
 	}
 
-	public function output($html) {
-		$DomPDF = new DOMPDF('A4');
-		$DomPDF->load_html($html);
+	public function output(CakePdf $pdf) {
+		$DomPDF = new DOMPDF();
+		$DomPDF->set_paper($pdf->pageSize(), $pdf->orientation());
+		$DomPDF->load_html($pdf->html());
 		$DomPDF->render();
 		return $DomPDF->output();
 	}
