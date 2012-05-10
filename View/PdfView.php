@@ -27,13 +27,6 @@ class PdfView extends View {
 	public $subDir = 'pdf';
 
 /**
- * Pdf engine name
- *
- * @var string
- */
-	protected $_engine = null;
-
-/**
  * CakePdf Instance
  *
  * @var object
@@ -49,14 +42,11 @@ class PdfView extends View {
 	public function __construct(Controller $controller = null) {
 		parent::__construct($controller);
 
-		$engine = Configure::read('Pdf.engine');
-		if (!empty($controller->pdfEngine)) {
-			$engine = $controller->pdfEngine;
+		$config = array();
+		if (!empty($controller->pdfConfig)) {
+			$config = $controller->pdfConfig;
 		}
-		if ($engine) {
-			$this->_engine = $engine;
-		}
-		$this->renderer($this->_engine);
+		$this->renderer($config);
 		if (isset($controller->response) && $controller->response instanceof CakeResponse) {
 			$controller->response->type('pdf');
 		}
@@ -64,12 +54,12 @@ class PdfView extends View {
 
 /**
  * Return CakePdf instance, optionally set engine to be used
- * @param string $engine
+ * @param array $config Array of pdf configs. When empty CakePdf instance will be returned.
  * @return CakePdf
  */
-	public function renderer($engine = null) {
-		if ($engine) {
-			$this->_renderer = new CakePdf($engine);
+	public function renderer($config = null) {
+		if ($config !== null) {
+			$this->_renderer = new CakePdf($config);
 		}
 		return $this->_renderer;
 	}
