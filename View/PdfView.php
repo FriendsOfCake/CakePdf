@@ -82,7 +82,7 @@ class PdfView extends View {
  */
 	public function render($view = null, $layout = null) {
 		$content = parent::render($view, $layout);
-		return $this->renderer()->render($content);
+		return $this->renderer()->output($content);
 	}
 
 }
