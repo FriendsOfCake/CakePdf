@@ -103,6 +103,13 @@ class CakePdf {
 	protected $_marginTop = null;
 
 /**
+ * Title of the document
+ *
+ * @var string
+ */
+	protected $_title = null;
+
+/**
  * Constructor
  *
  * @param array $config Pdf configs to use
@@ -111,7 +118,7 @@ class CakePdf {
 		$config = array_merge(array('engine' => Configure::read('Pdf.engine')), $config);
 		$this->engine($config['engine'])->config($config);
 
-		$options = array('pageSize', 'orientation', 'margin');
+		$options = array('pageSize', 'orientation', 'margin', 'title');
 		foreach($options as $option) {
 			if(isset($config[$option])) {
 				$this->{$option}($config[$option]);
@@ -336,6 +343,20 @@ class CakePdf {
 			return $this->_marginTop;
 		}
 		$this->_marginTop = $margin;
+		return $this;
+	}
+
+/**
+ * Get/Set document title.
+ *
+ * @param null|string $title
+ * @return mixed
+ */
+	public function title($title = null) {
+		if ($title === null) {
+			return $this->_title;
+		}
+		$this->_title = $title;
 		return $this;
 	}
 

@@ -95,6 +95,10 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine {
 			}
 		}
 
+		$title = $this->_Pdf->title();
+		if ($title !== null) {
+			$command .= sprintf(' --title %s', escapeshellarg($title));
+		}
 		$command .= " - -";
 
 		return $command;
