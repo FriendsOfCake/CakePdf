@@ -57,7 +57,7 @@ Also you can create pdf view and layout files for your controller actions and ha
 Place the view templates in a 'pdf' subdir, for instance <code>app/View/Invoices/pdf/view.ctp</code>
 Layouts will be in same location as in above example.
 
-Make sure your InvoiceController has RequestHandler Component in the <code>$components</code> array.
+Make sure your InvoicesController has RequestHandler Component in the <code>$components</code> array.
 Browse to http://localhost/invoices/view/1.pdf
 
 h2. Thanks
