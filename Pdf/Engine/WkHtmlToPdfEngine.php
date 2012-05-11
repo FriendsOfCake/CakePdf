@@ -85,8 +85,16 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine {
 	protected function _getCommand() {
 		$command = $this->binary;
 
-		$command .= " --orientation " . $this->_pdf->orientation();
-		$command .= " --page-size " . $this->_pdf->pageSize();
+		$command .= " --orientation " . $this->_Pdf->orientation();
+		$command .= " --page-size " . $this->_Pdf->pageSize();
+
+		$margin = $this->_Pdf->margin();
+
+		foreach($margin as $border => $value) {
+			if ($value !== null) {
+				$command .= sprintf(' --margin-%s %dmm', $border, $value);
+			}
+		}
 
 		$command .= " - -";
 
