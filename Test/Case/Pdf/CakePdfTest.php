@@ -36,13 +36,24 @@ class CakePdfTest extends CakeTestCase {
 
 /**
  * Tests expection to be thrown for a non existing engine
-
+ *
  * @expectedException Exception
  */
 	public function testNonExistingEngineException() {
 		$config = array('engine' => 'NonExistingEngine');
 
 		$pdf = new CakePdf($config);
+	}
+
+/**
+ * Tests that engine returns the proper object
+ *
+ * @dataProvider provider
+ */
+	public function testEngine($config) {
+		$pdf = new CakePdf($config);
+		$engine = $pdf->engine();
+		$this->assertEqual('PdfTestEngine', get_class($engine));
 	}
 
 /**
