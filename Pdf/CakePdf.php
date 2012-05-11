@@ -153,6 +153,46 @@ class CakePdf {
 	}
 
 /**
+ * Writes output to file
+ *
+ * @param srting $destination Absolute file path to write to
+ * @param boolean $create Create file if it does not exist (if true)
+ * @return boolean
+ */
+	public function write($destination, $create = true, $html = null) {
+		$ouput = $this->output($html);
+		$File = new File($destination, $create);
+		return $File->write($output) && $File->close();
+	}
+
+/**
+ * Load PdfEngine
+ *
+ * @param string $name Classname of pdf engine without `Engine` suffix. For example `CakePdf.DomPdf`
+ * @return object PdfEngine
+ */
+	public function engine($name = null) {
+		if (!$name) {
+			if ($this->_engineClass) {
+				return $this->_engineClass;
+			}
+			throw new CakeException(__d('cake_pdf', 'Engine is not loaded'));
+		}
+
+		list($pluginDot, $engineClassName) = pluginSplit($name, true);
+		$engineClassName = $engineClassName . 'Engine';
+		App::uses($engineClassName, $pluginDot . 'Pdf/Engine');
+		if (!class_exists($engineClassName)) {
+			throw new CakeException(__d('cake_pdf', 'Pdf engine "%s" not found', $name));
+		}
+		if (!is_subclass_of($engineClassName, 'AbstractPdfEngine')) {
+			throw new CakeException(__d('cake_pdf', 'Pdf engines must extend "AbstractPdfEngine"'));
+		}
+		$this->_engineClass = new $engineClassName($this);
+		return $this->_engineClass;
+	}
+
+/**
  * Get/Set Page size.
  *
  * @param null|string $pageSize
@@ -297,45 +337,6 @@ class CakePdf {
 		}
 		$this->_marginTop = $margin;
 		return $this;
-	}
-
-/**
- * Writes output to file
- *
- * @param srting $destination Absolute file path to write to
- * @param boolean $create Create file if it does not exist (if true)
- * @return boolean
- */
-	public function write($destination, $create = true, $html = null) {
-		$ouput = $this->output($html);
-		$File = new File($destination, $create);
-		return $File->write($output) && $File->close();
-	}
-
-/**
- * Load PdfEngine
- *
- * @param string $name Classname of pdf engine without `Engine` suffix. For example `CakePdf.DomPdf`
- * @return object PdfEngine
- */
-	public function engine($name = null) {
-		if (!$name) {
-			if ($this->_engineClass) {
-				return $this->_engineClass;
-			}
-			throw new CakeException(__d('cake_pdf', 'Engine is not loaded'));
-		}
-
-		list($pluginDot, $engineClassName) = pluginSplit($name, true);
-		$engineClassName = $engineClassName . 'Engine';
-		App::uses($engineClassName, $pluginDot . 'Pdf/Engine');
-		if (!class_exists($engineClassName)) {
-			throw new CakeException(__d('cake_pdf', 'Pdf engine "%s" not found', $name));
-		}
-		if (!is_subclass_of($engineClassName, 'AbstractPdfEngine')) {
-			throw new CakeException(__d('cake_pdf', 'Pdf engines must extend "AbstractPdfEngine"'));
-		}
-		return $this->_engineClass = new $engineClassName($this);
 	}
 
 /**
