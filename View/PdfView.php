@@ -12,7 +12,7 @@
  */
 
 App::uses('CakePdf', 'CakePdf.Pdf');
-App::uses('View', 'View');
+App::uses('MediaView', 'View');
 
 /**
  * @package       Cake.View
@@ -46,15 +46,16 @@ class PdfView extends View {
  * @param Controller $controller
  * @return void
  */
-	public function __construct(Controller $controller = null) {
+	public function __construct(Controller $Controller = null) {
 		$this->_passedVars[] = 'pdfConfig';
-		parent::__construct($controller);
+		parent::__construct($Controller);
 
 		$this->renderer($this->pdfConfig);
 		$this->response->type('pdf');
-		if ($controller instanceof CakeErrorController) {
+		if ($Controller instanceof CakeErrorController) {
 			$this->response->type('html');
 		}
+		$this->_Controller = $Controller;
 
 	}
 
@@ -77,19 +78,19 @@ class PdfView extends View {
  * @return string The rendered view.
  */
 	public function render($view = null, $layout = null) {
-		if (isset($this->pdfConfig['download']) && $this->pdfConfig['download'] === true) {
-			$filename = $this->view . '.pdf';
+		$content = parent::render($view, $layout);
+		if ($this->response->type() == 'text/html') {
+			return $content;
+		}
 
+		if (isset($this->pdfConfig['download']) && $this->pdfConfig['download'] === true) {
+			$id = current($this->request->params['pass']);
+			$filename = strtolower($this->viewPath) . $id . '.pdf';
 			if (isset($this->pdfConfig['filename'])) {
 				$filename = $this->pdfConfig['filename'];
 			}
 
 			$this->response->download($filename);
-		}
-
-		$content = parent::render($view, $layout);
-		if ($this->response->type() == 'text/html') {
-			return $content;
 		}
 		return $this->renderer()->output($content);
 	}
