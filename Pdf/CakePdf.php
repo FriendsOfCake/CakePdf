@@ -124,11 +124,19 @@ class CakePdf {
 	protected $_encrypt = false;
 
 /**
+ * User password, used with crypto
+ *
+ * @var boolean
+ */
+	protected $_userPassword = null;
+
+/**
  * Owner password, used with crypto
  *
  * @var boolean
  */
 	protected $_ownerPassword = null;
+
 /**
  * Constructor
  *
@@ -145,7 +153,7 @@ class CakePdf {
 			$this->crypto($config['crypto'])->config($config);
 		}
 
-		$options = array('pageSize', 'orientation', 'margin', 'title', 'encrypt', 'password');
+		$options = array('pageSize', 'orientation', 'margin', 'title', 'encrypt', 'userPassword', 'ownerPassword');
 		foreach ($options as $option) {
 			if (isset($config[$option])) {
 				$this->{$option}($config[$option]);
@@ -435,12 +443,31 @@ class CakePdf {
 	}
 
 /**
- * Get/Set password.
+ * Get/Set userPassword
+ * 
+ * The user password is used to control who can open the PDF document.
  *
  * @param null|string $password
  * @return mixed
  */
-	public function password($password = null) {
+	public function userPassword($password = null) {
+		if ($password === null) {
+			return $this->_userPassword;
+		}
+		$this->_userPassword = $password;
+
+		return $this;
+	}
+
+/**
+ * Get/Set ownerPassword.
+ *
+ * The owner password is used to control who can modify, print, manage the PDF document.
+ * 
+ * @param null|string $password
+ * @return mixed
+ */
+	public function ownerPassword($password = null) {
 		if ($password === null) {
 			return $this->_ownerPassword;
 		}

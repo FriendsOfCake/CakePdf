@@ -21,7 +21,27 @@ class PdftkCrypto extends AbstractPdfCrypto {
 			throw new CakeException(sprintf('pdftk binary is not found or not executable: %s', $this->binary));
 		}
 
-		$command = sprintf($this->binary . " - output - owner_pw %s", $this->_Pdf->password()); 
+		$arguments = array();
+
+		$ownerPassword = $this->_Pdf->ownerPassword();
+		if ($ownerPassword !== null) {
+			$arguments['owner_pw'] = $ownerPassword;
+		}
+
+		$userPassword = $this->_Pdf->userPassword();
+		if ($userPassword !== null) {
+			$arguments['user_pw'] = $userPassword;
+		}
+
+		if (!$ownerPassword && !$userPassword) {
+			throw new CakeException('Crypto: Required to configure atleast an ownerPassword or userPassword');
+		}
+
+		if ($ownerPassword == $userPassword) {
+			throw new CakeException('Crypto: ownerPassword and userPassword cannot be the same');
+		}
+
+		$command = sprintf('%s - output - %s', $this->binary, $this->__buildArguments($arguments)); 
 
 		$descriptorspec = array(
 			0 => array('pipe', 'r'), // feed stdin of process from this file descriptor
@@ -41,7 +61,21 @@ class PdftkCrypto extends AbstractPdfCrypto {
 
 		$exitcode = proc_close($prochandle);
 
+		if ($exitcode !== 0) {
+			throw new CakeException(sprintf('Crypto: Unknown error (exit code %d)', $exitcode));
+		}
+
 		return $stdout;
+	}
+
+	private function __buildArguments($arguments) {
+		$output = array();
+
+		foreach ($arguments as $argument => $value) {
+			$output[] = $argument . ' ' . escapeshellarg($value);
+		}
+
+		return implode(' ', $output);
 	}
 
 }
