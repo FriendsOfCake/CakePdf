@@ -47,20 +47,20 @@ h2. Configuration
 Use <code>Configure::write('Pdf', $config);</code> or set Controller property <code>$pdfConfig</code> (only when used with PdfView)
 You need to define at least <code>$config['engine']</code>. When using CakePdf directly you can also pass the config array to constructor.
 
-h2 Usage
+h2. Usage
 
-You can use CakePdf lib to create raw pdf data with a view template. The view file path would look like app/View/Pdf/example.ctp.
-Layout file path would be like app/View/Layouts/pdf/default.ctp
+You can use CakePdf lib to create raw pdf data with a view template. The view file path would look like <code>app/View/Pdf/example.ctp</code>.
+Layout file path would be like <code>app/View/Layouts/pdf/default.ctp</code>
 Optionally you can also write the raw data to file, for instance to use as email attachment.
 
 Also you can create pdf view and layout files for your controller actions and have them automatically.
-Place the view templates in a `pdf` subdir, for instance app/View/Invoices/pdf/view.ctp
+Place the view templates in a 'pdf' subdir, for instance <code>app/View/Invoices/pdf/view.ctp</code>
 Layouts will be in same location as in above example.
 
-Make sure your InvoiceController has RequestHandler Component in the $components array.
+Make sure your InvoiceController has RequestHandler Component in the <code>$components</code> array.
 Browse to http://localhost/invoices/view/1.pdf
 
-h2 Thanks
+h2. Thanks
 
 Many thanks to Kim Biesbjerg and Jelle Henkens for their contributions.
 Want your name here as well? Create a pull request for improvements/other pdf engines.
