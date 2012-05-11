@@ -54,6 +54,13 @@ class CakePdf {
 	protected $_engineClass = null;
 
 /**
+ * Instance of PdfCrypto class
+ *
+ * @var AbstractPdfCrypto
+ */
+	protected $_cryptoClass = null;
+
+/**
  * Html to be rendered
  *
  * @var string
@@ -110,6 +117,19 @@ class CakePdf {
 	protected $_title = null;
 
 /**
+ * Flag that tells if we need to pass it through crypto
+ *
+ * @var boolean
+ */
+	protected $_encrypt = false;
+
+/**
+ * Owner password, used with crypto
+ *
+ * @var boolean
+ */
+	protected $_ownerPassword = null;
+/**
  * Constructor
  *
  * @param array $config Pdf configs to use
@@ -118,11 +138,17 @@ class CakePdf {
 		$config = array_merge(array('engine' => Configure::read('Pdf.engine')), $config);
 		$this->engine($config['engine'])->config($config);
 
-		$options = array('pageSize', 'orientation', 'margin', 'title');
+		$options = array('pageSize', 'orientation', 'margin', 'title', 'password');
 		foreach($options as $option) {
 			if(isset($config[$option])) {
 				$this->{$option}($config[$option]);
 			}
+		}
+
+		if(isset($config['encrypt'])) {
+			$this->_encrypt = true;
+			$config = array_merge(array('crypto' => Configure::read('Pdf.crypto')), $config);
+			$this->crypto($config['crypto'])->config($config);
 		}
 	}
 
@@ -142,7 +168,13 @@ class CakePdf {
 		}
 		$this->html($html);
 
-		return $this->engine()->output();
+		$output = $this->engine()->output();
+
+		if($this->_encrypt) {
+			$output = $this->crypto()->encrypt($output);
+		}
+
+		return $output;
 	}
 
 /**
@@ -197,6 +229,33 @@ class CakePdf {
 		}
 		$this->_engineClass = new $engineClassName($this);
 		return $this->_engineClass;
+	}
+
+/**
+ * Load PdfEngine
+ *
+ * @param string $name Classname of crypto engine without `Crypto` suffix. For example `CakePdf.Pdftk`
+ * @return object PdfCrypto
+ */
+	public function crypto($name = null) {
+		if ($name === null) {
+			if ($this->_cryptoClass) {
+				return $this->_cryptoClass;
+			}
+			throw new CakeException(__d('cake_pdf', 'Crypto is not loaded'));
+		}
+
+		list($pluginDot, $engineClassName) = pluginSplit($name, true);
+		$engineClassName = $engineClassName . 'Crypto';
+		App::uses($engineClassName, $pluginDot . 'Pdf/Crypto');
+		if (!class_exists($engineClassName)) {
+			throw new CakeException(__d('cake_pdf', 'Pdf crypto "%s" not found', $name));
+		}
+		if (!is_subclass_of($engineClassName, 'AbstractPdfCrypto')) {
+			throw new CakeException(__d('cake_pdf', 'Crypto engine must extend "AbstractPdfCrypto"'));
+		}
+		$this->_cryptoClass = new $engineClassName($this);
+		return $this->_cryptoClass;
 	}
 
 /**
@@ -361,6 +420,20 @@ class CakePdf {
 	}
 
 /**
+ * Get/Set password.
+ *
+ * @param null|string $password
+ * @return mixed
+ */
+	public function password($password = null) {
+		if ($password === null) {
+			return $this->_ownerPassword;
+		}
+		$this->_ownerPassword = $password;
+		return $this;
+	}
+
+/**
  * Template and layout
  *
  * @param mixed $template Template name or null to not use
@@ -463,4 +536,9 @@ class CakePdf {
 		return $View->render();
 	}
 
+	protected function _encrypt($data) {
+		App::uses('PdftkCrypto', 'CakePdf.Pdf/Crypto');
+		$crypto = new PdftkCrypto($this);
+		return $crypto->encrypt($data);
+	}
 }

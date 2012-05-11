@@ -21,7 +21,7 @@ class PdftkCrypto extends AbstractPdfCrypto {
 			throw new CakeException(sprintf('pdftk binary is not found or not executable: %s', $this->binary));
 		}
 
-		$command = $this->binary . " - output - owner_pw test"; 
+		$command = sprintf($this->binary . " - output - owner_pw %s", $this->_Pdf->password()); 
 
 		$descriptorspec = array(
 			0 => array('pipe', 'r'), // feed stdin of process from this file descriptor
