@@ -52,6 +52,10 @@ class PdfView extends View {
 
 		$this->renderer($this->pdfConfig);
 		$this->response->type('pdf');
+		if ($controller instanceof CakeErrorController) {
+			$this->response->type('html');
+		}
+
 	}
 
 /**
@@ -74,6 +78,9 @@ class PdfView extends View {
  */
 	public function render($view = null, $layout = null) {
 		$content = parent::render($view, $layout);
+		if ($this->response->type() == 'text/html') {
+			return $content;
+		}
 		return $this->renderer()->output($content);
 	}
 
