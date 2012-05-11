@@ -2,6 +2,7 @@
 
 App::uses('CakePdf', 'CakePdf.Pdf');
 App::uses('AbstractPdfEngine', 'CakePdf.Pdf/Engine');
+App::uses('Controller', 'Controller');
 
 /**
  * Dummy engine
@@ -46,11 +47,20 @@ class CakePdfTest extends CakeTestCase {
 	}
 
 /**
+ * testOutput
  *
  * @dataProvider provider
  */
 	public function testOutput($config) {
 		$pdf = new CakePdf($config);
+		$path = CakePlugin::path('CakePdf') . 'Test' . DS . 'test_app' . DS . 'View' . DS;
+		App::build(array('View' => $path));
+		$pdf->viewVars(array('data' => 'testing'));
+		$pdf->template('testing', 'pdf');
+		$result = $pdf->output();
+		$expected = 'Data: testing';
+		$this->assertEquals($expected, $result);
+
 		$html = '<h2>Title</h2>';
 		$result = $pdf->output($html);
 		$this->assertEquals($html, $result);
