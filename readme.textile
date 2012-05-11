@@ -44,8 +44,8 @@ In app/Config/bootstrap.php add:
 
 h2. Configuration
 
-Use <pre><code>Configure::write('Pdf', $config);</code></pre> or set Controller property `$pdfConfig` (only when used with PdfView)
-You need to define at least $config['engine']. When using CakePdf directly you can also pass the config array to constructor.
+Use <code>Configure::write('Pdf', $config);</code> or set Controller property <code>$pdfConfig</code> (only when used with PdfView)
+You need to define at least <code>$config['engine']</code>. When using CakePdf directly you can also pass the config array to constructor.
 
 h2 Usage
 
