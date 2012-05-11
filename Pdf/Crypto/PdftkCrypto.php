@@ -10,6 +10,7 @@ class PdftkCrypto extends AbstractPdfCrypto {
  * @var string
  */
 	protected $binary = '/usr/local/bin/pdftk';
+
 /**
  * Encrypt a pdf file
  *
@@ -68,6 +69,12 @@ class PdftkCrypto extends AbstractPdfCrypto {
 		return $stdout;
 	}
 
+/**
+ * Builds a shell safe argument list
+ *
+ * @param array $arguments
+ * @return string list of arguments
+ */
 	private function __buildArguments($arguments) {
 		$output = array();
 
