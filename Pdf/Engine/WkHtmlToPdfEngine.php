@@ -23,10 +23,6 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine {
 		if ($binary) {
 			$this->binary = $binary;
 		}
-
-		if (!is_executable($this->binary)) {
-			throw new CakeException(sprintf('wkhtmltopdf binary is not found or not executable: %s', $this->binary));
-		}
 	}
 
 /**
@@ -35,6 +31,9 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine {
  * @return string raw pdf data
  */
 	public function output() {
+		if (!is_executable($this->binary)) {
+			throw new CakeException(sprintf('wkhtmltopdf binary is not found or not executable: %s', $this->binary));
+		}
 		$content = $this->_exec($this->_getCommand(), $this->_Pdf->html());
 
 		if (strpos(mb_strtolower($content['stderr']), 'error')) {
