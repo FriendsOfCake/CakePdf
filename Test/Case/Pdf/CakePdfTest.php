@@ -9,7 +9,7 @@ App::uses('AbstractPdfEngine', 'CakePdf.Pdf/Engine');
 class PdfTestEngine extends AbstractPdfEngine {
 
 	public function output() {
-		return 'Pdf data';
+		return $this->_Pdf->html();
 	}
 }
 
@@ -37,12 +37,23 @@ class CakePdfTest extends CakeTestCase {
 /**
  * Tests exception to be thrown for a non existing engine
  *
- * @expectedException Exception
+ * @expectedException CakeException
  */
 	public function testNonExistingEngineException() {
 		$config = array('engine' => 'NonExistingEngine');
 
 		$pdf = new CakePdf($config);
+	}
+
+/**
+ *
+ * @dataProvider provider
+ */
+	public function testOutput($config) {
+		$pdf = new CakePdf($config);
+		$html = '<h2>Title</h2>';
+		$result = $pdf->output($html);
+		$this->assertEquals($html, $result);
 	}
 
 /**

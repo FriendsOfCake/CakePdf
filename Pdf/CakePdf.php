@@ -127,7 +127,7 @@ class CakePdf {
  */
 	public function output($html = null) {
 		if (!isset($this->_engineClass)) {
-			throw new Exception(__d('cakepdf', 'No Pdf engine is set!'));
+			throw new CakeException(__d('cakepdf', 'No Pdf engine is set!'));
 		}
 
 		if (!$html) {
@@ -323,17 +323,17 @@ class CakePdf {
 			if ($this->_engineClass) {
 				return $this->_engineClass;
 			}
-			throw new Exception(__d('cake_pdf', 'Engine is not loaded'));
+			throw new CakeException(__d('cake_pdf', 'Engine is not loaded'));
 		}
 
 		list($pluginDot, $engineClassName) = pluginSplit($name, true);
 		$engineClassName = $engineClassName . 'Engine';
 		App::uses($engineClassName, $pluginDot . 'Pdf/Engine');
 		if (!class_exists($engineClassName)) {
-			throw new Exception(__d('cake_pdf', 'Pdf engine "%s" not found', $name));
+			throw new CakeException(__d('cake_pdf', 'Pdf engine "%s" not found', $name));
 		}
 		if (!is_subclass_of($engineClassName, 'AbstractPdfEngine')) {
-			throw new Exception(__d('cake_pdf', 'Pdf engines must extend "AbstractPdfEngine"'));
+			throw new CakeException(__d('cake_pdf', 'Pdf engines must extend "AbstractPdfEngine"'));
 		}
 		return $this->_engineClass = new $engineClassName($this);
 	}

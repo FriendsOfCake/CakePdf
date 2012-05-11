@@ -25,7 +25,7 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine {
 		}
 
 		if (!is_executable($this->binary)) {
-			throw new Exception(sprintf('wkhtmltopdf binary is not found or not executable: %s', $this->binary));
+			throw new CakeException(sprintf('wkhtmltopdf binary is not found or not executable: %s', $this->binary));
 		}
 	}
 
@@ -38,15 +38,15 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine {
 		$content = $this->_exec($this->_getCommand(), $this->_Pdf->html());
 
 		if (strpos(mb_strtolower($content['stderr']), 'error')) {
-			throw new Exception("System error <pre>" . $content['stderr'] . "</pre>");
+			throw new CakeException("System error <pre>" . $content['stderr'] . "</pre>");
 		}
 
 		if (mb_strlen($content['stdout'], 'utf-8') === 0) {
-			throw new Exception("WKHTMLTOPDF didn't return any data");
+			throw new CakeException("WKHTMLTOPDF didn't return any data");
 		}
 
 		if ((int)$content['return'] > 1) {
-			throw new Exception("Shell error, return code: " . (int)$content['return']);
+			throw new CakeException("Shell error, return code: " . (int)$content['return']);
 		}
 
 		return $content['stdout'];
