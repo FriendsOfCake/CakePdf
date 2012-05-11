@@ -141,12 +141,12 @@ class CakePdf {
 		), $config);
 		$this->engine($config['engine'])->config($config);
 
-		if( isset($config['crypto'])) {
+		if (isset($config['crypto'])) {
 			$this->crypto($config['crypto'])->config($config);
 		}
 
 		$options = array('pageSize', 'orientation', 'margin', 'title', 'encrypt', 'password');
-		foreach($options as $option) {
+		foreach ($options as $option) {
 			if (isset($config[$option])) {
 				$this->{$option}($config[$option]);
 			}
@@ -330,15 +330,15 @@ class CakePdf {
 			extract($bottom, EXTR_IF_EXISTS);
 		}
 
-		if($bottom && $left === null && $right === null && $top === null) {
+		if ($bottom && $left === null && $right === null && $top === null) {
 			$left = $right = $top = $bottom;
 		}
 
-		if($bottom && $top === null) {
+		if ($bottom && $top === null) {
 			$top = $bottom;
 		}
 
-		if($left && $right === null) {
+		if ($left && $right === null) {
 			$right = $left;
 		}
 
