@@ -17,7 +17,7 @@ class PdfTestEngine extends AbstractPdfEngine {
 /**
  * CakePdfTest class
  *
- * @package       CakePdf.Test.Case.Lib.CakePdf
+ * @package       CakePdf.Test.Case.Pdf
  */
 class CakePdfTest extends CakeTestCase {
 

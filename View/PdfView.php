@@ -34,22 +34,24 @@ class PdfView extends View {
 	protected $_renderer = null;
 
 /**
+ * List of pdf configs collected from the associated controller.
+ *
+ * @var array
+ */
+	public $pdfConfig = array();
+
+/**
  * Constructor
  *
  * @param Controller $controller
  * @return void
  */
 	public function __construct(Controller $controller = null) {
+		$this->_passedVars[] = 'pdfConfig';
 		parent::__construct($controller);
 
-		$config = array();
-		if (!empty($controller->pdfConfig)) {
-			$config = $controller->pdfConfig;
-		}
-		$this->renderer($config);
-		if (isset($controller->response) && $controller->response instanceof CakeResponse) {
-			$controller->response->type('pdf');
-		}
+		$this->renderer($this->pdfConfig);
+		$this->response->type('pdf');
 	}
 
 /**
