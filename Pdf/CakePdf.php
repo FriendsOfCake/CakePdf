@@ -550,10 +550,4 @@ class CakePdf {
 		$View->layout = $this->_layout;
 		return $View->render();
 	}
-
-	protected function _encrypt($data) {
-		App::uses('PdftkCrypto', 'CakePdf.Pdf/Crypto');
-		$crypto = new PdftkCrypto($this);
-		return $crypto->encrypt($data);
-	}
 }
