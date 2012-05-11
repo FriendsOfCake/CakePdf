@@ -35,7 +35,7 @@ class CakePdfTest extends CakeTestCase {
 	}
 
 /**
- * Tests expection to be thrown for a non existing engine
+ * Tests exception to be thrown for a non existing engine
  *
  * @expectedException Exception
  */
