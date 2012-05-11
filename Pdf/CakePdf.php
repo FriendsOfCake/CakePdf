@@ -135,20 +135,21 @@ class CakePdf {
  * @param array $config Pdf configs to use
  */
 	public function __construct($config = array()) {
-		$config = array_merge(array('engine' => Configure::read('Pdf.engine')), $config);
+		$config = array_merge(array(
+			'engine' => Configure::read('Pdf.engine'),
+			'crypto' => Configure::read('Pdf.crypto')
+		), $config);
 		$this->engine($config['engine'])->config($config);
 
-		$options = array('pageSize', 'orientation', 'margin', 'title', 'password');
-		foreach($options as $option) {
-			if(isset($config[$option])) {
-				$this->{$option}($config[$option]);
-			}
+		if( isset($config['crypto'])) {
+			$this->crypto($config['crypto'])->config($config);
 		}
 
-		if(isset($config['encrypt'])) {
-			$this->_encrypt = true;
-			$config = array_merge(array('crypto' => Configure::read('Pdf.crypto')), $config);
-			$this->crypto($config['crypto'])->config($config);
+		$options = array('pageSize', 'orientation', 'margin', 'title', 'encrypt', 'password');
+		foreach($options as $option) {
+			if (isset($config[$option])) {
+				$this->{$option}($config[$option]);
+			}
 		}
 	}
 
@@ -170,7 +171,7 @@ class CakePdf {
 
 		$output = $this->engine()->output();
 
-		if($this->_encrypt) {
+		if ($this->encrypt()) {
 			$output = $this->crypto()->encrypt($output);
 		}
 
@@ -416,6 +417,20 @@ class CakePdf {
 			return $this->_title;
 		}
 		$this->_title = $title;
+		return $this;
+	}
+
+/**
+ * Get/Set encrypt.
+ *
+ * @param null|boolean $encrypt
+ * @return mixed
+ */
+	public function encrypt($encrypt = null) {
+		if ($encrypt === null) {
+			return $this->_encrypt;
+		}
+		$this->_encrypt = $encrypt;
 		return $this;
 	}
 
