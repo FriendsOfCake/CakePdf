@@ -77,6 +77,16 @@ class PdfView extends View {
  * @return string The rendered view.
  */
 	public function render($view = null, $layout = null) {
+		if (isset($this->pdfConfig['download']) && $this->pdfConfig['download'] === true) {
+			$filename = $this->view . '.pdf';
+
+			if (isset($this->pdfConfig['filename'])) {
+				$filename = $this->pdfConfig['filename'];
+			}
+
+			$this->response->download($filename);
+		}
+
 		$content = parent::render($view, $layout);
 		if ($this->response->type() == 'text/html') {
 			return $content;
