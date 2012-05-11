@@ -11,7 +11,7 @@ h2. Requirements
 
 * PHP 5.2.8
 * CakePHP 2.x
-* wkhtmltopdf (optional) See: http://code.google.com/p/wkhtmltopdf/wiki/compilation
+* wkhtmltopdf (optional) See: http://code.google.com/p/wkhtmltopdf/
 
 h2. Installation
 
