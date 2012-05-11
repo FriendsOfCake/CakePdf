@@ -232,7 +232,7 @@ class CakePdf {
 	}
 
 /**
- * Load PdfEngine
+ * Load PdfCrypto
  *
  * @param string $name Classname of crypto engine without `Crypto` suffix. For example `CakePdf.Pdftk`
  * @return object PdfCrypto
