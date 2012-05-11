@@ -69,7 +69,7 @@ class PdfViewTest extends CakeTestCase {
  */
 	public function testRender() {
 		$this->View->set('post', 'This is the post');
-		$result = $this->View->render('view', 'defaults');
+		$result = $this->View->render('view', 'default');
 
 		$this->assertTrue(strpos($result, '<h2>Rendered with default layout</h2>') !== false);
 		$this->assertTrue(strpos($result, 'Post data: This is the post') !== false);
