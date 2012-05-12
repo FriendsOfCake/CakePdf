@@ -10,8 +10,7 @@ class TcpdfEngine extends AbstractPdfEngine {
  */
 	public function __construct(CakePdf $Pdf) {
 		parent::__construct($Pdf);
-
-		App::import('Vendor', 'CakePdf.DomPDF', array('file' => 'tcpdf' . DS . 'tcpdf.php'));
+		App::import('Vendor', 'CakePdf.TCPDF', array('file' => 'tcpdf' . DS . 'tcpdf.php'));
 	}
 
 /**
@@ -20,6 +19,8 @@ class TcpdfEngine extends AbstractPdfEngine {
  * @return string raw pdf data
  */
 	public function output() {
+		//TCPDF often produces a whole bunch of errors, although there is a pdf created when debug = 0
+		//Configure::write('debug', 0);
 		$TCPDF = new TCPDF($this->_Pdf->orientation(), 'mm', $this->_Pdf->pageSize());
 		$TCPDF->AddPage();
 		$TCPDF->writeHTML($this->_Pdf->html());
