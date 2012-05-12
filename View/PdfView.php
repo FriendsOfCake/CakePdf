@@ -12,7 +12,7 @@
  */
 
 App::uses('CakePdf', 'CakePdf.Pdf');
-App::uses('MediaView', 'View');
+App::uses('View', 'View');
 
 /**
  * @package       Cake.View
