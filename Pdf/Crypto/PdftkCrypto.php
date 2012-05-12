@@ -12,6 +12,23 @@ class PdftkCrypto extends AbstractPdfCrypto {
 	protected $binary = '/usr/local/bin/pdftk';
 
 /**
+ * Mapping of the CakePdf permissions to the Pdftk arguments
+ *
+ * @access protected
+ * @var string
+ */
+	protected $_permissionsMap = array(
+		'print' => 'Printing',
+		'degraded_print' => 'DegradedPrinting',
+		'modify' => 'ModifyContents',
+		'assembly' => 'Assembly',
+		'copy_contents' => 'CopyContents',
+		'screen_readers' => 'ScreenReaders',
+		'annotate' => 'ModifyAnnotations',
+		'fill_in' => 'FillIn'
+	);
+
+/**
  * Encrypt a pdf file
  *
  * @param string $data raw pdf data
@@ -26,12 +43,17 @@ class PdftkCrypto extends AbstractPdfCrypto {
 
 		$ownerPassword = $this->_Pdf->ownerPassword();
 		if ($ownerPassword !== null) {
-			$arguments['owner_pw'] = $ownerPassword;
+			$arguments['owner_pw'] = escapeshellarg($ownerPassword);
 		}
 
 		$userPassword = $this->_Pdf->userPassword();
 		if ($userPassword !== null) {
-			$arguments['user_pw'] = $userPassword;
+			$arguments['user_pw'] = escapeshellarg($userPassword);
+		}
+
+		$allowed = $this->_buildPermissionsArgument();
+		if($allowed) {
+			$arguments['allow'] = $allowed;
 		}
 
 		if (!$ownerPassword && !$userPassword) {
@@ -70,6 +92,16 @@ class PdftkCrypto extends AbstractPdfCrypto {
 	}
 
 /**
+ * Checks if a CakePdf permission is implemented
+ *
+ * @param string $permission permission name
+ * @return boolean
+ */
+	public function permissionImplemented($permission) {
+		return array_key_exists($permission, $this->_permissionsMap);
+	}
+
+/**
  * Builds a shell safe argument list
  *
  * @param array $arguments
@@ -79,10 +111,38 @@ class PdftkCrypto extends AbstractPdfCrypto {
 		$output = array();
 
 		foreach ($arguments as $argument => $value) {
-			$output[] = $argument . ' ' . escapeshellarg($value);
+			$output[] = $argument . ' ' . $value;
 		}
 
 		return implode(' ', $output);
+	}
+
+/**
+ * Generate the permissions argument
+ *
+ * @param array $arguments
+ * @return string list of arguments
+ */
+	protected function _buildPermissionsArgument() {
+		$permissions = $this->_Pdf->permissions();
+
+		if ($permissions === false) {
+			return false;
+		}
+
+		$allowed = array();
+
+		if ($permissions === true) {
+			$allowed[] = 'AllFeatures';
+		}
+
+		if (is_array($permissions)) {
+			foreach ($permissions as $permission) {
+				$allowed[] = $this->_permissionsMap[$permission];
+			}
+		}
+
+		return implode(' ', $allowed);
 	}
 
 }
