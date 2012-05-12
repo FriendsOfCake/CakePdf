@@ -55,8 +55,6 @@ class PdfView extends View {
 		if ($Controller instanceof CakeErrorController) {
 			$this->response->type('html');
 		}
-		$this->_Controller = $Controller;
-
 	}
 
 /**
