@@ -138,6 +138,34 @@ class CakePdf {
 	protected $_ownerPassword = null;
 
 /**
+ * Permissions that are allowed, used with crypto
+ *
+ * false: none
+ * true: all
+ * array: List of permissions that are allowed
+ * 
+ * @var mixed
+ */
+	protected $_allow = false;
+
+
+/**
+ * Available permissions
+ * 
+ * @var array
+ */
+	private $__availablePermissions = array(
+		'print',
+		'degraded_print',
+		'modify',
+		'assembly',
+		'copy_contents',
+		'screen_readers',
+		'annotate',
+		'fill_in'
+	);
+
+/**
  * Constructor
  *
  * @param array $config Pdf configs to use
@@ -153,7 +181,7 @@ class CakePdf {
 			$this->crypto($config['crypto'])->config($config);
 		}
 
-		$options = array('pageSize', 'orientation', 'margin', 'title', 'encrypt', 'userPassword', 'ownerPassword');
+		$options = array('pageSize', 'orientation', 'margin', 'title', 'encrypt', 'userPassword', 'ownerPassword', 'permissions');
 		foreach ($options as $option) {
 			if (isset($config[$option])) {
 				$this->{$option}($config[$option]);
@@ -472,6 +500,51 @@ class CakePdf {
 			return $this->_ownerPassword;
 		}
 		$this->_ownerPassword = $password;
+		return $this;
+	}
+
+/**
+ * Get/Set permissions.
+ *
+ * all: allow all permissions
+ * none: allow no permissions
+ * array: list of permissions that are allowed
+ * 
+
+ * @param null|bool|array $permissions
+ * @return mixed
+ */
+	public function permissions($permissions = null) {
+		if (!$this->_encrypt) {
+			return $this;
+		}
+
+		if ($permissions === null) {
+			return $this->_allow;
+		}
+
+		if (is_string($permissions) && $permissions == 'all') {
+			$permissions = true;
+		}
+
+		if (is_string($permissions) && $permissions == 'none') {
+			$permissions = false;
+		}
+
+		if (is_array($permissions)) {
+			foreach ($permissions as $permission) {
+				if (!in_array($permission, $this->__availablePermissions)) {
+					throw new CakeException(sprintf('Invalid permission: %s', $permission));
+				}
+
+				if (!$this->crypto()->permissionImplemented($permission)) {
+					throw new CakeException(sprintf('Permission not implemented in crypto engine: %s', $permission));
+				}
+			}
+		}
+
+		$this->_allow = $permissions;
+
 		return $this;
 	}
 
