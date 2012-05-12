@@ -12,6 +12,7 @@ h2. Requirements
 * PHP 5.2.8
 * CakePHP 2.x
 * wkhtmltopdf (optional) See: http://code.google.com/p/wkhtmltopdf/
+* wkhtmltopdf (optional) See: http://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/
 
 h2. Installation
 
@@ -59,6 +60,48 @@ Layouts will be in same location as in above example.
 
 Make sure your InvoicesController has RequestHandler Component in the <code>$components</code> array.
 Browse to http://localhost/invoices/view/1.pdf
+
+h2. Encryption
+
+You can optionally encrypt the PDF with permissions
+
+To use encryption you first need to select a crypto engine. Currently we support the following crypto engines:
+
+ * Pdftk
+
+h3. Usage
+
+Add the following in your bootstrap.
+
+Configure::write('Pdf.crypto', 'CakePdf.Pdftk');
+
+Options in pdfConfig:
+
+ * protect: Set to true to enable encryption
+ * userPassword (optional): Set a password to open the PDF file
+ * ownerPassword (optional): Set the password to unlock the locked permissions
+ * permissions (optional): Define the permissions
+
+Permissions:
+
+By default, we deny all permissions.
+
+To allow all permissions:
+
+Set 'permission' to true
+
+To allow specific permissions:
+
+Set 'permissions' to an array with a combination of the following available permissions:
+
+ * print
+ * degraded_print
+ * modify,
+ * assembly,
+ * copy_contents,
+ * screen_readers,
+ * annotate,
+ * fill_in
 
 h2. Thanks
 
