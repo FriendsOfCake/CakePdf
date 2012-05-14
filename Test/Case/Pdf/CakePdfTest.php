@@ -7,7 +7,7 @@ App::uses('Controller', 'Controller');
 /**
  * Dummy engine
  */
-class PdfTestEngine extends AbstractPdfEngine {
+class PdfTest2Engine extends AbstractPdfEngine {
 
 	public function output() {
 		return $this->_Pdf->html();
@@ -26,7 +26,7 @@ class CakePdfTest extends CakeTestCase {
  */
 	public static function provider() {
 		return array(array(array(
-				'engine' => 'PdfTest',
+				'engine' => 'PdfTest2',
 				'margin' => array(
 					'bottom' => 15,
 					'left' => 50,
@@ -74,7 +74,7 @@ class CakePdfTest extends CakeTestCase {
 	public function testEngine($config) {
 		$pdf = new CakePdf($config);
 		$engine = $pdf->engine();
-		$this->assertEqual('PdfTestEngine', get_class($engine));
+		$this->assertEqual('PdfTest2Engine', get_class($engine));
 	}
 
 /**
