@@ -31,6 +31,12 @@ abstract class AbstractPdfCrypto {
 	abstract public function encrypt($data);
 
 /**
+ * Implement in subclass.
+ *
+ */
+	abstract public function permissionImplemented($permission);
+
+/**
  * Set the config
  *
  * @param mixed $config Null, string or array. Pass array of configs to set.
