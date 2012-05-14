@@ -147,9 +147,11 @@ class CakePdf {
 			'engine' => Configure::read('Pdf.engine'),
 			'crypto' => Configure::read('Pdf.crypto')
 		), $config);
-		$this->engine($config['engine'])->config($config);
+		if ($config['engine']) {
+			$this->engine($config['engine'])->config($config);
+		}
 
-		if (isset($config['crypto'])) {
+		if ($config['crypto']) {
 			$this->crypto($config['crypto'])->config($config);
 		}
 
@@ -168,8 +170,9 @@ class CakePdf {
  * @return string
  */
 	public function output($html = null) {
-		if (!isset($this->_engineClass)) {
-			throw new CakeException(__d('cakepdf', 'No Pdf engine is set!'));
+		$Engine = $this->engine();
+		if (!$Engine) {
+			throw new CakeException(__d('cake_pdf', 'Engine is not loaded'));
 		}
 
 		if (!$html) {
@@ -177,7 +180,7 @@ class CakePdf {
 		}
 		$this->html($html);
 
-		$output = $this->engine()->output();
+		$output = $Engine->output();
 
 		if ($this->encrypt()) {
 			$output = $this->crypto()->encrypt($output);
@@ -221,10 +224,7 @@ class CakePdf {
  */
 	public function engine($name = null) {
 		if (!$name) {
-			if ($this->_engineClass) {
-				return $this->_engineClass;
-			}
-			throw new CakeException(__d('cake_pdf', 'Engine is not loaded'));
+			return $this->_engineClass;
 		}
 
 		list($pluginDot, $engineClassName) = pluginSplit($name, true);
@@ -444,7 +444,7 @@ class CakePdf {
 
 /**
  * Get/Set userPassword
- * 
+ *
  * The user password is used to control who can open the PDF document.
  *
  * @param null|string $password
@@ -463,7 +463,7 @@ class CakePdf {
  * Get/Set ownerPassword.
  *
  * The owner password is used to control who can modify, print, manage the PDF document.
- * 
+ *
  * @param null|string $password
  * @return mixed
  */

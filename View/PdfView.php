@@ -50,11 +50,13 @@ class PdfView extends View {
 		$this->_passedVars[] = 'pdfConfig';
 		parent::__construct($Controller);
 
-		$this->renderer($this->pdfConfig);
 		$this->response->type('pdf');
 		if ($Controller instanceof CakeErrorController) {
 			$this->response->type('html');
+		} elseif (!$this->pdfConfig) {
+			throw new CakeException(__d('cakepdf', 'Controller attribute $pdfConfig is not correct or missing'));
 		}
+		$this->renderer($this->pdfConfig);
 	}
 
 /**
