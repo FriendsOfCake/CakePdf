@@ -1,5 +1,7 @@
 h1. CakePdf plugin
 
+"!https://secure.travis-ci.org/ceeram/CakePdf.png!":http://travis-ci.org/ceeram/CakePdf
+
 Plugin containing CakePdf lib which will use a pdf engine to convert html to pdf.
 
 Current engines:
