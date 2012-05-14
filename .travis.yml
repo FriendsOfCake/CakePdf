@@ -1,0 +1,19 @@
+language: php
+
+php:
+  - 5.3
+
+env:
+  - CAKE_VERSION=2.1
+  - CAKE_VERSION=2.2
+
+before_script:
+  - git clone --depth 1 git://github.com/cakephp/cakephp ../cakephp && cd ../cakephp && git checkout $CAKE_VERSION
+  - cp -R ../CakePdf plugins/CakePdf
+
+script:
+  - ./lib/Cake/Console/cake test CakePdf AllCakePdf
+
+
+notifications:
+  email: false
