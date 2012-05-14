@@ -12,7 +12,7 @@ h2. Requirements
 * PHP 5.2.8
 * CakePHP 2.x
 * wkhtmltopdf (optional) See: http://code.google.com/p/wkhtmltopdf/
-* wkhtmltopdf (optional) See: http://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/
+* pdftk (optional) See: http://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/
 
 h2. Installation
 
