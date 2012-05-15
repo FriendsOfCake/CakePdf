@@ -7,7 +7,8 @@ Plugin containing CakePdf lib which will use a pdf engine to convert html to pdf
 Current engines:
 * DomPdf
 * Mpdf
-* Wkhtmltopdf (requires additional installation)
+* Tcpdf
+* Wkhtmltopdf (requires additional installation) *RECOMMENDED ENGINE*
 
 h2. Requirements
 
