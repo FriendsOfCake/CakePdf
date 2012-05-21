@@ -64,6 +64,9 @@ Layouts will be in same location as in above example.
 Make sure your InvoicesController has RequestHandler Component in the <code>$components</code> array.
 Browse to http://localhost/invoices/view/1.pdf
 
+Additionally you can map resources by adding <code>Router::mapResources(array('Invoices'));</code> to your routes
+file and you can access the same document at http://localhost/invoices/1.pdf
+
 h2. Encryption
 
 You can optionally encrypt the PDF with permissions
