@@ -1,3 +1,3 @@
 <?php
 	$extensions = array_merge(array('pdf'), Router::extensions());
-	Router::parseExtensions($extensions);
+	call_user_func_array('Router::parseExtensions', $extensions);
