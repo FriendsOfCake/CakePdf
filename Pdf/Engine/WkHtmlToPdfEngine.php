@@ -84,6 +84,8 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine {
 	protected function _getCommand() {
 		$command = $this->binary;
 
+		$command .= " -q";
+		$command .= " --print-media-type";
 		$command .= " --orientation " . $this->_Pdf->orientation();
 		$command .= " --page-size " . $this->_Pdf->pageSize();
 
