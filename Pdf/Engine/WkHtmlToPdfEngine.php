@@ -44,7 +44,7 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine {
 			throw new CakeException("WKHTMLTOPDF didn't return any data");
 		}
 
-		if ((int)$content['return'] > 1) {
+		if ((int)$content['return'] !== 0 && !empty($content['stdout'])) {
 			throw new CakeException("Shell error, return code: " . (int)$content['return']);
 		}
 
