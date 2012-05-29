@@ -50,6 +50,7 @@ h2. Configuration
 
 Use <code>Configure::write('Pdf', $config);</code> or set Controller property <code>$pdfConfig</code> (only when used with PdfView)
 You need to define at least <code>$config['engine']</code>. When using CakePdf directly you can also pass the config array to constructor.
+The value for engine should have the <code>'Plugin.ClassName'</code> format without the Engine suffix
 
 h2. Usage
 
