@@ -4,4 +4,4 @@
  * If you use 2.1 dont load this routes file, and add pdf to your parseExtensions() in app/Config/routes.php
  */
 Router::parseExtensions();
-Router::setExtensions('pdf');
+Router::setExtensions(array('pdf'));
