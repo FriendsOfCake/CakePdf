@@ -18,11 +18,6 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine {
  */
 	public function __construct(CakePdf $Pdf) {
 		parent::__construct($Pdf);
-		$binary = $this->config('binary');
-
-		if ($binary) {
-			$this->binary = $binary;
-		}
 	}
 
 /**
@@ -31,6 +26,11 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine {
  * @return string raw pdf data
  */
 	public function output() {
+		$binary = $this->config('binary');
+
+		if ($binary) {
+			$this->binary = $binary;
+		}
 		if (!is_executable($this->binary)) {
 			throw new CakeException(sprintf('wkhtmltopdf binary is not found or not executable: %s', $this->binary));
 		}
