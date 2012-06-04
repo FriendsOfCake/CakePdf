@@ -145,6 +145,13 @@ class CakePdf {
 	protected $_ownerPassword = null;
 
 /**
+ * Cache config name, if set to false cache is disabled
+ *
+ * @var string|boolean
+ */
+	protected $_cache = false;
+
+/**
  * Permissions that are allowed, used with crypto
  *
  * false: none
@@ -190,7 +197,7 @@ class CakePdf {
 			$this->crypto($config['crypto'])->config($config);
 		}
 
-		$options = array('pageSize', 'orientation', 'margin', 'title', 'protect', 'userPassword', 'ownerPassword', 'permissions');
+		$options = array('pageSize', 'orientation', 'margin', 'title', 'protect', 'userPassword', 'ownerPassword', 'permissions', 'cache');
 		foreach ($options as $option) {
 			if (isset($config[$option])) {
 				$this->{$option}($config[$option]);
@@ -215,10 +222,23 @@ class CakePdf {
 		}
 		$this->html($html);
 
+		$cache = $this->cache();
+		if ($cache) {
+			$cacheKey = md5(serialize($this));
+			$cached = Cache::read($cacheKey, $cache);
+			if ($cached) {
+				return $cached;
+			}
+		}
+
 		$output = $Engine->output();
 
 		if ($this->protect()) {
 			$output = $this->crypto()->encrypt($output);
+		}
+
+		if ($cache) {
+			Cache::write($cacheKey, $output, $cache);
 		}
 
 		return $output;
@@ -570,6 +590,33 @@ class CakePdf {
 	}
 
 /**
+ * Get/Set caching.
+ *
+ * @param null|boolean|string $cache Cache config name to use, If true is passed, 'cake_pdf' will be used.
+ * @return mixed
+ */
+	public function cache($cache = null) {
+		if ($cache === null) {
+			return $this->_cache;
+		}
+
+		if ($cache === false) {
+			$this->_cache = false;
+			return $this;
+		}
+
+		if ($cache === true) {
+			$cache = 'cake_pdf';
+		}
+
+		if (!in_array($cache, Cache::configured())) {
+			throw new CakeException(sprintf('CakePdf cache is not configured: %s', $cache));
+		}
+
+		$this->_cache = $cache;
+		return $this;
+	}
+/**
  * Template and layout
  *
  * @param mixed $template Template name or null to not use
@@ -646,7 +693,6 @@ class CakePdf {
 		$this->_helpers = (array)$helpers;
 		return $this;
 	}
-
 
 /**
  * Build and set all the view properties needed to render the layout and template.
