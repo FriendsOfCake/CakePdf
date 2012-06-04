@@ -82,6 +82,13 @@ class CakePdf {
 	protected $_orientation = 'portrait';
 
 /**
+ * Encoding
+ *
+ * @var string
+ */
+	protected $_encoding = 'UTF-8';
+
+/**
  * Bottom margin in mm
  *
  * @var number
@@ -143,7 +150,7 @@ class CakePdf {
  * false: none
  * true: all
  * array: List of permissions that are allowed
- * 
+ *
  * @var mixed
  */
 	protected $_allow = false;
@@ -151,7 +158,7 @@ class CakePdf {
 
 /**
  * Available permissions
- * 
+ *
  * @var array
  */
 	private $__availablePermissions = array(
@@ -320,6 +327,20 @@ class CakePdf {
 			return $this->_orientation;
 		}
 		$this->_orientation = $orientation;
+		return $this;
+	}
+
+/**
+ * Get/Set Encoding.
+ *
+ * @param null|string $encoding
+ * @return mixed
+ */
+	public function encoding($encoding = null) {
+		if ($encoding === null) {
+			return $this->_encoding;
+		}
+		$this->_encoding = $encoding;
 		return $this;
 	}
 
@@ -509,7 +530,7 @@ class CakePdf {
  * all: allow all permissions
  * none: allow no permissions
  * array: list of permissions that are allowed
- * 
+ *
 
  * @param null|bool|array $permissions
  * @return mixed
