@@ -1,0 +1,10 @@
+{
+	"name": "ceeram/CakePdf",
+	"type": "cakephp-plugin",
+	"homepage": "http://github.com/ceeram/CakePdf",
+	"license": "MIT",
+	"require": {
+		"php": ">=5.3.0",
+		"composer/installers": "*"
+	}
+}
