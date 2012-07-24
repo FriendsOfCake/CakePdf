@@ -32,7 +32,7 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine {
 			throw new CakeException("System error <pre>" . $content['stderr'] . "</pre>");
 		}
 
-		if (mb_strlen($content['stdout'], 'utf-8') === 0) {
+		if (mb_strlen($content['stdout'], $this->_Pdf->encoding()) === 0) {
 			throw new CakeException("WKHTMLTOPDF didn't return any data");
 		}
 
