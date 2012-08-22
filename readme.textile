@@ -110,6 +110,11 @@ Set 'permissions' to an array with a combination of the following available perm
  * annotate,
  * fill_in
 
+h2. Note about images
+
+Use absolute urls for images in your view templates for pdf.
+If you use <code>HtmlHelper::image()</code> make sure you have <code>$options['fullBase'] = true</code>
+
 h2. Thanks
 
 Many thanks to Kim Biesbjerg and Jelle Henkens for their contributions.

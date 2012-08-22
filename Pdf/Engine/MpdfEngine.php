@@ -1,5 +1,6 @@
 <?php
 App::uses('AbstractPdfEngine', 'CakePdf.Pdf/Engine');
+App::uses('Multibyte', 'I18n');
 
 class MpdfEngine extends AbstractPdfEngine {
 
