@@ -13,7 +13,7 @@ Current engines:
 h2. Requirements
 
 * PHP 5.2.8
-* CakePHP 2.x
+* CakePHP 2.1+
 * wkhtmltopdf (optional) See: http://code.google.com/p/wkhtmltopdf/
 * pdftk (optional) See: http://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/
 
