@@ -96,9 +96,9 @@ class PdfView extends View {
 
 			$this->response->download($filename);
 		}
-		$this->output = $this->renderer()->output($content);
 
-		return $this->output;
+		$this->Blocks->set('content', $this->renderer()->output($content));
+		return $this->Blocks->get('content');
 	}
 
 }
