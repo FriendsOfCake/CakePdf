@@ -1410,7 +1410,7 @@ class  Cpdf {
       break;
 
     case  'out':
-      $res .= "\n".$id." 0 obj\n".'<< ';
+      $res = "\n".$id." 0 obj\n".'<< ';
       foreach($o['info'] as  $k=>$v) {
         $res.=  "\n/".$k.' '.$v;
       }
