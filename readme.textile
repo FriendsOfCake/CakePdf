@@ -52,6 +52,34 @@ Use <code>Configure::write('Pdf', $config);</code> or set Controller property <c
 You need to define at least <code>$config['engine']</code>. When using CakePdf directly you can also pass the config array to constructor.
 The value for engine should have the <code>'Plugin.ClassName'</code> format without the Engine suffix
 
+Configuration options:
+
+ * engine: Engine to be used (required)
+ * pageSize: Change the default size, defaults to A4
+ * orientation: Change the default orientation, defaults to potrait
+ * margin: Array or margins with the keys: bottom, left, right, top and their values
+ * title: Title of the document
+ * encoding: Change the encoding, defaults to UTF-8
+ * binary: Path to binary (WkHtmlToPdfEngine only), defaults to /usr/bin/wkhtmltopdf
+ * download: Set to true to force a download, only when using PdfView
+ * filename: Filename for the document when using forced download, best set in controller action with $this->pdfConfig
+
+Example:
+<pre><code>
+<?php
+Configure::write('Pdf', array(
+    'engine' => 'WkHtmlToPdf',
+    'margin' => array(
+        'bottom' => 15,
+	'left' => 50,
+	'right' => 30,
+	'top' => 45
+    ),
+    'orientation' => 'landscape',
+    'download' => true
+));
+</code></pre>
+
 h2. Usage
 
 You can use CakePdf lib to create raw pdf data with a view template. The view file path would look like <code>app/View/Pdf/example.ctp</code>.

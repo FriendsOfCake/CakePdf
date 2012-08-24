@@ -197,7 +197,7 @@ class CakePdf {
 			$this->crypto($config['crypto'])->config($config);
 		}
 
-		$options = array('pageSize', 'orientation', 'margin', 'title', 'protect', 'userPassword', 'ownerPassword', 'permissions', 'cache');
+		$options = array('pageSize', 'orientation', 'margin', 'title', 'encoding', 'protect', 'userPassword', 'ownerPassword', 'permissions', 'cache');
 		foreach ($options as $option) {
 			if (isset($config[$option])) {
 				$this->{$option}($config[$option]);
