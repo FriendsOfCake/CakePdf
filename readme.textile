@@ -62,11 +62,10 @@ Configuration options:
  * encoding: Change the encoding, defaults to UTF-8
  * binary: Path to binary (WkHtmlToPdfEngine only), defaults to /usr/bin/wkhtmltopdf
  * download: Set to true to force a download, only when using PdfView
- * filename: Filename for the document when using forced download, best set in controller action with $this->pdfConfig
+ * filename: Filename for the document when using forced download
 
 Example:
 <pre><code>
-<?php
 Configure::write('Pdf', array(
     'engine' => 'WkHtmlToPdf',
     'margin' => array(
@@ -78,6 +77,18 @@ Configure::write('Pdf', array(
     'orientation' => 'landscape',
     'download' => true
 ));
+
+//in your Invoices controller you could set additional configs, or override the global ones:
+
+public function view($id = null) {
+    $this->Invoice->id = $id;
+    if (!$this->Invoice->exists()) {
+        throw new NotFoundException(__('Invalid invoice'));
+    }
+    $this->pdfConfig = array('orientation' => 'potrait', 'filename' => 'Invoice_' . $id);
+    $this->set('invoice', $this->Invoice->read(null, $id));
+}
+
 </code></pre>
 
 h2. Usage
