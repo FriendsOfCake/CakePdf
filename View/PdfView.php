@@ -56,7 +56,8 @@ class PdfView extends View {
 
 		$this->response->type('pdf');
 		if ($Controller instanceof CakeErrorController) {
-			$this->response->type('html');
+			$this->subDir = null;
+			return $this->response->type('html');
 		} elseif (!$this->pdfConfig) {
 			throw new CakeException(__d('cakepdf', 'Controller attribute $pdfConfig is not correct or missing'));
 		}
