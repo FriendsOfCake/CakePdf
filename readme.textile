@@ -66,30 +66,33 @@ Configuration options:
 
 Example:
 <pre><code>
-Configure::write('Pdf', array(
-    'engine' => 'WkHtmlToPdf',
-    'margin' => array(
-        'bottom' => 15,
-	'left' => 50,
-	'right' => 30,
-	'top' => 45
-    ),
-    'orientation' => 'landscape',
-    'download' => true
-));
+<?php
+    Configure::write('Pdf', array(
+        'engine' => 'WkHtmlToPdf',
+        'margin' => array(
+            'bottom' => 15,
+            'left' => 50,
+            'right' => 30,
+            'top' => 45
+        ),
+        'orientation' => 'landscape',
+        'download' => true
+    ));
+?>
 
-//in your Invoices controller you could set additional configs, or override the global ones:
-
-public function view($id = null) {
-    $this->Invoice->id = $id;
-    if (!$this->Invoice->exists()) {
-        throw new NotFoundException(__('Invalid invoice'));
+<?php
+    class InvoicesController extends AppController {
+        //in your Invoices controller you could set additional configs, or override the global ones:
+        public function view($id = null) {
+            $this->Invoice->id = $id;
+            if (!$this->Invoice->exists()) {
+                throw new NotFoundException(__('Invalid invoice'));
+            }
+            $this->pdfConfig = array('orientation' => 'potrait', 'filename' => 'Invoice_' . $id);
+            $this->set('invoice', $this->Invoice->read(null, $id));
+        }
     }
-    $this->pdfConfig = array('orientation' => 'potrait', 'filename' => 'Invoice_' . $id);
-    $this->set('invoice', $this->Invoice->read(null, $id));
-}
-
-</code></pre>
+?></code></pre>
 
 h2. Usage
 
