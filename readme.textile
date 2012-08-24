@@ -157,12 +157,6 @@ h2. Note about images
 Use absolute urls for images in your view templates for pdf.
 If you use <code>HtmlHelper::image()</code> make sure you have <code>$options['fullBase'] = true</code>
 
-h2. Troubleshooting
-
-When you get this error, it chokes on throwing an exception for missing view, so make sure your view and layout files are in correct place
-Fatal error: Allowed memory size of 134217728 bytes exhausted (tried to allocate 32 bytes) in /path/here/lib/Cake/View/View.php on line 994
-
-
 h2. Thanks
 
 Many thanks to Kim Biesbjerg and Jelle Henkens for their contributions.
