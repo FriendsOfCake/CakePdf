@@ -266,7 +266,7 @@ class CakePdf {
  * @return boolean
  */
 	public function write($destination, $create = true, $html = null) {
-		$ouput = $this->output($html);
+		$output = $this->output($html);
 		$File = new File($destination, $create);
 		return $File->write($output) && $File->close();
 	}
