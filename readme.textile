@@ -68,7 +68,7 @@ Example:
 <pre><code>
 <?php
     Configure::write('CakePdf', array(
-        'engine' => 'WkHtmlToPdf',
+        'engine' => 'CakePdf.WkHtmlToPdf',
         'margin' => array(
             'bottom' => 15,
             'left' => 50,
