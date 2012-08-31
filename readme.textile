@@ -48,7 +48,7 @@ In app/Config/bootstrap.php add:
 
 h2. Configuration
 
-Use <code>Configure::write('Pdf', $config);</code> or set Controller property <code>$pdfConfig</code> (only when used with PdfView)
+Use <code>Configure::write('CakePdf', $config);</code> or set Controller property <code>$pdfConfig</code> (only when used with PdfView)
 You need to define at least <code>$config['engine']</code>. When using CakePdf directly you can also pass the config array to constructor.
 The value for engine should have the <code>'Plugin.ClassName'</code> format without the Engine suffix
 
@@ -67,7 +67,7 @@ Configuration options:
 Example:
 <pre><code>
 <?php
-    Configure::write('Pdf', array(
+    Configure::write('CakePdf', array(
         'engine' => 'WkHtmlToPdf',
         'margin' => array(
             'bottom' => 15,
@@ -122,7 +122,7 @@ h3. Usage
 
 Add the following in your bootstrap.
 
-Configure::write('Pdf.crypto', 'CakePdf.Pdftk');
+Configure::write('CakePdf.crypto', 'CakePdf.Pdftk');
 
 Options in pdfConfig:
 

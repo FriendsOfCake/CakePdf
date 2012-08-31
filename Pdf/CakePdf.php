@@ -186,8 +186,8 @@ class CakePdf {
  */
 	public function __construct($config = array()) {
 		$config = array_merge(array(
-			'engine' => Configure::read('Pdf.engine'),
-			'crypto' => Configure::read('Pdf.crypto')
+			'engine' => Configure::read('CakePdf.engine'),
+			'crypto' => Configure::read('CakePdf.crypto')
 		), $config);
 		if ($config['engine']) {
 			$this->engine($config['engine'])->config($config);
