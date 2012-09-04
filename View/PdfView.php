@@ -59,7 +59,8 @@ class PdfView extends View {
 		if ($Controller instanceof CakeErrorController) {
 			$this->subDir = null;
 			return $this->response->type('html');
-		} elseif (!$this->pdfConfig) {
+		}
+		if (!$this->pdfConfig) {
 			throw new CakeException(__d('cakepdf', 'Controller attribute $pdfConfig is not correct or missing'));
 		}
 		$this->renderer($this->pdfConfig);
@@ -90,17 +91,22 @@ class PdfView extends View {
 		}
 
 		if (isset($this->pdfConfig['download']) && $this->pdfConfig['download'] === true) {
-			$id = current($this->request->params['pass']);
-			$filename = strtolower($this->viewPath) . $id . '.pdf';
-			if (isset($this->pdfConfig['filename'])) {
-				$filename = $this->pdfConfig['filename'];
-			}
-
-			$this->response->download($filename);
+			$this->response->download($this->getFilename());
 		}
 
 		$this->Blocks->set('content', $this->renderer()->output($content));
 		return $this->Blocks->get('content');
 	}
 
+/**
+ * Get or build a filename for forced download
+ * @return string The filename
+ */
+	public function getFilename() {
+		if (isset($this->pdfConfig['filename'])) {
+			return $this->pdfConfig['filename'];
+		}
+		$id = current($this->request->params['pass']);
+		return strtolower($this->viewPath) . $id . '.pdf';
+	}
 }
