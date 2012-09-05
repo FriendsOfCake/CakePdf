@@ -99,7 +99,10 @@ Example:
 
 h2. Usage
 
-h3. Render as pdf (including forced download) in the browser with PdfView
+You can use CakePdf in 2 ways, read carefully which one you actually need.
+Many people mix both ways and dont get the expected results.
+
+h3. 1: Render as pdf (including forced download) in the browser with PdfView
 
 You can create pdf view and layout files for your controller actions and have them automatically rendered.
 Place the view templates in a 'pdf' subdir, for instance <code>app/View/Invoices/pdf/view.ctp</code>
@@ -111,7 +114,7 @@ Browse to http://localhost/invoices/view/1.pdf
 Additionally you can map resources by adding <code>Router::mapResources(array('Invoices'));</code> to your routes
 file and you can access the same document at http://localhost/invoices/1.pdf
 
-h3. Create pdf for email attachment, file storage etc.
+h3. 2: Create pdf for email attachment, file storage etc.
 
 You can use CakePdf lib to create raw pdf data with a view template.
 The view file path would look like <code>app/View/Pdf/newsletter.ctp</code>.
