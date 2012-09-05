@@ -88,7 +88,11 @@ Example:
             if (!$this->Invoice->exists()) {
                 throw new NotFoundException(__('Invalid invoice'));
             }
-            $this->pdfConfig = array('orientation' => 'potrait', 'filename' => 'Invoice_' . $id);
+            $this->pdfConfig = array(
+                'orientation' => 'potrait',
+                'download' => true,
+                'filename' => 'Invoice_' . $id
+            );
             $this->set('invoice', $this->Invoice->read(null, $id));
         }
     }
@@ -96,19 +100,38 @@ Example:
 
 h2. Usage
 
-You can use CakePdf lib to create raw pdf data with a view template. The view file path would look like <code>app/View/Pdf/example.ctp</code>.
-Layout file path would be like <code>app/View/Layouts/pdf/default.ctp</code>
-Optionally you can also write the raw data to file, for instance to use as email attachment.
+h3. Render as pdf (including forced download) with PdfView
 
-Also you can create pdf view and layout files for your controller actions and have them automatically.
+You can create pdf view and layout files for your controller actions and have them automatically rendered.
 Place the view templates in a 'pdf' subdir, for instance <code>app/View/Invoices/pdf/view.ctp</code>
-Layouts will be in same location as in above example.
+Layouts will be in <code>app/Layouts/pdf/default.ctp</code>
 
 Make sure your InvoicesController has RequestHandler Component in the <code>$components</code> array.
 Browse to http://localhost/invoices/view/1.pdf
 
 Additionally you can map resources by adding <code>Router::mapResources(array('Invoices'));</code> to your routes
 file and you can access the same document at http://localhost/invoices/1.pdf
+
+h3. Create pdf for email attachment, file storage etc.
+
+You can use CakePdf lib to create raw pdf data with a view template.
+The view file path would look like <code>app/View/Pdf/newsletter.ctp</code>.
+Layout file path would be like <code>app/View/Layouts/pdf/default.ctp</code>
+Note that layouts for both usage types are within same directory, but the view templates use different file paths
+Optionally you can also write the raw data to file.
+
+Example:
+<pre><code>
+<?php
+    $CakePdf = new CakePdf();
+    $CakePdf->template('newsletter', 'default');
+
+    //get the pdf string returned
+    $pdf = CakePdf->output();
+
+    //or write it to file directly
+    $pdf = CakePdf->write(APP . 'files' . DS . 'newsletter.pdf');
+</code></pre>
 
 h2. Encryption
 
