@@ -99,7 +99,7 @@ Example:
 
 h2. Usage
 
-h3. Render as pdf (including forced download) with PdfView
+h3. Render as pdf (including forced download) in the browser with PdfView
 
 You can create pdf view and layout files for your controller actions and have them automatically rendered.
 Place the view templates in a 'pdf' subdir, for instance <code>app/View/Invoices/pdf/view.ctp</code>
@@ -125,7 +125,7 @@ Example:
     $CakePdf = new CakePdf();
     $CakePdf->template('newsletter', 'default');
     //get the pdf string returned
-    $pdf = CakePdf->output();
+    $pdf = $CakePdf->output();
     //or write it to file directly
     $pdf = CakePdf->write(APP . 'files' . DS . 'newsletter.pdf');
 </code></pre>
