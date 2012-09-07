@@ -106,7 +106,7 @@ h3. 1: Render as pdf (including forced download) in the browser with PdfView
 
 You can create pdf view and layout files for your controller actions and have them automatically rendered.
 Place the view templates in a 'pdf' subdir, for instance <code>app/View/Invoices/pdf/view.ctp</code>
-Layouts will be in <code>app/Layouts/pdf/default.ctp</code>
+Layouts will be in <code>app/View/Layouts/pdf/default.ctp</code>
 
 Make sure your InvoicesController has RequestHandler Component in the <code>$components</code> array.
 Browse to http://localhost/invoices/view/1.pdf
