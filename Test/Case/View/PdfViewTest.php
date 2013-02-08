@@ -42,7 +42,6 @@ class PdfViewTest extends CakeTestCase {
 		$path = CakePlugin::path('CakePdf') . 'Test' . DS . 'test_app' . DS . 'View' . DS;
 		App::build(array('View' => $path));
 
-		$request = new CakeRequest(array('controller' => 'posts', 'action' => 'view', 1), false);
 		$Controller = new PdfTestPostsController();
 		$this->View = new PdfView($Controller);
 		$this->View->layoutPath = 'pdf';
