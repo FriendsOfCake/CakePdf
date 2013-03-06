@@ -89,6 +89,20 @@ class CakePdf {
 	protected $_encoding = 'UTF-8';
 
 /**
+ * Footer HTML
+ * 
+ * @var string
+ */
+	protected $_footer = array('left' => null, 'center' => null, 'right' => null);
+
+/**
+ * Header HTML
+ * 
+ * @var string
+ */
+	protected $_header = array('left' => null, 'center' => null, 'right' => null);
+
+/**
  * Bottom margin in mm
  *
  * @var number
@@ -363,6 +377,48 @@ class CakePdf {
 		$this->_encoding = $encoding;
 		return $this;
 	}
+
+/**
+ * Get/Set footer HTML.
+ * 
+ * @param null|string $left
+ * @param null|string $center
+ * @param null|string $right
+ * @return mixed
+ */
+	public function footer($left = null, $center = null, $right = null) {
+		if($left === null && $center === null && $right === null) {
+			return $this->_footer;
+		}
+
+		if (is_array($left)) {
+			extract($left, EXTR_IF_EXISTS);
+		}
+
+		$this->_footer = compact('left', 'center', 'right');
+		return $this;
+	}
+
+/**
+ * Get/Set header HTML.
+ * 
+ * @param null|string $left
+ * @param null|string $center
+ * @param null|string $right
+ * @return mixed
+ */
+	public function header($left = null, $center = null, $right = null) {
+		if($left === null && $center === null && $right === null) {
+			return $this->_header;
+		}
+
+		if (is_array($left)) {
+			extract($left, EXTR_IF_EXISTS);
+		}
+
+		$this->_header = compact('left', 'center', 'right');
+		return $this;
+	}	
 
 /**
  * Get/Set page margins.
