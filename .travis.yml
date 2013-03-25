@@ -12,6 +12,7 @@ env:
 before_script:
   - git clone --depth 1 --branch $CAKE_VERSION git://github.com/cakephp/cakephp ../cakephp && cd ../cakephp
   - cp -R ../CakePdf plugins/CakePdf
+  - sudo touch /usr/bin/wkhtmltopdf && sudo chmod +x /usr/bin/wkhtmltopdf
 
 script:
   - ./lib/Cake/Console/cake test CakePdf AllCakePdf
