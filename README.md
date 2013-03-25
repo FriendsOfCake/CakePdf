@@ -61,6 +61,7 @@ The value for engine should have the `Plugin.ClassName` format without the Engin
 
 Configuration options:
 * engine: Engine to be used (required)
+* options: Engine options, this may vary between Engines
 * pageSize: Change the default size, defaults to A4
 * orientation: Change the default orientation, defaults to potrait
 * margin: Array or margins with the keys: bottom, left, right, top and their values
@@ -75,6 +76,11 @@ Example:
 <?php
     Configure::write('CakePdf', array(
         'engine' => 'CakePdf.WkHtmlToPdf',
+        'options' => array(
+            'print-media-type' => false,
+            'outline' => true,
+            'dpi' => 96
+        ),
         'margin' => array(
             'bottom' => 15,
             'left' => 50,
