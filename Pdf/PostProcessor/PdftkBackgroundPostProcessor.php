@@ -8,7 +8,7 @@ class PdftkBackgroundPostProcessor extends AbstractPostProcessor {
  * @access protected
  * @var string
  */
-	protected $binary = '/usr/local/bin/pdftk';
+	protected $binary = '/usr/bin/pdftk';
 
 	public function output($data) {
 		if (!is_executable($this->binary)) {
