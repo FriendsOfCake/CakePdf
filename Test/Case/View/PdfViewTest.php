@@ -42,13 +42,16 @@ class PdfViewTest extends CakeTestCase {
 		$path = CakePlugin::path('CakePdf') . 'Test' . DS . 'test_app' . DS . 'View' . DS;
 		App::build(array('View' => $path));
 
+		// Clean Configuration so when running tests on a existing application it doesn't interfere
+		Configure::write('CakePdf', array());
+
 		$Controller = new PdfTestPostsController();
 		$this->View = new PdfView($Controller);
 		$this->View->layoutPath = 'pdf';
 	}
 
 /**
- * testRender
+ * testConstruct
  *
  */
 	public function testConstruct() {
@@ -60,6 +63,41 @@ class PdfViewTest extends CakeTestCase {
 
 		$result = $this->View->renderer();
 		$this->assertInstanceOf('CakePdf', $result);
+	}
+
+/**
+ * testConstructMergeConfiguration
+ *
+ */
+	public function testConstructMergeConfiguration() {
+		Configure::write('CakePdf', array(
+			'engine'  => 'CakePdf.WkHtmlToPdf',
+			'options' => array(
+				'toc' => true,
+				'dpi' => 96,
+			),
+			'download' => true,
+		));
+
+		$Controller = new PdfTestPostsController();
+		$Controller->pdfConfig = array(
+			'options' => array(
+				'dpi' => 300,
+			),
+			'download' => false,
+		);
+		$this->View = new PdfView($Controller);
+
+		$expected = array(
+			'engine'  => 'CakePdf.WkHtmlToPdf',
+			'options' => array(
+				'toc' => true,
+				'dpi' => 300,
+			),
+			'download' => false,
+		);
+		$result = $this->View->pdfConfig;
+		$this->assertEquals($expected, $result);
 	}
 
 /**
