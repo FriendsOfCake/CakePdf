@@ -41,5 +41,18 @@ class WkHtmlToPdfEngineTest extends CakeTestCase {
 		$result = $method->invokeArgs($Pdf->engine(), array());
 		$expected = "/usr/bin/wkhtmltopdf --quiet --print-media-type --orientation 'portrait' --page-size 'A4' --encoding 'UTF-8' --boolean --string 'value' --integer '42' - -";
 		$this->assertEquals($expected, $result);
+
+		$Pdf = new CakePdf(array(
+			'engine'  => 'WkHtmlToPdf',
+			'options' => array(
+				'cookie' => array(
+					'foo' => 'bar',
+					'one' => 'two',
+				),
+			)
+		));
+		$result = $method->invokeArgs($Pdf->engine(), array());
+		$expected = "/usr/bin/wkhtmltopdf --quiet --print-media-type --orientation 'portrait' --page-size 'A4' --encoding 'UTF-8' --cookie 'foo' 'bar' --cookie 'one' 'two' - -";
+		$this->assertEquals($expected, $result);
 	}
 }
