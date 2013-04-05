@@ -1,6 +1,6 @@
-h1. CakePdf plugin
+# CakePdf plugin
 
-"!https://secure.travis-ci.org/ceeram/CakePdf.png!":http://travis-ci.org/ceeram/CakePdf
+[![Build Status](https://secure.travis-ci.org/ceeram/CakePdf.png)](http://travis-ci.org/ceeram/CakePdf)
 
 Plugin containing CakePdf lib which will use a pdf engine to convert html to pdf.
 
@@ -8,67 +8,79 @@ Current engines:
 * DomPdf
 * Mpdf
 * Tcpdf
-* Wkhtmltopdf (requires additional installation) *RECOMMENDED ENGINE*
+* Wkhtmltopdf (requires additional installation) **RECOMMENDED ENGINE**
 
-h2. Requirements
+
+## Requirements
 
 * PHP 5.2.8
 * CakePHP 2.1+
 * wkhtmltopdf (optional) See: http://code.google.com/p/wkhtmltopdf/
 * pdftk (optional) See: http://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/
 
-h2. Installation
+
+## Installation
 
 _[Manual]_
 
-# Download this: http://github.com/ceeram/CakePdf/zipball/master
-# Unzip that download.
-# Copy the resulting folder to app/Plugin
-# Rename the folder you just copied to CakePdf
+1. Download this: http://github.com/ceeram/CakePdf/zipball/master
+2. Unzip that download.
+3. Copy the resulting folder to app/Plugin
+4. Rename the folder you just copied to CakePdf
 
 _[GIT Submodule]_
 
 In your app directory type:
-<pre><code>git submodule add git://github.com/ceeram/CakePdf.git Plugin/CakePdf
+```bash
+git submodule add git://github.com/ceeram/CakePdf.git Plugin/CakePdf
 git submodule init
 git submodule update
-</code></pre>
+```
 
 _[GIT Clone]_
 
 In your plugin directory type
-<pre><code>git clone git://github.com/ceeram/CakePdf.git CakePdf</code></pre>
-
-h2. Setup
-
-In app/Config/bootstrap.php add:
-<pre><code>CakePlugin::load('CakePdf', array('bootstrap' => true, 'routes' => true));
-</code></pre>
+```bash
+git clone git://github.com/ceeram/CakePdf.git CakePdf
+```
 
 
-h2. Configuration
+## Setup
 
-Use <code>Configure::write('CakePdf', $config);</code> or set Controller property <code>$pdfConfig</code> (only when used with PdfView)
-You need to define at least <code>$config['engine']</code>. When using CakePdf directly you can also pass the config array to constructor.
-The value for engine should have the <code>'Plugin.ClassName'</code> format without the Engine suffix
+In `app/Config/bootstrap.php` add:
+```php
+CakePlugin::load('CakePdf', array('bootstrap' => true, 'routes' => true));
+```
+
+
+## Configuration
+
+Use `Configure::write('CakePdf', $config);` or set Controller property `$pdfConfig` (only when used with PdfView)
+You need to define at least `$config['engine']`. When using CakePdf directly you can also pass the config array to constructor.
+The value for engine should have the `Plugin.ClassName` format without the Engine suffix
 
 Configuration options:
-
- * engine: Engine to be used (required)
- * pageSize: Change the default size, defaults to A4
- * orientation: Change the default orientation, defaults to potrait
- * margin: Array or margins with the keys: bottom, left, right, top and their values
- * title: Title of the document
- * encoding: Change the encoding, defaults to UTF-8
- * binary: Path to binary (WkHtmlToPdfEngine only), defaults to /usr/bin/wkhtmltopdf
- * download: Set to true to force a download, only when using PdfView
- * filename: Filename for the document when using forced download
+* engine: Engine to be used (required)
+* options: Engine options, this may vary between Engines
+* pageSize: Change the default size, defaults to A4
+* orientation: Change the default orientation, defaults to potrait
+* margin: Array or margins with the keys: bottom, left, right, top and their values
+* title: Title of the document
+* encoding: Change the encoding, defaults to UTF-8
+* binary: Path to binary (WkHtmlToPdfEngine only), defaults to /usr/bin/wkhtmltopdf
+* download: Set to true to force a download, only when using PdfView
+* filename: Filename for the document when using forced download
 
 Example:
-<pre><code>
+```php
 <?php
     Configure::write('CakePdf', array(
         'engine' => 'CakePdf.WkHtmlToPdf',
+        'options' => array(
+            'print-media-type' => false,
+            'outline' => true,
+            'dpi' => 96
+        ),
         'margin' => array(
             'bottom' => 15,
             'left' => 50,
@@ -95,35 +107,39 @@ Example:
             $this->set('invoice', $this->Invoice->read(null, $id));
         }
     }
-?></code></pre>
+?>
+```
 
-h2. Usage
+
+## Usage
 
 You can use CakePdf in 2 ways, read carefully which one you actually need.
 Many people mix both ways and dont get the expected results.
 
-h3. 1: Render as pdf (including forced download) in the browser with PdfView
+
+### 1: Render as pdf (including forced download) in the browser with PdfView
 
 You can create pdf view and layout files for your controller actions and have them automatically rendered.
-Place the view templates in a 'pdf' subdir, for instance <code>app/View/Invoices/pdf/view.ctp</code>
-Layouts will be in <code>app/View/Layouts/pdf/default.ctp</code>
+Place the view templates in a 'pdf' subdir, for instance `app/View/Invoices/pdf/view.ctp`
+Layouts will be in `app/View/Layouts/pdf/default.ctp`
 
-Make sure your InvoicesController has RequestHandler Component in the <code>$components</code> array.
+Make sure your InvoicesController has RequestHandler Component in the `$components` array.
 Browse to http://localhost/invoices/view/1.pdf
 
-Additionally you can map resources by adding <code>Router::mapResources(array('Invoices'));</code> to your routes
+Additionally you can map resources by adding `Router::mapResources(array('Invoices'));` to your routes
 file and you can access the same document at http://localhost/invoices/1.pdf
 
-h3. 2: Create pdf for email attachment, file storage etc.
+
+### 2: Create pdf for email attachment, file storage etc.
 
 You can use CakePdf lib to create raw pdf data with a view template.
-The view file path would look like <code>app/View/Pdf/newsletter.ctp</code>.
-Layout file path would be like <code>app/View/Layouts/pdf/default.ctp</code>
+The view file path would look like `app/View/Pdf/newsletter.ctp`.
+Layout file path would be like `app/View/Layouts/pdf/default.ctp`
 Note that layouts for both usage types are within same directory, but the view templates use different file paths
 Optionally you can also write the raw data to file.
 
 Example:
-<pre><code>
+```php
 <?php
     $CakePdf = new CakePdf();
     $CakePdf->template('newsletter', 'default');
@@ -131,28 +147,30 @@ Example:
     $pdf = $CakePdf->output();
     //or write it to file directly
     $pdf = CakePdf->write(APP . 'files' . DS . 'newsletter.pdf');
-</code></pre>
+```
 
-h2. Encryption
+
+## Encryption
 
 You can optionally encrypt the PDF with permissions
 
 To use encryption you first need to select a crypto engine. Currently we support the following crypto engines:
+* Pdftk
 
- * Pdftk
 
-h3. Usage
+### Usage
 
 Add the following in your bootstrap.
 
+```php
 Configure::write('CakePdf.crypto', 'CakePdf.Pdftk');
+```
 
 Options in pdfConfig:
-
- * protect: Set to true to enable encryption
- * userPassword (optional): Set a password to open the PDF file
- * ownerPassword (optional): Set the password to unlock the locked permissions
- * permissions (optional): Define the permissions
+* protect: Set to true to enable encryption
+* userPassword (optional): Set a password to open the PDF file
+* ownerPassword (optional): Set the password to unlock the locked permissions
+* permissions (optional): Define the permissions
 
 Permissions:
 
@@ -165,27 +183,29 @@ Set 'permission' to true
 To allow specific permissions:
 
 Set 'permissions' to an array with a combination of the following available permissions:
+* print
+* degraded_print
+* modify,
+* assembly,
+* copy_contents,
+* screen_readers,
+* annotate,
+* fill_in
 
- * print
- * degraded_print
- * modify,
- * assembly,
- * copy_contents,
- * screen_readers,
- * annotate,
- * fill_in
 
-h2. Note about images
+## Note about images
 
 Use absolute urls for images in your view templates for pdf.
-If you use <code>HtmlHelper::image()</code> make sure you have <code>$options['fullBase'] = true</code>
+If you use `HtmlHelper::image()` make sure you have `$options['fullBase'] = true`
 
-h2. Thanks
+
+## Thanks
 
 Many thanks to Kim Biesbjerg and Jelle Henkens for their contributions.
 Want your name here as well? Create a pull request for improvements/other pdf engines.
 
-h2. License
+
+## License
 
 Copyright (c) 2012 Ceeram
 

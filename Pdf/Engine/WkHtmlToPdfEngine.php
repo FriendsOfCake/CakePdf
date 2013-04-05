@@ -82,13 +82,15 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine {
 		if (!is_executable($this->binary)) {
 			throw new CakeException(sprintf('wkhtmltopdf binary is not found or not executable: %s', $this->binary));
 		}
-		$command = $this->binary;
 
-		$command .= " -q";
-		$command .= " --print-media-type";
-		$command .= " --orientation " . $this->_Pdf->orientation();
-		$command .= " --page-size " . $this->_Pdf->pageSize();
-		$command .= " --encoding " . $this->_Pdf->encoding();
+		$options = array(
+			'quiet' => true,
+			'print-media-type' => true,
+			'orientation' => $this->_Pdf->orientation(),
+			'page-size' => $this->_Pdf->pageSize(),
+			'encoding' => $this->_Pdf->encoding(),
+			'title' => $this->_Pdf->title()
+		);
 
 		$footer = $this->_Pdf->footer();
 		foreach($footer as $location => $text) {
@@ -105,16 +107,22 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine {
 		}
 
 		$margin = $this->_Pdf->margin();
-
-		foreach($margin as $border => $value) {
+		foreach ($margin as $key => $value) {
 			if ($value !== null) {
-				$command .= sprintf(' --margin-%s %dmm', $border, $value);
+				$options['margin-' . $key] = $value . 'mm';
 			}
 		}
+		$options = array_merge($options, $this->config('options'));
 
-		$title = $this->_Pdf->title();
-		if ($title !== null) {
-			$command .= sprintf(' --title %s', escapeshellarg($title));
+		$command = $this->binary;
+		foreach ($options as $key => $value) {
+			if (empty($value)) {
+				continue;
+			} elseif ($value === true) {
+				$command .= ' --' . $key;
+			} else {
+				$command .= sprintf(' --%s %s', $key, escapeshellarg($value));
+			}
 		}
 		$command .= " - -";
 
