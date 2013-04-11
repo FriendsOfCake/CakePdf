@@ -67,6 +67,33 @@ class CakePdfTest extends CakeTestCase {
 	}
 
 /**
+ * testPluginOutput
+ *
+ * @dataProvider provider
+ */
+	public function testPluginOutput($config) {
+		$pdf = new CakePdf($config);
+		$path = CakePlugin::path('CakePdf') . 'Test' . DS . 'test_app' . DS . 'Plugin' . DS;
+		App::build(array('Plugin' => $path));
+		CakePlugin::load('MyPlugin');
+		$pdf->viewVars(array('data' => 'testing'));
+		$pdf->template('MyPlugin.testing', 'MyPlugin.pdf');
+		$result = $pdf->output();
+		$expected = 'MyPlugin Layout Data: testing';
+		$this->assertEquals($expected, $result);
+
+		$pdf->template('MyPlugin.testing', 'MyPlugin.default');
+		$result = $pdf->output();
+		$lines = array(
+			'<h2>Rendered with default layout from MyPlugin</h2>',
+			'MyPlugin view Data: testing'
+		);
+		foreach ($lines as $line) {
+			$this->assertTrue(strpos($result, $line) !== false);
+		}
+	}
+
+/**
  * Tests that engine returns the proper object
  *
  * @dataProvider provider
