@@ -92,20 +92,6 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine {
 			'title' => $this->_Pdf->title()
 		);
 
-		$footer = $this->_Pdf->footer();
-		foreach($footer as $location => $text) {
-			if($text !== null) {
-				$command .= " --footer-$location \"" . addslashes($text) . "\"";
-			}
-		}
-
-		$header = $this->_Pdf->header();
-		foreach($header as $location => $text) {
-			if($text !== null) {
-				$command .= " --header-$location \"" . addslashes($text) . "\"";
-			}
-		}
-
 		$margin = $this->_Pdf->margin();
 		foreach ($margin as $key => $value) {
 			if ($value !== null) {
@@ -126,6 +112,19 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine {
 				$command .= ' --' . $key;
 			} else {
 				$command .= sprintf(' --%s %s', $key, escapeshellarg($value));
+			}
+		}
+		$footer = $this->_Pdf->footer();
+		foreach ($footer as $location => $text) {
+			if ($text !== null) {
+				$command .= " --footer-$location \"" . addslashes($text) . "\"";
+			}
+		}
+
+		$header = $this->_Pdf->header();
+		foreach ($header as $location => $text) {
+			if ($text !== null) {
+				$command .= " --header-$location \"" . addslashes($text) . "\"";
 			}
 		}
 		$command .= " - -";
