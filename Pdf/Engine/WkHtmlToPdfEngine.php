@@ -9,7 +9,7 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine {
  * @access protected
  * @var string
  */
-	protected $binary = '/usr/bin/wkhtmltopdf';
+	protected $_binary = '/usr/bin/wkhtmltopdf';
 
 /**
  * Constructor
@@ -24,6 +24,7 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine {
  * Generates Pdf from html
  *
  * @return string raw pdf data
+ * @throws CakeException
  */
 	public function output() {
 		$content = $this->_exec($this->_getCommand(), $this->_Pdf->html());
@@ -72,14 +73,15 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine {
  * Get the command to render a pdf
  *
  * @return string the command for generating the pdf
+ * @throws CakeException
  */
 	protected function _getCommand() {
 		$binary = $this->config('binary');
 
 		if ($binary) {
-			$this->binary = $binary;
+			$this->_binary = $binary;
 		}
-		if (!is_executable($this->binary)) {
+		if (!is_executable($this->_binary)) {
 			throw new CakeException(sprintf('wkhtmltopdf binary is not found or not executable: %s', $this->binary));
 		}
 
@@ -100,11 +102,11 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine {
 		}
 
 		$configOptions = $this->config('options');
-		if(is_array($configOptions)) {
+		if (is_array($configOptions)) {
 			$options = array_merge($options, $configOptions);
 		}
 
-		$command = $this->binary;
+		$command = $this->_binary;
 		foreach ($options as $key => $value) {
 			if (empty($value)) {
 				continue;
