@@ -101,7 +101,7 @@ Example:
                 throw new NotFoundException(__('Invalid invoice'));
             }
             $this->pdfConfig = array(
-                'orientation' => 'potrait',
+                'orientation' => 'portrait',
                 'filename' => 'Invoice_' . $id
             );
             $this->set('invoice', $this->Invoice->read(null, $id));
