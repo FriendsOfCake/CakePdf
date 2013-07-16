@@ -193,10 +193,22 @@ Set 'permissions' to an array with a combination of the following available perm
 * fill_in
 
 
-## Note about images
+## Note about static assets
 
-Use absolute urls for images in your view templates for pdf.
-If you use `HtmlHelper::image()` make sure you have `$options['fullBase'] = true`
+Use absolute urls for static assets in your view templates for pdf.
+If you use `HtmlHelper::image()`, `HtmlHelper::script()` or `HtmlHelper::css()` make sure you have `$options['fullBase'] = true`
+
+Another solution would be to create a `AppHelper` of which it would force `$options['fullBase'] = true` for PDF requests. e.g:
+```php
+class AppHelper extends Helper {
+    public function assetUrl($path, $options = array()) {
+    	if (!empty($this->request->params['ext']) && $this->request->params['ext'] === 'pdf') {
+			$options['fullBase'] = true;
+		}
+		return parent::assetUrl($path, $options);
+	}
+}
+```
 
 
 ## Thanks
@@ -207,7 +219,7 @@ Want your name here as well? Create a pull request for improvements/other pdf en
 
 ## License
 
-Copyright (c) 2012 Ceeram
+Copyright (c) 2013 Ceeram
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
