@@ -1,4 +1,5 @@
 <?php
+App::uses('Controller', 'Controller');
 App::uses('File', 'Utility');
 App::uses('View', 'View');
 
