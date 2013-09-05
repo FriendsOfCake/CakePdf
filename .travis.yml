@@ -5,9 +5,10 @@ php:
   - 5.4
 
 env:
-  - CAKE_VERSION=2.2.7
+  - CAKE_VERSION=2.2.9
+  - CAKE_VERSION=2.3.10
   - CAKE_VERSION=master
-  - CAKE_VERSION=2.4
+  - CAKE_VERSION=2.5
 
 before_script:
   - git clone --depth 1 --branch $CAKE_VERSION git://github.com/cakephp/cakephp ../cakephp && cd ../cakephp
