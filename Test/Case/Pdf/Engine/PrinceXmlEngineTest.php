@@ -1,6 +1,7 @@
 <?php
 App::uses('CakePdf', 'CakePdf.Pdf');
 App::uses('PrinceXmlEngine', 'CakePdf.Pdf/Engine');
+App::uses('Router', 'Routing');
 
 /**
  * PrinceXmlEngine class
@@ -14,6 +15,13 @@ class PrinceXmlEngineTest extends CakeTestCase {
  *
  */
 	public function testGetCommand() {
+		
+		if (method_exists ('Router', 'fullBaseUrl')) {
+			$baseUrl = Router::fullBaseUrl();
+		} else {
+			$baseUrl = Router::url ('/', true);
+		}
+		
 		$class = new ReflectionClass('PrinceXmlEngine');
 		$method = $class->getMethod('parseCommand');
 		$method->setAccessible(true);
@@ -24,7 +32,7 @@ class PrinceXmlEngineTest extends CakeTestCase {
 		));
 		
 		$result = $method->invoke($Pdf->engine());
-		$expected = '/usr/bin/prince --input=auto --baseurl=' . Router::fullBaseUrl() . ' --javascript --pdf-title="PrinceXML is king" - -o -';
+		$expected = '/usr/bin/prince --input=auto --baseurl=' . $baseUrl . ' --javascript --pdf-title="PrinceXML is king" - -o -';
 		$this->assertEquals($expected, $result);
 		
 		$Pdf = new CakePdf(array(
@@ -38,7 +46,7 @@ class PrinceXmlEngineTest extends CakeTestCase {
 		
 		$result = $method->invoke($Pdf->engine());
 		
-		$expected = '/another/location/prince --input=auto --baseurl=' . Router::fullBaseUrl() . ' --javascript --pdf-subject=Foobar - -o -';
+		$expected = '/another/location/prince --input=auto --baseurl=' . $baseUrl . ' --javascript --pdf-subject=Foobar - -o -';
 		$this->assertEquals($expected, $result);
 		
 		$Pdf = new CakePdf(array(
@@ -54,7 +62,7 @@ class PrinceXmlEngineTest extends CakeTestCase {
 		
 		$result = $method->invoke($Pdf->engine());
 		
-		$expected = '/another/location/prince --input=auto --baseurl=' . Router::fullBaseUrl() . ' --javascript --pdf-subject=Foobar --key-bits=48 --user-password=foo --owner-password=bar - -o -';
+		$expected = '/another/location/prince --input=auto --baseurl=' . $baseUrl . ' --javascript --pdf-subject=Foobar --key-bits=48 --user-password=foo --owner-password=bar - -o -';
 		$this->assertEquals($expected, $result);
 		
 		$Pdf = new CakePdf(array(
@@ -72,7 +80,7 @@ class PrinceXmlEngineTest extends CakeTestCase {
 		
 		$result = $method->invoke($Pdf->engine());
 		
-		$expected = '/another/location/prince --input=auto --baseurl=' . Router::fullBaseUrl() . ' --javascript --pdf-subject=Foobar --pdf-author=God --pdf-keywords="pdf, html" --pdf-creator=Humanity --key-bits=48 --user-password=foo - -o -';
+		$expected = '/another/location/prince --input=auto --baseurl=' . $baseUrl . ' --javascript --pdf-subject=Foobar --pdf-author=God --pdf-keywords="pdf, html" --pdf-creator=Humanity --key-bits=48 --user-password=foo - -o -';
 		$this->assertEquals($expected, $result);
 	}
 }

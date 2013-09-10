@@ -1,6 +1,7 @@
 <?php
 App::uses('AbstractPdfEngine', 'CakePdf.Pdf/Engine');
 App::uses('Hash', 'Utility');
+App::uses('Router', 'Routing');
 /**
  *  Configure::write ('CakePdf', array (
  *  	'engine'	=> 'CakePdf.PrinceXml',
