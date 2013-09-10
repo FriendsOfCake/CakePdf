@@ -23,9 +23,15 @@ class PrinceXmlEngine extends AbstractPdfEngine
 	
 	protected function parseCommand ()
 	{
+		if (method_exists ('Router', 'fullBaseUrl')) {
+			$baseUrl = Router::fullBaseUrl();
+		} else {
+			$baseUrl = Router::url ('/', true);
+		}
+		
 		$arguments = array (
 			'input'			=> 'auto',
-			'baseurl'		=> version_compare ((defined ('CAKE_VERSION') ? CAKE_VERSION : Configure::version()), '2.4.0') >= 0 ? Router::fullBaseUrl() : Router::url ('/', true),
+			'baseurl'		=> $baseUrl,
 			'javascript'	=> '',
 		);
 		
