@@ -29,12 +29,10 @@ class PrinceXmlEngineTest extends CakeTestCase {
 		
 		$Pdf = new CakePdf(array(
 			'engine'  => 'PrinceXml',
+			'binary'	=> '/another/location/prince',
 			'options'	=> array (
-				'binary'	=> '/another/location/prince',
-				'pdf'		=> array (
-					'subject'	=> 'Foobar',
-					'key_bits'	=> 48
-				)
+				'subject'	=> 'Foobar',
+				'key_bits'	=> 48
 			)
 		));
 		
@@ -45,14 +43,12 @@ class PrinceXmlEngineTest extends CakeTestCase {
 		
 		$Pdf = new CakePdf(array(
 			'engine'  		=> 'PrinceXml',
+			'binary'	=> '/another/location/prince',
 			'userPassword'	=> 'foo',
 			'ownerPassword'	=> 'bar',
 			'options'		=> array (
-				'binary'	=> '/another/location/prince',
-				'pdf'		=> array (
-					'subject'	=> 'Foobar',
-					'key_bits'	=> 48
-				)
+				'subject'	=> 'Foobar',
+				'key_bits'	=> 48
 			)
 		));
 		
@@ -63,16 +59,14 @@ class PrinceXmlEngineTest extends CakeTestCase {
 		
 		$Pdf = new CakePdf(array(
 			'engine'  		=> 'PrinceXml',
+			'binary'	=> '/another/location/prince',
 			'userPassword'	=> 'foo',
 			'options'		=> array (
-				'binary'	=> '/another/location/prince',
-				'pdf'		=> array (
-					'subject'	=> 'Foobar',
-					'author'	=> 'God',
-					'keywords'	=> 'pdf, html',
-					'creator'	=> 'Humanity',
-					'key_bits'	=> 48
-				)
+				'subject'	=> 'Foobar',
+				'author'	=> 'God',
+				'keywords'	=> 'pdf, html',
+				'creator'	=> 'Humanity',
+				'key_bits'	=> 48
 			)
 		));
 		

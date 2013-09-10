@@ -4,15 +4,13 @@ App::uses('Hash', 'Utility');
 /**
  *  Configure::write ('CakePdf', array (
  *  	'engine'	=> 'CakePdf.PrinceXml',
+ *  	'binary'	=> '/usr/local/bin/prince',
  *  	'options'	=> array (
- *  		'binary'	=> '/usr/local/bin/prince',
- *  		'pdf'		=> array (
- *  			'subject'	=> 'subject',
- *  			'author'	=> 'author',
- *  			'keywords'	=> 'keywords',
- *  			'creator'	=> 'creator',
- *  			'key_bits'	=> 128
- *  		)
+*  			'subject'	=> 'subject',
+*  			'author'	=> 'author',
+*  			'keywords'	=> 'keywords',
+*  			'creator'	=> 'creator',
+*  			'key_bits'	=> 128
  *  	)
  *  ));
  */
@@ -20,7 +18,7 @@ class PrinceXmlEngine extends AbstractPdfEngine
 {
 	protected function getBinary ()
 	{
-		return Hash::get ($this->config(), 'options.binary') ?: '/usr/bin/prince';
+		return Hash::get ($this->config(), 'binary') ?: '/usr/bin/prince';
 	}
 	
 	protected function parseCommand ()
@@ -40,14 +38,14 @@ class PrinceXmlEngine extends AbstractPdfEngine
 		
 		$options = $this->config ('options');
 		
-		if ( $options && ($opts = Hash::get ($options, 'pdf')) ) {
+		if ( $options ) {
 			foreach (array (
 				'subject'	=> 'pdf-subject',
 				'author'	=> 'pdf-author',
 				'keywords'	=> 'pdf-keywords',
 				'creator'	=> 'pdf-creator'
 			) as $k => $v) {
-				if ( ($k = Hash::get ($opts, $k)) ) {
+				if ( ($k = Hash::get ($options, $k)) ) {
 					$arguments[$v] = $k;
 				}
 			}
@@ -57,7 +55,7 @@ class PrinceXmlEngine extends AbstractPdfEngine
 		$ownerPw = $this->_Pdf->ownerPassword();
 		
 		if (! empty ($userPw) || ! empty ($ownerPw)) {
-			if ( ($k = Hash::get ($options, 'pdf.key_bits')) ) {
+			if ( ($k = Hash::get ($options, 'key_bits')) ) {
 				$arguments['key-bits'] = $k;
 			}
 			
