@@ -60,5 +60,25 @@ class PrinceXmlEngineTest extends CakeTestCase {
 		
 		$expected = '/another/location/prince --input=auto --input-list=- --baseurl=' . Router::fullBaseUrl() . ' --javascript --output=- --pdf-subject=Foobar --key-bits=48 --user-password=foo --owner-password=bar';
 		$this->assertEquals($expected, $result);
+		
+		$Pdf = new CakePdf(array(
+			'engine'  		=> 'PrinceXml',
+			'userPassword'	=> 'foo',
+			'options'		=> array (
+				'binary'	=> '/another/location/prince',
+				'pdf'		=> array (
+					'subject'	=> 'Foobar',
+					'author'	=> 'God',
+					'keywords'	=> 'pdf, html',
+					'creator'	=> 'Humanity',
+					'key_bits'	=> 48
+				)
+			)
+		));
+		
+		$result = $method->invoke($Pdf->engine());
+		
+		$expected = '/another/location/prince --input=auto --input-list=- --baseurl=' . Router::fullBaseUrl() . ' --javascript --output=- --pdf-subject=Foobar --pdf-author=God --pdf-keywords="pdf, html" --pdf-creator=Humanity --key-bits=48 --user-password=foo';
+		$this->assertEquals($expected, $result);
 	}
 }

@@ -7,14 +7,11 @@ App::uses('Hash', 'Utility');
  *  	'options'	=> array (
  *  		'binary'	=> '/usr/local/bin/prince',
  *  		'pdf'		=> array (
- *  			'title'		=> 'pdf title',
  *  			'subject'	=> 'subject',
  *  			'author'	=> 'author',
  *  			'keywords'	=> 'keywords',
  *  			'creator'	=> 'creator',
- *  			'encrypt'	=> array (
- *  				'key_bits'			=> 128,
- *  			)
+ *  			'key_bits'	=> 128
  *  		)
  *  	)
  *  ));
