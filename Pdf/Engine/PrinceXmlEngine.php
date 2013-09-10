@@ -25,7 +25,7 @@ class PrinceXmlEngine extends AbstractPdfEngine
 	{
 		$arguments = array (
 			'input'			=> 'auto',
-			'baseurl'		=> version_compare (CAKE_VERSION, '2.4.0') >= 0 ? Router::fullBaseUrl() : Router::url ('/', true),
+			'baseurl'		=> version_compare ((defined ('CAKE_VERSION') ? CAKE_VERSION : Configure::version()), '2.4.0') >= 0 ? Router::fullBaseUrl() : Router::url ('/', true),
 			'javascript'	=> '',
 		);
 		
