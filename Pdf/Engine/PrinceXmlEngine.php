@@ -25,10 +25,8 @@ class PrinceXmlEngine extends AbstractPdfEngine
 	{
 		$arguments = array (
 			'input'			=> 'auto',
-			'input-list'	=> '-',
 			'baseurl'		=> Router::fullBaseUrl(),
 			'javascript'	=> '',
-			'output'		=> '-'
 		);
 		
 		$title = $this->_Pdf->title();
@@ -85,6 +83,9 @@ class PrinceXmlEngine extends AbstractPdfEngine
 				$argsList[] = '-' . $value;
 			}
 		}
+		
+		$argsList[] = '-';
+		$argsList[] = '-o -';
 		
 		return $this->getBinary() . ' ' . implode (' ', $argsList);
 	}

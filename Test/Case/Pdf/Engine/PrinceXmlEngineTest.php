@@ -24,7 +24,7 @@ class PrinceXmlEngineTest extends CakeTestCase {
 		));
 		
 		$result = $method->invoke($Pdf->engine());
-		$expected = '/usr/bin/prince --input=auto --input-list=- --baseurl=' . Router::fullBaseUrl() . ' --javascript --output=- --pdf-title="PrinceXML is king"';
+		$expected = '/usr/bin/prince --input=auto --baseurl=' . Router::fullBaseUrl() . ' --javascript --pdf-title="PrinceXML is king" - -o -';
 		$this->assertEquals($expected, $result);
 		
 		$Pdf = new CakePdf(array(
@@ -38,7 +38,7 @@ class PrinceXmlEngineTest extends CakeTestCase {
 		
 		$result = $method->invoke($Pdf->engine());
 		
-		$expected = '/another/location/prince --input=auto --input-list=- --baseurl=' . Router::fullBaseUrl() . ' --javascript --output=- --pdf-subject=Foobar';
+		$expected = '/another/location/prince --input=auto --baseurl=' . Router::fullBaseUrl() . ' --javascript --pdf-subject=Foobar - -o -';
 		$this->assertEquals($expected, $result);
 		
 		$Pdf = new CakePdf(array(
@@ -54,7 +54,7 @@ class PrinceXmlEngineTest extends CakeTestCase {
 		
 		$result = $method->invoke($Pdf->engine());
 		
-		$expected = '/another/location/prince --input=auto --input-list=- --baseurl=' . Router::fullBaseUrl() . ' --javascript --output=- --pdf-subject=Foobar --key-bits=48 --user-password=foo --owner-password=bar';
+		$expected = '/another/location/prince --input=auto --baseurl=' . Router::fullBaseUrl() . ' --javascript --pdf-subject=Foobar --key-bits=48 --user-password=foo --owner-password=bar - -o -';
 		$this->assertEquals($expected, $result);
 		
 		$Pdf = new CakePdf(array(
@@ -72,7 +72,7 @@ class PrinceXmlEngineTest extends CakeTestCase {
 		
 		$result = $method->invoke($Pdf->engine());
 		
-		$expected = '/another/location/prince --input=auto --input-list=- --baseurl=' . Router::fullBaseUrl() . ' --javascript --output=- --pdf-subject=Foobar --pdf-author=God --pdf-keywords="pdf, html" --pdf-creator=Humanity --key-bits=48 --user-password=foo';
+		$expected = '/another/location/prince --input=auto --baseurl=' . Router::fullBaseUrl() . ' --javascript --pdf-subject=Foobar --pdf-author=God --pdf-keywords="pdf, html" --pdf-creator=Humanity --key-bits=48 --user-password=foo - -o -';
 		$this->assertEquals($expected, $result);
 	}
 }
