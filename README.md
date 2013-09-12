@@ -49,7 +49,7 @@ git clone git://github.com/ceeram/CakePdf.git CakePdf
 
 In `app/Config/bootstrap.php` add:
 ```php
-CakePlugin::load('CakePdf', array('bootstrap' => true, 'routes' => true));
+CakePlugin::load('CakePdf', array('routes' => true));
 ```
 
 
@@ -94,6 +94,13 @@ Example:
 
 <?php
     class InvoicesController extends AppController {
+
+        public $components = array(
+            'RequestHandler' => array(
+                'viewClassMap' => array('pdf' => 'CakePdf.Pdf')
+            )
+        );
+
         //in your Invoices controller you could set additional configs, or override the global ones:
         public function view($id = null) {
             $this->Invoice->id = $id;
@@ -123,7 +130,9 @@ You can create pdf view and layout files for your controller actions and have th
 Place the view templates in a 'pdf' subdir, for instance `app/View/Invoices/pdf/view.ctp`
 Layouts will be in `app/View/Layouts/pdf/default.ctp`
 
-Make sure your InvoicesController has RequestHandler Component in the `$components` array.
+Make sure your `InvoicesController` or `AppController` has `RequestHandler` component
+in the `$components` with view class mapping config as shown in example above.
+
 Browse to http://localhost/invoices/view/1.pdf
 
 Additionally you can map resources by adding `Router::mapResources(array('Invoices'));` to your routes
