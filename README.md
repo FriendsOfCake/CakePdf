@@ -4,12 +4,13 @@
 
 Plugin containing CakePdf lib which will use a pdf engine to convert html to pdf.
 
-Current engines:
+Current supported engines:
 * DomPdf
 * Mpdf
 * Tcpdf
-* Wkhtmltopdf (requires additional installation) **RECOMMENDED ENGINE**
+* Wkhtmltopdf **RECOMMENDED ENGINE**
 
+You need to make sure at least one of the above is present in your vendor dir.
 
 ## Requirements
 
@@ -20,6 +21,36 @@ Current engines:
 
 
 ## Installation
+
+_[Composer]_
+
+This is the recommended way for installation
+
+Example composer.json file for your application:
+```json
+{
+    "name": "ceeram/example-app",
+    "authors": [
+        {
+            "name": "Ceeram",
+            "email": "c33ram@gmail.com"
+        }
+    ],
+    "require": {
+        "ceeram/cakepdf": "1.0.*",
+        "dompdf/dompdf": "dev-master",
+        "tecnick.com/tcpdf": "6.0.031",
+        "mpdf/mpdf": "dev-master",
+        "h4cc/wkhtmltopdf-amd64": "0.11.0-RC1"
+    },
+    "config": {
+        "vendor-dir": "Vendor"
+    }
+}
+```
+
+Then run `composer install` in your application directory, this will set up
+CakePdf and all the dependencies. It is advised to only pick one of the listed.
 
 _[Manual]_
 
