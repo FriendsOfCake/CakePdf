@@ -9,7 +9,7 @@ env:
   global:
     - REPO_NAME=CakePdf
     - PLUGIN_NAME=CakePdf
-    - REQUIRE="dompdf/dompdf:dev-master tecnick.com/tcpdf:6.0.031 mpdf/mpdf:v5.7.1"
+    - REQUIRE="tecnick.com/tcpdf:6.0.031 mpdf/mpdf:v5.7.1 dompdf/dompdf:dev-master"
 
   matrix:
     - DB=mysql CAKE_VERSION=master
