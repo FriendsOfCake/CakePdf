@@ -1,6 +1,7 @@
 <?php
 
 abstract class AbstractPdfCrypto {
+
 /**
  * Instance of CakePdf class
  *

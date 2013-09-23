@@ -45,12 +45,12 @@ class PdfView extends View {
  *
  * @param Controller $controller
  * @return void
+ * @throws CakeException
  */
 	public function __construct(Controller $Controller = null) {
 		$this->_passedVars[] = 'pdfConfig';
 		parent::__construct($Controller);
 		$this->pdfConfig = array_merge(
-			(array)Configure::read('Pdf'),//BC line, remove later @todo
 			(array)Configure::read('CakePdf'),
 			(array)$this->pdfConfig
 		);

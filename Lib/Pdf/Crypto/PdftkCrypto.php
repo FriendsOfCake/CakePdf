@@ -9,7 +9,7 @@ class PdftkCrypto extends AbstractPdfCrypto {
  * @access protected
  * @var string
  */
-	protected $binary = '/usr/local/bin/pdftk';
+	protected $_binary = '/usr/local/bin/pdftk';
 
 /**
  * Mapping of the CakePdf permissions to the Pdftk arguments
@@ -33,10 +33,11 @@ class PdftkCrypto extends AbstractPdfCrypto {
  *
  * @param string $data raw pdf data
  * @return string raw pdf data
+ * @throws CakeException
  */
 	public function encrypt($data) {
-		if (!is_executable($this->binary)) {
-			throw new CakeException(sprintf('pdftk binary is not found or not executable: %s', $this->binary));
+		if (!is_executable($this->_binary)) {
+			throw new CakeException(sprintf('pdftk binary is not found or not executable: %s', $this->_binary));
 		}
 
 		$arguments = array();
@@ -52,7 +53,7 @@ class PdftkCrypto extends AbstractPdfCrypto {
 		}
 
 		$allowed = $this->_buildPermissionsArgument();
-		if($allowed) {
+		if ($allowed) {
 			$arguments['allow'] = $allowed;
 		}
 
@@ -64,7 +65,7 @@ class PdftkCrypto extends AbstractPdfCrypto {
 			throw new CakeException('Crypto: ownerPassword and userPassword cannot be the same');
 		}
 
-		$command = sprintf('%s - output - %s', $this->binary, $this->__buildArguments($arguments)); 
+		$command = sprintf('%s - output - %s', $this->_binary, $this->__buildArguments($arguments));
 
 		$descriptorspec = array(
 			0 => array('pipe', 'r'), // feed stdin of process from this file descriptor

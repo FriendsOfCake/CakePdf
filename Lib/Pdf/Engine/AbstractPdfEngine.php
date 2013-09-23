@@ -1,6 +1,7 @@
 <?php
 
 abstract class AbstractPdfEngine {
+
 /**
  * Instance of CakePdf class
  *

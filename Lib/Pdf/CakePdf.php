@@ -164,7 +164,6 @@ class CakePdf {
  */
 	protected $_allow = false;
 
-
 /**
  * Available permissions
  *
@@ -212,6 +211,7 @@ class CakePdf {
  *
  * @param mixed $html Html content to render. If left empty, the template will be rendered with viewVars and layout that have been set.
  * @return string
+ * @throws CakeException
  */
 	public function output($html = null) {
 		$Engine = $this->engine();
@@ -278,6 +278,7 @@ class CakePdf {
  *
  * @param string $name Classname of pdf engine without `Engine` suffix. For example `CakePdf.DomPdf`
  * @return object PdfEngine
+ * @throws CakeException
  */
 	public function engine($name = null) {
 		if (!$name) {
@@ -302,6 +303,7 @@ class CakePdf {
  *
  * @param string $name Classname of crypto engine without `Crypto` suffix. For example `CakePdf.Pdftk`
  * @return object PdfCrypto
+ * @throws CakeException
  */
 	public function crypto($name = null) {
 		if ($name === null) {
@@ -553,9 +555,9 @@ class CakePdf {
  * none: allow no permissions
  * array: list of permissions that are allowed
  *
-
  * @param null|bool|array $permissions
  * @return mixed
+ * @throws CakeException
  */
 	public function permissions($permissions = null) {
 		if (!$this->protect()) {
@@ -596,6 +598,7 @@ class CakePdf {
  *
  * @param null|boolean|string $cache Cache config name to use, If true is passed, 'cake_pdf' will be used.
  * @return mixed
+ * @throws CakeException
  */
 	public function cache($cache = null) {
 		if ($cache === null) {
