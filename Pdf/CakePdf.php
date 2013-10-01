@@ -244,9 +244,17 @@ class CakePdf {
 	}
 
 	protected function _postProcess($output) {
+		$processors = !empty($this->config['postProcess']) ? $this->config['postProcess'] : array();
+
 		if (!empty($this->config['background'])) {
-			App::uses('PdftkBackgroundPostProcessor', 'CakePdf.Pdf/PostProcessor');
-			$PostProcessor = new PdftkBackgroundPostProcessor($this);
+			$processors[] = 'CakePdf.PdftkBackgroundPostProcessor';
+		}
+
+		foreach ($processors as $processor) {
+			list($pluginDot, $class) = pluginSplit($processor, true);
+
+			App::uses($class, $pluginDot . 'Pdf/PostProcessor');
+			$PostProcessor = new $class($this);
 			$PostProcessor->config($this->config);
 
 			$output = $PostProcessor->output($output);
