@@ -170,6 +170,7 @@ Options in pdfConfig:
 * protect: Set to true to enable encryption
 * userPassword (optional): Set a password to open the PDF file
 * ownerPassword (optional): Set the password to unlock the locked permissions
+* one of the above must be present, either userPassword or ownerPassword
 * permissions (optional): Define the permissions
 
 Permissions:
