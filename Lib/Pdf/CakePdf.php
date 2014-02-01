@@ -169,7 +169,7 @@ class CakePdf {
  *
  * @var array
  */
-	protected $__availablePermissions = array(
+	protected $_availablePermissions = array(
 		'print',
 		'degraded_print',
 		'modify',
@@ -578,7 +578,7 @@ class CakePdf {
 
 		if (is_array($permissions)) {
 			foreach ($permissions as $permission) {
-				if (!in_array($permission, $this->__availablePermissions)) {
+				if (!in_array($permission, $this->_availablePermissions)) {
 					throw new CakeException(sprintf('Invalid permission: %s', $permission));
 				}
 
