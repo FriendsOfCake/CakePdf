@@ -6,7 +6,6 @@ class PdftkCrypto extends AbstractPdfCrypto {
 /**
  * Path to the pdftk executable binary
  *
- * @access protected
  * @var string
  */
 	protected $_binary = '/usr/local/bin/pdftk';
@@ -14,7 +13,6 @@ class PdftkCrypto extends AbstractPdfCrypto {
 /**
  * Mapping of the CakePdf permissions to the Pdftk arguments
  *
- * @access protected
  * @var string
  */
 	protected $_permissionsMap = array(
@@ -108,7 +106,7 @@ class PdftkCrypto extends AbstractPdfCrypto {
  * @param array $arguments
  * @return string list of arguments
  */
-	private function __buildArguments($arguments) {
+	protected function _buildArguments($arguments) {
 		$output = array();
 
 		foreach ($arguments as $argument => $value) {

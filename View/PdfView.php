@@ -15,7 +15,6 @@ App::uses('CakePdf', 'CakePdf.Pdf');
 App::uses('View', 'View');
 
 /**
- * @package       Cake.View
  */
 class PdfView extends View {
 
@@ -44,7 +43,6 @@ class PdfView extends View {
  * Constructor
  *
  * @param Controller $controller
- * @return void
  * @throws CakeException
  */
 	public function __construct(Controller $Controller = null) {
@@ -86,7 +84,7 @@ class PdfView extends View {
  */
 	public function render($view = null, $layout = null) {
 		$content = parent::render($view, $layout);
-		if ($this->response->type() == 'text/html') {
+		if ($this->response->type() === 'text/html') {
 			return $content;
 		}
 

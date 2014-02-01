@@ -568,11 +568,11 @@ class CakePdf {
 			return $this->_allow;
 		}
 
-		if (is_string($permissions) && $permissions == 'all') {
+		if (is_string($permissions) && $permissions === 'all') {
 			$permissions = true;
 		}
 
-		if (is_string($permissions) && $permissions == 'none') {
+		if (is_string($permissions) && $permissions === 'none') {
 			$permissions = false;
 		}
 
