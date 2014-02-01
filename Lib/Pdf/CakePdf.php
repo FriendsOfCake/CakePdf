@@ -169,7 +169,7 @@ class CakePdf {
  *
  * @var array
  */
-	private $__availablePermissions = array(
+	protected $__availablePermissions = array(
 		'print',
 		'degraded_print',
 		'modify',
