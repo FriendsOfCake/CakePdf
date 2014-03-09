@@ -8,7 +8,7 @@ Current engines:
 * DomPdf
 * Mpdf
 * Tcpdf
-* Wkhtmltopdf (requires additional installation) **RECOMMENDED ENGINE**
+* WkHtmlToPdf (requires additional installation) **RECOMMENDED ENGINE**
 
 
 ## Requirements
@@ -17,6 +17,7 @@ Current engines:
 * CakePHP 2.1+
 * wkhtmltopdf (optional) See: http://code.google.com/p/wkhtmltopdf/
 * pdftk (optional) See: http://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/
+* fonts (optional) If on linux system and your content contains cjk character, cjk fonts are required
 
 
 ## Installation
