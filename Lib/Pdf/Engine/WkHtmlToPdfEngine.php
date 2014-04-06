@@ -6,7 +6,6 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine {
 /**
  * Path to the wkhtmltopdf executable binary
  *
- * @access protected
  * @var string
  */
 	protected $_binary = '/usr/bin/wkhtmltopdf';

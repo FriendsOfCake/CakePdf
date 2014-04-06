@@ -5,7 +5,6 @@ App::uses('WkHtmlToPdfEngine', 'CakePdf.Pdf/Engine');
 /**
  * WkHtmlToPdfEngineTest class
  *
- * @package       CakePdf.Test.Case.Pdf.Engine
  */
 class WkHtmlToPdfEngineTest extends CakeTestCase {
 
@@ -19,10 +18,10 @@ class WkHtmlToPdfEngineTest extends CakeTestCase {
 		$method->setAccessible(true);
 
 		$Pdf = new CakePdf(array(
-			'engine'  => 'WkHtmlToPdf',
-			'title'   => 'CakePdf rules',
+			'engine' => 'WkHtmlToPdf',
+			'title' => 'CakePdf rules',
 			'options' => array(
-				'quiet'    => false,
+				'quiet' => false,
 				'encoding' => 'ISO-8859-1'
 			)
 		));
@@ -31,10 +30,10 @@ class WkHtmlToPdfEngineTest extends CakeTestCase {
 		$this->assertEquals($expected, $result);
 
 		$Pdf = new CakePdf(array(
-			'engine'  => 'WkHtmlToPdf',
+			'engine' => 'WkHtmlToPdf',
 			'options' => array(
 				'boolean' => true,
-				'string'  => 'value',
+				'string' => 'value',
 				'integer' => 42
 			)
 		));

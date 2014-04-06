@@ -28,7 +28,6 @@ class PdfTestPostsController extends Controller {
 /**
  * PdfViewTest class
  *
- * @package       CakePdf.Test.Case.View
  */
 class PdfViewTest extends CakeTestCase {
 
