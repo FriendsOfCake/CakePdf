@@ -4,13 +4,12 @@
 
 Plugin containing CakePdf lib which will use a pdf engine to convert html to pdf.
 
-Current supported engines:
+Current engines:
 * DomPdf
 * Mpdf
 * Tcpdf
-* Wkhtmltopdf **RECOMMENDED ENGINE**
+* Wkhtmltopdf (requires additional installation) **RECOMMENDED ENGINE**
 
-You need to make sure at least one of the above is present in your vendor dir.
 
 ## Requirements
 
@@ -21,36 +20,6 @@ You need to make sure at least one of the above is present in your vendor dir.
 
 
 ## Installation
-
-_[Composer]_
-
-This is the recommended way for installation
-
-Example composer.json file for your application:
-```json
-{
-    "name": "ceeram/example-app",
-    "authors": [
-        {
-            "name": "Ceeram",
-            "email": "c33ram@gmail.com"
-        }
-    ],
-    "require": {
-        "ceeram/cakepdf": "1.0.*",
-        "dompdf/dompdf": "dev-master",
-        "tecnick.com/tcpdf": "6.0.031",
-        "mpdf/mpdf": "dev-master",
-        "h4cc/wkhtmltopdf-amd64": "0.11.0-RC1"
-    },
-    "config": {
-        "vendor-dir": "Vendor"
-    }
-}
-```
-
-Then run `composer install` in your application directory, this will set up
-CakePdf and all the dependencies. It is advised to only pick one of the listed.
 
 _[Manual]_
 
@@ -80,7 +49,7 @@ git clone git://github.com/ceeram/CakePdf.git CakePdf
 
 In `app/Config/bootstrap.php` add:
 ```php
-CakePlugin::load('CakePdf', array('routes' => true));
+CakePlugin::load('CakePdf', array('bootstrap' => true, 'routes' => true));
 ```
 
 
@@ -125,13 +94,6 @@ Example:
 
 <?php
     class InvoicesController extends AppController {
-
-        public $components = array(
-            'RequestHandler' => array(
-                'viewClassMap' => array('pdf' => 'CakePdf.Pdf')
-            )
-        );
-
         //in your Invoices controller you could set additional configs, or override the global ones:
         public function view($id = null) {
             $this->Invoice->id = $id;
@@ -161,9 +123,7 @@ You can create pdf view and layout files for your controller actions and have th
 Place the view templates in a 'pdf' subdir, for instance `app/View/Invoices/pdf/view.ctp`
 Layouts will be in `app/View/Layouts/pdf/default.ctp`
 
-Make sure your `InvoicesController` or `AppController` has `RequestHandler` component
-in the `$components` with view class mapping config as shown in example above.
-
+Make sure your InvoicesController has RequestHandler Component in the `$components` array.
 Browse to http://localhost/invoices/view/1.pdf
 
 Additionally you can map resources by adding `Router::mapResources(array('Invoices'));` to your routes
@@ -210,6 +170,7 @@ Options in pdfConfig:
 * protect: Set to true to enable encryption
 * userPassword (optional): Set a password to open the PDF file
 * ownerPassword (optional): Set the password to unlock the locked permissions
+* one of the above must be present, either userPassword or ownerPassword
 * permissions (optional): Define the permissions
 
 Permissions:
