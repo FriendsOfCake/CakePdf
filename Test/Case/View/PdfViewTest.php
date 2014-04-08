@@ -12,6 +12,7 @@ class PdfTestEngine extends AbstractPdfEngine {
 	public function output() {
 		return $this->_Pdf->html();
 	}
+
 }
 
 /**

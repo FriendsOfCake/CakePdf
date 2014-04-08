@@ -8,7 +8,7 @@ Current engines:
 * DomPdf
 * Mpdf
 * Tcpdf
-* Wkhtmltopdf (requires additional installation) **RECOMMENDED ENGINE**
+* WkHtmlToPdf (requires additional installation) **RECOMMENDED ENGINE**
 
 
 ## Requirements
