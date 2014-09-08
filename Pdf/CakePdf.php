@@ -1,4 +1,6 @@
 <?php
+App::Uses('CakeRequest', 'Network');
+App::uses('Controller', 'Controller');
 App::uses('File', 'Utility');
 App::uses('View', 'View');
 
@@ -763,9 +765,9 @@ class CakePdf {
 			App::uses($viewClass, $pluginDot . 'View');
 		}
 		$Controller = new Controller(new CakeRequest());
+		$Controller->helpers = $this->_helpers;
 		$View = new $viewClass($Controller);
 		$View->viewVars = $this->_viewVars;
-		$View->helpers = $this->_helpers;
 		$View->theme = $this->_theme;
 		$View->layoutPath = 'pdf';
 		$View->viewPath = 'Pdf';

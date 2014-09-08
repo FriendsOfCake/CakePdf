@@ -100,13 +100,9 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine {
 				$options['margin-' . $key] = $value . 'mm';
 			}
 		}
+		$options = array_merge($options, (array)$this->config('options'));
 
-		$configOptions = $this->config('options');
-		if (is_array($configOptions)) {
-			$options = array_merge($options, $configOptions);
-		}
-
-		$command = $this->_binary;
+		$command = $this->binary;
 		foreach ($options as $key => $value) {
 			if (empty($value)) {
 				continue;
