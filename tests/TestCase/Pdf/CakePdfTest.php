@@ -5,6 +5,8 @@ namespace CakePdf\Test\TestCase\Pdf;
 use CakePdf\Pdf\CakePdf;
 use CakePdf\Pdf\Engine\AbstractPdfEngine;
 use Cake\Controller\Controller;
+use Cake\TestSuite\TestCase;
+
 /**
  * Dummy engine
  */
@@ -26,20 +28,24 @@ class CakePdfTest extends TestCase {
  *
  */
 	public static function provider() {
-		return array(array(array(
-				'engine' => 'PdfTest2',
-				'margin' => array(
-					'bottom' => 15,
-					'left' => 50,
-					'right' => 30,
-					'top' => 45
-		))));
+		return array(
+			array(
+				array(
+					'engine' => 'PdfTest2',
+					'margin' => array(
+						'bottom' => 15,
+						'left' => 50,
+						'right' => 30,
+						'top' => 45
+				))
+			)
+		);
 	}
 
 /**
  * Tests exception to be thrown for a non existing engine
  *
- * @expectedException CakeException
+ * @expectedException Cake\Core\Exception\Exception
  */
 	public function testNonExistingEngineException() {
 		$config = array('engine' => 'NonExistingEngine');
@@ -52,7 +58,7 @@ class CakePdfTest extends TestCase {
  *
  * @dataProvider provider
  */
-	public function testOutput($config) {
+	public function testOutput($config) {)
 		$pdf = new CakePdf($config);
 		$path = Plugin::path('CakePdf') . 'Test' . DS . 'test_app' . DS . 'View' . DS;
 		App::build(array('View' => $path));
@@ -160,5 +166,5 @@ class CakePdfTest extends TestCase {
 			'top' => 45
 		);
 		$this->assertEqual($expected, $pdf->margin());
-	}
+	}	
 }

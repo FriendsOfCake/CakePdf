@@ -5,6 +5,9 @@ use Cake\Controller\Controller;
 use Cake\Network\Request;
 use Cake\Utility\File;
 use Cake\View\View;
+use Cake\Core\Configure;
+use Cake\Core\Exception\Exception as CakeException;
+
 class CakePdf {
 
 /**

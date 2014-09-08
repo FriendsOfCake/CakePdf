@@ -3,6 +3,7 @@ namespace CakePdf\Test\TestCase\Pdf\Engine;
 
 use CakePdf\Pdf\CakePdf;
 use CakePdf\Pdf\Engine\WkHtmlToPdfEngine;
+use Cake\TestSuite\TestCase;
 /**
  * WkHtmlToPdfEngineTest class
  *

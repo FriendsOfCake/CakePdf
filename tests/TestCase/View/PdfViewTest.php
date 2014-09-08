@@ -5,6 +5,8 @@ namespace CakePdf\Test\TestCase\View;
 use CakePdf\Pdf\Engine\AbstractPdfEngine;
 use CakePdf\View\PdfView;
 use Cake\Controller\Controller;
+use Cake\TestSuite\TestCase;
+
 /**
  * Dummy engine
  */
