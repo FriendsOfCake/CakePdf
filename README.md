@@ -16,7 +16,7 @@ Current engines:
 * PHP 5.4.19+
 * CakePHP 3.0+
 * DomPdf, Mpdf, Tcpdf
-* wkhtmltopdf (optional) See: http://code.google.com/p/wkhtmltopdf/
+* wkhtmltopdf (optional) See: http://wkhtmltopdf.org/
 * pdftk (optional) See: http://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/
 
 
@@ -33,6 +33,32 @@ following to your `composer.json` file:
 ```
 
 And run `php composer.phar update`, or `composer update` (Depending on your composer setup)
+
+### Engine installation
+
+CakePdf currently supports 4 PDF engines. To install one, simply add one of the following to your `composer.json` file:
+
+__DomPdf__
+
+```javascript
+"dompdf/dompdf": "0.6.1"
+```
+
+__Tcpdf__
+
+```javascript
+"tecnick.com/tcpdf": "6.0.093"
+```
+
+__Mpdf__
+
+```javascript
+"mpdf/mpdf": "5.7.3"
+```
+
+__WkHtmlToPdf__
+
+To install WkHtmlToPdf please follow the instructions available at http://wkhtmltopdf.org/
 
 ## Setup
 
