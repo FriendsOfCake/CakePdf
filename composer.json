@@ -6,10 +6,14 @@
 	"license": "MIT",
 	"require": {
 		"php": ">=5.4.19",
-		"cakephp/plugin-installer": "dev-master"
+		"cakephp/plugin-installer": "dev-master",
+		"cakephp/cakephp": "3.0.x-dev",
+		"dompdf/dompdf": "0.6.1",
+		"tecnick.com/tcpdf": "6.0.093",
+		"mpdf/mpdf": "5.7.3"
 	},
 	"require-dev": {
-		"cakephp/cakephp": "3.0.x-dev"
+		"phpunit/phpunit": "*"
 	},
 	"autoload": {
 			"psr-4": {
