@@ -1,6 +1,9 @@
 <?php
 
 namespace CakePdf\Pdf\Engine;
+
+use CakePdf\Pdf\CakePdf;
+
 abstract class AbstractPdfEngine {
 /**
  * Instance of CakePdf class

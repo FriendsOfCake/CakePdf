@@ -16,12 +16,12 @@ class WkHtmlToPdfEngineTest extends TestCase {
  *
  */
 	public function testGetCommand() {
-		$class = new ReflectionClass('WkHtmlToPdfEngine');
+		$class = new \ReflectionClass('CakePdf\Pdf\Engine\WkHtmlToPdfEngine');
 		$method = $class->getMethod('_getCommand');
 		$method->setAccessible(true);
 
 		$Pdf = new CakePdf(array(
-			'engine'  => 'WkHtmlToPdf',
+			'engine'  => 'CakePdf.WkHtmlToPdf',
 			'title'   => 'CakePdf rules',
 			'options' => array(
 				'quiet'    => false,
@@ -33,7 +33,7 @@ class WkHtmlToPdfEngineTest extends TestCase {
 		$this->assertEquals($expected, $result);
 
 		$Pdf = new CakePdf(array(
-			'engine'  => 'WkHtmlToPdf',
+			'engine'  => 'CakePdf.WkHtmlToPdf',
 			'options' => array(
 				'boolean' => true,
 				'string'  => 'value',

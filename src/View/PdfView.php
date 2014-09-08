@@ -13,9 +13,12 @@
 namespace CakePdf\View;
 
 use CakePdf\Pdf\CakePdf;
-use Cake\Controller\Controller;
 use Cake\Core\Configure;
 use Cake\View\View;
+use Cake\Network\Request;
+use Cake\Network\Response;
+use Cake\Event\EventManager;
+use Cake\Core\Exception\Exception;
 
 /**
  * @package       Cake.View
@@ -46,25 +49,20 @@ class PdfView extends View {
 /**
  * Constructor
  *
- * @param Controller $controller
  * @return void
  */
-	public function __construct(Controller $Controller = null) {
+	public function __construct(Request $request = null, Response $response = null,
+		EventManager $eventManager = null, array $viewOptions = []) {
 		$this->_passedVars[] = 'pdfConfig';
-		parent::__construct($Controller);
+		parent::__construct($request, $response, $eventManager, $viewOptions);
 		$this->pdfConfig = array_merge(
-			(array)Configure::read('Pdf'),//BC line, remove later @todo
 			(array)Configure::read('CakePdf'),
 			(array)$this->pdfConfig
 		);
 
 		$this->response->type('pdf');
-		if ($Controller instanceof CakeErrorController) {
-			$this->subDir = null;
-			return $this->response->type('html');
-		}
 		if (!$this->pdfConfig) {
-			throw new CakeException(__d('cakepdf', 'Controller attribute $pdfConfig is not correct or missing'));
+			throw new Exception(__d('cakepdf', 'Controller attribute $pdfConfig is not correct or missing'));
 		}
 		$this->renderer($this->pdfConfig);
 	}

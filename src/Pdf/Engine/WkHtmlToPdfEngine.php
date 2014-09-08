@@ -1,7 +1,10 @@
 <?php
 namespace CakePdf\Pdf\Engine;
 
+use CakePdf\Pdf\CakePdf;
 use CakePdf\Pdf\Engine\AbstractPdfEngine;
+use Cake\Core\Exception\Exception;
+
 class WkHtmlToPdfEngine extends AbstractPdfEngine {
 
 /**
@@ -25,21 +28,21 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine {
  * Generates Pdf from html
  *
  * @return string raw pdf data
- * @throws CakeException
+ * @throws Exception
  */
 	public function output() {
 		$content = $this->_exec($this->_getCommand(), $this->_Pdf->html());
 
 		if (strpos(mb_strtolower($content['stderr']), 'error')) {
-			throw new CakeException("System error <pre>" . $content['stderr'] . "</pre>");
+			throw new Exception("System error <pre>" . $content['stderr'] . "</pre>");
 		}
 
 		if (mb_strlen($content['stdout'], $this->_Pdf->encoding()) === 0) {
-			throw new CakeException("WKHTMLTOPDF didn't return any data");
+			throw new Exception("WKHTMLTOPDF didn't return any data");
 		}
 
 		if ((int)$content['return'] !== 0 && !empty($content['stderr'])) {
-			throw new CakeException("Shell error, return code: " . (int)$content['return']);
+			throw new Exception("Shell error, return code: " . (int)$content['return']);
 		}
 
 		return $content['stdout'];
@@ -74,7 +77,7 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine {
  * Get the command to render a pdf
  *
  * @return string the command for generating the pdf
- * @throws CakeException
+ * @throws Exception
  */
 	protected function _getCommand() {
 		$binary = $this->config('binary');
@@ -83,7 +86,7 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine {
 			$this->_binary = $binary;
 		}
 		if (!is_executable($this->_binary)) {
-			throw new CakeException(sprintf('wkhtmltopdf binary is not found or not executable: %s', $this->binary));
+			throw new Exception(sprintf('wkhtmltopdf binary is not found or not executable: %s', $this->_binary));
 		}
 
 		$options = array(
@@ -103,7 +106,7 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine {
 		}
 		$options = array_merge($options, (array)$this->config('options'));
 
-		$command = $this->binary;
+		$command = $this->_binary;
 		foreach ($options as $key => $value) {
 			if (empty($value)) {
 				continue;

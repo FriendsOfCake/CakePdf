@@ -1,0 +1,20 @@
+<phpunit backupGlobals="false"
+         backupStaticAttributes="false"
+		 		 bootstrap="./tests/bootstrap.php"
+         colors="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         processIsolation="false"
+         stopOnError="false"
+         stopOnFailure="false"
+         stopOnIncomplete="false"
+         stopOnSkipped="false"
+         syntaxCheck="false">
+
+    <testsuites>
+        <testsuite name="CakePdf">
+            <directory>./tests/</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>

@@ -1,8 +1,9 @@
 <?php
 namespace CakePdf\Pdf\Engine;
 
-use App\I18n\Multibyte;
+use CakePdf\Pdf\CakePdf;
 use CakePdf\Pdf\Engine\AbstractPdfEngine;
+
 class MpdfEngine extends AbstractPdfEngine {
 
 /**

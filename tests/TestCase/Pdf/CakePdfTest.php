@@ -5,6 +5,9 @@ namespace CakePdf\Test\TestCase\Pdf;
 use CakePdf\Pdf\CakePdf;
 use CakePdf\Pdf\Engine\AbstractPdfEngine;
 use Cake\Controller\Controller;
+use Cake\Core\App;
+use Cake\Core\Plugin;
+use Cake\Core\Configure;
 use Cake\TestSuite\TestCase;
 
 /**
@@ -31,7 +34,7 @@ class CakePdfTest extends TestCase {
 		return array(
 			array(
 				array(
-					'engine' => 'PdfTest2',
+					'engine' => '\\' . __NAMESPACE__ . '\PdfTest2Engine',
 					'margin' => array(
 						'bottom' => 15,
 						'left' => 50,
@@ -58,10 +61,8 @@ class CakePdfTest extends TestCase {
  *
  * @dataProvider provider
  */
-	public function testOutput($config) {)
+	public function testOutput($config) {
 		$pdf = new CakePdf($config);
-		$path = Plugin::path('CakePdf') . 'Test' . DS . 'test_app' . DS . 'View' . DS;
-		App::build(array('View' => $path));
 		$pdf->viewVars(array('data' => 'testing'));
 		$pdf->template('testing', 'pdf');
 		$result = $pdf->output();
@@ -80,8 +81,6 @@ class CakePdfTest extends TestCase {
  */
 	public function testPluginOutput($config) {
 		$pdf = new CakePdf($config);
-		$path = Plugin::path('CakePdf') . 'Test' . DS . 'test_app' . DS . 'Plugin' . DS;
-		App::build(array('Plugin' => $path));
 		Plugin::load('MyPlugin');
 		$pdf->viewVars(array('data' => 'testing'));
 		$pdf->template('MyPlugin.testing', 'MyPlugin.pdf');
@@ -110,7 +109,7 @@ class CakePdfTest extends TestCase {
 	public function testEngine($config) {
 		$pdf = new CakePdf($config);
 		$engine = $pdf->engine();
-		$this->assertEqual('PdfTest2Engine', get_class($engine));
+		$this->assertEquals(__NAMESPACE__ . '\PdfTest2Engine', get_class($engine));
 	}
 
 /**
@@ -126,7 +125,7 @@ class CakePdfTest extends TestCase {
 			'right' => 25,
 			'top' => 30
 		);
-		$this->assertEqual($expected, $pdf->margin());
+		$this->assertEquals($expected, $pdf->margin());
 
 		$pdf = new CakePdf($config);
 		$pdf->margin(75);
@@ -136,7 +135,7 @@ class CakePdfTest extends TestCase {
 			'right' => 75,
 			'top' => 75
 		);
-		$this->assertEqual($expected, $pdf->margin());
+		$this->assertEquals($expected, $pdf->margin());
 
 		$pdf = new CakePdf($config);
 		$pdf->margin(20, 50);
@@ -146,7 +145,7 @@ class CakePdfTest extends TestCase {
 			'right' => 50,
 			'top' => 20
 		);
-		$this->assertEqual($expected, $pdf->margin());
+		$this->assertEquals($expected, $pdf->margin());
 
 		$pdf = new CakePdf($config);
 		$pdf->margin(array('left' => 120, 'right' => 30, 'top' => 34, 'bottom' => 15));
@@ -156,7 +155,7 @@ class CakePdfTest extends TestCase {
 			'right' => 30,
 			'top' => 34
 		);
-		$this->assertEqual($expected, $pdf->margin());
+		$this->assertEquals($expected, $pdf->margin());
 
 		$pdf = new CakePdf($config);
 		$expected = array(
@@ -165,6 +164,6 @@ class CakePdfTest extends TestCase {
 			'right' => 30,
 			'top' => 45
 		);
-		$this->assertEqual($expected, $pdf->margin());
+		$this->assertEquals($expected, $pdf->margin());
 	}	
 }

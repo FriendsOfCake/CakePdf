@@ -1,12 +1,13 @@
 <?php
 namespace CakePdf\Pdf;
 
+use Cake\Core\App;
 use Cake\Controller\Controller;
 use Cake\Network\Request;
 use Cake\Utility\File;
 use Cake\View\View;
 use Cake\Core\Configure;
-use Cake\Core\Exception\Exception as CakeException;
+use Cake\Core\Exception\Exception;
 
 class CakePdf {
 
@@ -234,7 +235,7 @@ class CakePdf {
 	public function output($html = null) {
 		$Engine = $this->engine();
 		if (!$Engine) {
-			throw new CakeException(__d('cake_pdf', 'Engine is not loaded'));
+			throw new Exception(__d('cake_pdf', 'Engine is not loaded'));
 		}
 
 		if (!$html) {
@@ -302,14 +303,13 @@ class CakePdf {
 			return $this->_engineClass;
 		}
 
-		list($pluginDot, $engineClassName) = pluginSplit($name, true);
-		$engineClassName = $engineClassName . 'Engine';
-		/* TODO: App::uses($engineClassName, $pluginDot . 'Pdf/Engine'); */
+		$engineClassName = App::className($name, 'Pdf/Engine', 'Engine');
 		if (!class_exists($engineClassName)) {
-			throw new CakeException(__d('cake_pdf', 'Pdf engine "%s" not found', $name));
+			throw new Exception(__d('cake_pdf', sprintf('Pdf engine "%s" not found', $name)));
 		}
-		if (!is_subclass_of($engineClassName, 'AbstractPdfEngine')) {
-			throw new CakeException(__d('cake_pdf', 'Pdf engines must extend "AbstractPdfEngine"'));
+		if (!is_subclass_of($engineClassName, 'CakePdf\Pdf\Engine\AbstractPdfEngine')) {
+			debug(get_parent_class($engineClassName));
+			throw new Exception(__d('cake_pdf', 'Pdf engines must extend "AbstractPdfEngine"'));
 		}
 		$this->_engineClass = new $engineClassName($this);
 		return $this->_engineClass;
@@ -326,17 +326,17 @@ class CakePdf {
 			if ($this->_cryptoClass) {
 				return $this->_cryptoClass;
 			}
-			throw new CakeException(__d('cake_pdf', 'Crypto is not loaded'));
+			throw new \Exception(__d('cake_pdf', 'Crypto is not loaded'));
 		}
 
 		list($pluginDot, $engineClassName) = pluginSplit($name, true);
 		$engineClassName = $engineClassName . 'Crypto';
 		/* TODO: App::uses($engineClassName, $pluginDot . 'Pdf/Crypto'); */
 		if (!class_exists($engineClassName)) {
-			throw new CakeException(__d('cake_pdf', 'Pdf crypto "%s" not found', $name));
+			throw new Exception(__d('cake_pdf', 'Pdf crypto "%s" not found', $name));
 		}
 		if (!is_subclass_of($engineClassName, 'AbstractPdfCrypto')) {
-			throw new CakeException(__d('cake_pdf', 'Crypto engine must extend "AbstractPdfCrypto"'));
+			throw new Exception(__d('cake_pdf', 'Crypto engine must extend "AbstractPdfCrypto"'));
 		}
 		$this->_cryptoClass = new $engineClassName($this);
 		return $this->_cryptoClass;
@@ -613,7 +613,6 @@ class CakePdf {
  * none: allow no permissions
  * array: list of permissions that are allowed
  *
-
  * @param null|bool|array $permissions
  * @return mixed
  */
@@ -763,14 +762,8 @@ class CakePdf {
  */
 	protected function _render() {
 		$viewClass = $this->viewRender();
-		if ($viewClass !== 'View') {
-			list($pluginDot, $viewClass) = pluginSplit($viewClass, true);
-			$viewClass .= 'View';
-			/* TODO: App::uses($viewClass, $pluginDot . 'View'); */
-		}
-		$Controller = new Controller(new Request());
-		$Controller->helpers = $this->_helpers;
-		$View = new $viewClass($Controller);
+		$viewClass = App::className($viewClass, 'View', $viewClass == 'View' ? '' : 'View');
+		$View = new $viewClass(new Request());
 		$View->viewVars = $this->_viewVars;
 		$View->theme = $this->_theme;
 		$View->layoutPath = 'pdf';

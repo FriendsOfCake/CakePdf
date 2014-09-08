@@ -5,6 +5,10 @@ namespace CakePdf\Test\TestCase\View;
 use CakePdf\Pdf\Engine\AbstractPdfEngine;
 use CakePdf\View\PdfView;
 use Cake\Controller\Controller;
+use Cake\Core\App;
+use Cake\Core\Configure;
+use Cake\Core\Plugin;
+use Cake\Network\Request;
 use Cake\TestSuite\TestCase;
 
 /**
@@ -43,11 +47,15 @@ class PdfViewTest extends TestCase {
  */
 	public function setUp() {
 		parent::setUp();
-		$path = Plugin::path('CakePdf') . 'Test' . DS . 'test_app' . DS . 'View' . DS;
-		App::build(array('View' => $path));
 
-		$Controller = new PdfTestPostsController();
-		$this->View = new PdfView($Controller);
+		Configure::write('CakePdf', [
+			'engine' => '\\' . __NAMESPACE__ . '\PdfTestEngine'
+		]);
+
+
+		$request = new Request();
+		$Controller = new PdfTestPostsController($request);
+		$this->View = new PdfView($request);
 		$this->View->layoutPath = 'pdf';
 	}
 
@@ -60,10 +68,10 @@ class PdfViewTest extends TestCase {
 		$this->assertEquals('application/pdf', $result);
 
 		$result = $this->View->pdfConfig;
-		$this->assertEquals(array('engine' => 'PdfTest'), $result);
+		$this->assertEquals(array('engine' => '\\' . __NAMESPACE__ . '\PdfTestEngine'), $result);
 
 		$result = $this->View->renderer();
-		$this->assertInstanceOf('CakePdf', $result);
+		$this->assertInstanceOf('CakePdf\Pdf\CakePdf', $result);
 	}
 
 /**
@@ -71,6 +79,7 @@ class PdfViewTest extends TestCase {
  *
  */
 	public function testRender() {
+		$this->View->viewPath = 'Posts';
 		$this->View->set('post', 'This is the post');
 		$result = $this->View->render('view', 'default');
 
