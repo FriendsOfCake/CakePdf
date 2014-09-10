@@ -211,11 +211,11 @@ class CakePdf {
 			'crypto' => Configure::read('CakePdf.crypto')
 		), $config);
 		if ($config['engine']) {
-			$this->engine($config['engine'])->config($config);
+			$this->engine($config['engine']);
 		}
 
 		if ($config['crypto']) {
-			$this->crypto($config['crypto'])->config($config);
+			$this->crypto($config['crypto']);
 		}
 
 		$options = array('pageSize', 'orientation', 'margin', 'title', 'encoding', 'protect', 'userPassword', 'ownerPassword', 'permissions', 'cache');
@@ -302,6 +302,11 @@ class CakePdf {
 		if (!$name) {
 			return $this->_engineClass;
 		}
+		$config = [];
+		if (is_array($name)) {
+			$config = $name;
+			$name = $name['engine'];
+		}
 
 		$engineClassName = App::className($name, 'Pdf/Engine', 'Engine');
 		if (!class_exists($engineClassName)) {
@@ -312,6 +317,7 @@ class CakePdf {
 			throw new Exception(__d('cake_pdf', 'Pdf engines must extend "AbstractPdfEngine"'));
 		}
 		$this->_engineClass = new $engineClassName($this);
+		$this->_engineClass->config($config);
 		return $this->_engineClass;
 	}
 
@@ -328,17 +334,21 @@ class CakePdf {
 			}
 			throw new \Exception(__d('cake_pdf', 'Crypto is not loaded'));
 		}
+		$config = [];
+		if (is_array($name)) {
+			$config = $name;
+			$name = $name['engine'];
+		}
 
-		list($pluginDot, $engineClassName) = pluginSplit($name, true);
-		$engineClassName = $engineClassName . 'Crypto';
-		/* TODO: App::uses($engineClassName, $pluginDot . 'Pdf/Crypto'); */
+		$engineClassName = App::className($name, 'Pdf/Crypto', 'Crypto');
 		if (!class_exists($engineClassName)) {
 			throw new Exception(__d('cake_pdf', 'Pdf crypto "%s" not found', $name));
 		}
-		if (!is_subclass_of($engineClassName, 'AbstractPdfCrypto')) {
+		if (!is_subclass_of($engineClassName, 'CakePdf\Pdf\Crypto\AbstractPdfCrypto')) {
 			throw new Exception(__d('cake_pdf', 'Crypto engine must extend "AbstractPdfCrypto"'));
 		}
 		$this->_cryptoClass = new $engineClassName($this);
+		$this->_cryptoClass->config($config);
 		return $this->_cryptoClass;
 	}
 

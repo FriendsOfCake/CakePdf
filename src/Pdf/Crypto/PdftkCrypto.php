@@ -1,7 +1,8 @@
 <?php
 namespace CakePdf\Pdf\Crypto;
 
-use CakePdf\Pdf\Crypto\AbstractPdfCrypto;
+use Cake\Core\Exception\Exception;
+
 class PdftkCrypto extends AbstractPdfCrypto {
 
 /**
@@ -10,7 +11,7 @@ class PdftkCrypto extends AbstractPdfCrypto {
  * @access protected
  * @var string
  */
-	protected $binary = '/usr/local/bin/pdftk';
+	protected $_binary = '/usr/local/bin/pdftk';
 
 /**
  * Mapping of the CakePdf permissions to the Pdftk arguments
@@ -36,8 +37,14 @@ class PdftkCrypto extends AbstractPdfCrypto {
  * @return string raw pdf data
  */
 	public function encrypt($data) {
-		if (!is_executable($this->binary)) {
-			throw new CakeException(sprintf('pdftk binary is not found or not executable: %s', $this->binary));
+		$binary = $this->config('binary');
+
+		if ($binary) {
+			$this->_binary = $binary;
+		}
+
+		if (!is_executable($this->_binary)) {
+			throw new Exception(sprintf('pdftk binary is not found or not executable: %s', $this->_binary));
 		}
 
 		$arguments = array();
@@ -53,19 +60,19 @@ class PdftkCrypto extends AbstractPdfCrypto {
 		}
 
 		$allowed = $this->_buildPermissionsArgument();
-		if($allowed) {
+		if ($allowed) {
 			$arguments['allow'] = $allowed;
 		}
 
 		if (!$ownerPassword && !$userPassword) {
-			throw new CakeException('Crypto: Required to configure atleast an ownerPassword or userPassword');
+			throw new Exception('Crypto: Required to configure atleast an ownerPassword or userPassword');
 		}
 
 		if ($ownerPassword == $userPassword) {
-			throw new CakeException('Crypto: ownerPassword and userPassword cannot be the same');
+			throw new Exception('Crypto: ownerPassword and userPassword cannot be the same');
 		}
 
-		$command = sprintf('%s - output - %s', $this->binary, $this->__buildArguments($arguments)); 
+		$command = sprintf('%s - output - %s', $this->_binary, $this->__buildArguments($arguments));
 
 		$descriptorspec = array(
 			0 => array('pipe', 'r'), // feed stdin of process from this file descriptor
@@ -86,7 +93,7 @@ class PdftkCrypto extends AbstractPdfCrypto {
 		$exitcode = proc_close($prochandle);
 
 		if ($exitcode !== 0) {
-			throw new CakeException(sprintf('Crypto: Unknown error (exit code %d)', $exitcode));
+			throw new Exception(sprintf('Crypto: Unknown error (exit code %d)', $exitcode));
 		}
 
 		return $stdout;
