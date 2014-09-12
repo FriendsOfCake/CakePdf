@@ -13,45 +13,33 @@ Current engines:
 
 ## Requirements
 
-* PHP 5.2.8
-* CakePHP 2.1+
-* wkhtmltopdf (optional) See: http://code.google.com/p/wkhtmltopdf/
+* PHP 5.4.19+
+* CakePHP 3.0+
+* DomPdf, Mpdf, Tcpdf
+* wkhtmltopdf (optional) See: http://wkhtmltopdf.org/
 * pdftk (optional) See: http://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/
 
 
 ## Installation
 
-_[Manual]_
+You can install this plugin into your CakePHP application using
+[composer](http://getcomposer.org). For existing applications you can add the
+following to your `composer.json` file:
 
-1. Download this: http://github.com/ceeram/CakePdf/zipball/master
-2. Unzip that download.
-3. Copy the resulting folder to app/Plugin
-4. Rename the folder you just copied to CakePdf
-
-_[GIT Submodule]_
-
-In your app directory type:
-```bash
-git submodule add git://github.com/ceeram/CakePdf.git Plugin/CakePdf
-git submodule init
-git submodule update
+```javascript
+"require": {
+    "ceeram/cakepdf": "3.0.x-dev"
+}
 ```
 
-_[GIT Clone]_
-
-In your plugin directory type
-```bash
-git clone git://github.com/ceeram/CakePdf.git CakePdf
-```
-
+And run `php composer.phar update`, or `composer update` (Depending on your composer setup)
 
 ## Setup
 
-In `app/Config/bootstrap.php` add:
+In `config/bootstrap.php` add:
 ```php
 CakePlugin::load('CakePdf', array('bootstrap' => true, 'routes' => true));
 ```
-
 
 ## Configuration
 
@@ -120,8 +108,8 @@ Many people mix both ways and dont get the expected results.
 ### 1: Render as pdf (including forced download) in the browser with PdfView
 
 You can create pdf view and layout files for your controller actions and have them automatically rendered.
-Place the view templates in a 'pdf' subdir, for instance `app/View/Invoices/pdf/view.ctp`
-Layouts will be in `app/View/Layouts/pdf/default.ctp`
+Place the view templates in a 'pdf' subdir, for instance `src/Template/Invoices/pdf/view.ctp`
+Layouts will be in `src/Template/Layouts/pdf/default.ctp`
 
 Make sure your InvoicesController has RequestHandler Component in the `$components` array.
 Browse to http://localhost/invoices/view/1.pdf
@@ -133,15 +121,15 @@ file and you can access the same document at http://localhost/invoices/1.pdf
 ### 2: Create pdf for email attachment, file storage etc.
 
 You can use CakePdf lib to create raw pdf data with a view template.
-The view file path would look like `app/View/Pdf/newsletter.ctp`.
-Layout file path would be like `app/View/Layouts/pdf/default.ctp`
+The view file path would look like `src/Template/Pdf/newsletter.ctp`.
+Layout file path would be like `src/Template/Layouts/pdf/default.ctp`
 Note that layouts for both usage types are within same directory, but the view templates use different file paths
 Optionally you can also write the raw data to file.
 
 Example:
 ```php
 <?php
-    $CakePdf = new CakePdf();
+    $CakePdf = new \CakePdf\Pdf\CakePdf();
     $CakePdf->template('newsletter', 'default');
     //get the pdf string returned
     $pdf = $CakePdf->output();
