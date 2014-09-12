@@ -7,23 +7,25 @@
 	"require": {
 		"php": ">=5.4.19",
 		"cakephp/plugin-installer": "dev-master",
-		"dompdf/dompdf": "0.6.1",
-		"tecnick.com/tcpdf": "6.0.093",
-		"mpdf/mpdf": "5.7.3"
-	},
-	"require-dev": {
-		"phpunit/phpunit": "*",
 		"cakephp/cakephp": "3.0.x-dev"
 	},
+	"require-dev": {
+		"phpunit/phpunit": "*"
+	},
+	"suggest": {
+		"dompdf/dompdf": "If you wish to use the DomPdf engine",
+		"tecnick.com/tcpdf": "If you wish to use the Tcpdf engine",
+		"mpdf/mpdf": "If you wish to use the Mpdf engine"
+	},
 	"autoload": {
-			"psr-4": {
-				"CakePdf\\": "src"
-			}
-		},
-		"autoload-dev": {
-			"psr-4": {
-				"Cake\\Test\\": "vendor/cakephp/cakephp/tests",
-				"CakePdf\\Test\\": "tests"
-			}
+		"psr-4": {
+			"CakePdf\\": "src"
 		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"Cake\\Test\\": "vendor/cakephp/cakephp/tests",
+			"CakePdf\\Test\\": "tests"
+		}
+	}
 }
