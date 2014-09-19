@@ -28,7 +28,7 @@
 			"CakePdf\\Test\\": "tests"
 		}
 	},
-	"replace": [
-		"ceeram/CakePdf"
-	]
+	"replace": {
+		"ceeram/CakePdf": "self.version"
+	}
 }
