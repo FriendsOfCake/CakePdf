@@ -29,6 +29,7 @@ matrix:
     - php: hhvm-nightly
 
 before_script:
+ - sudo touch /usr/bin/wkhtmltopdf && sudo chmod +x /usr/bin/wkhtmltopdf
   - composer self-update
   - composer install --prefer-source --no-interaction --dev
 
