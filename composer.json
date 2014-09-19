@@ -2,7 +2,7 @@
 	"name": "friendsofcake/cakepdf",
 	"type": "cakephp-plugin",
     "description": "CakePHP plugin for creating and/or rendering Pdf, several Pdf engines supported.",
-	"homepage": "http://github.com/ceeram/CakePdf",
+	"homepage": "https://github.com/FriendsOfCake/CakePdf",
 	"license": "MIT",
 	"require": {
 		"php": ">=5.3.0",
