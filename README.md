@@ -23,7 +23,7 @@ Current engines:
 
 _[Manual]_
 
-1. Download this: http://github.com/ceeram/CakePdf/zipball/master
+1. Download this: http://github.com/friendsofcake/CakePdf/zipball/master
 2. Unzip that download.
 3. Copy the resulting folder to app/Plugin
 4. Rename the folder you just copied to CakePdf
@@ -32,7 +32,7 @@ _[GIT Submodule]_
 
 In your app directory type:
 ```bash
-git submodule add git://github.com/ceeram/CakePdf.git Plugin/CakePdf
+git submodule add git://github.com/friendsofcake/CakePdf.git Plugin/CakePdf
 git submodule init
 git submodule update
 ```
@@ -41,9 +41,15 @@ _[GIT Clone]_
 
 In your plugin directory type
 ```bash
-git clone git://github.com/ceeram/CakePdf.git CakePdf
+git clone git://github.com/friendsofcake/CakePdf.git CakePdf
 ```
 
+_[Composer]_
+
+In your app directory type
+```bash
+composer require friendsofcake/CakePdf
+```
 
 ## Setup
 
