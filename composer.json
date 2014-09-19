@@ -1,5 +1,5 @@
 {
-	"name": "friendsofcake/CakePdf",
+	"name": "friendsofcake/cake-pdf",
 	"type": "cakephp-plugin",
     "description": "CakePHP plugin for creating and/or rendering Pdfs, several Pdf engines supported.",
 	"homepage": "http://github.com/friendsofcake/CakePdf",
@@ -29,6 +29,6 @@
 		}
 	},
 	"replace": {
-		"ceeram/CakePdf": "self.version"
+		"ceeram/cakepdf": "self.version"
 	}
 }
