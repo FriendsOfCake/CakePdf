@@ -2,7 +2,6 @@
 namespace CakePdf\Pdf\Engine;
 
 use CakePdf\Pdf\CakePdf;
-use CakePdf\Pdf\Engine\AbstractPdfEngine;
 
 class DomPdfEngine extends AbstractPdfEngine {
 
@@ -19,8 +18,6 @@ class DomPdfEngine extends AbstractPdfEngine {
 		if (!defined('DOMPDF_TEMP_DIR')) {
 			define('DOMPDF_TEMP_DIR', TMP);
 		}
-
-		App::import('Vendor', 'CakePdf.DomPDF', array('file' => 'dompdf' . DS . 'dompdf_config.inc.php'));
 	}
 
 /**
@@ -29,7 +26,7 @@ class DomPdfEngine extends AbstractPdfEngine {
  * @return string raw pdf data
  */
 	public function output() {
-		$DomPDF = new DOMPDF();
+		$DomPDF = new \DOMPDF();
 		$DomPDF->set_paper($this->_Pdf->pageSize(), $this->_Pdf->orientation());
 		$DomPDF->load_html($this->_Pdf->html());
 		$DomPDF->render();
