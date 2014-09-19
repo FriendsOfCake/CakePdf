@@ -1,24 +1,47 @@
 language: php
 
 php:
-  - 5.3
   - 5.4
   - 5.5
+  - 5.6
 
 env:
-  - CAKE_VERSION=2.2.9
-  - CAKE_VERSION=2.3.10
-  - CAKE_VERSION=master
-  - CAKE_VERSION=2.5
+  global:
+    - DEFAULT=1
+
+matrix:
+  allow_failures:
+    - php: 5.4
+      env: PHPCS=1 DEFAULT=0
+
+    - php: hhvm
+
+    - php: hhvm-nightly
+
+  fast_finish: true
+
+  include:
+    - php: 5.4
+      env: PHPCS=1 DEFAULT=0
+
+    - php: hhvm
+
+    - php: hhvm-nightly
 
 before_script:
-  - git clone --depth 1 --branch $CAKE_VERSION git://github.com/cakephp/cakephp ../cakephp && cd ../cakephp
-  - cp -R ../CakePdf plugins/CakePdf
-  - sudo touch /usr/bin/wkhtmltopdf && sudo chmod +x /usr/bin/wkhtmltopdf
+  - composer self-update
+  - composer install --prefer-source --no-interaction --dev
+
+  - sh -c "if [ '$PHPCS' = '1' ]; then pear channel-discover pear.cakephp.org; fi"
+  - sh -c "if [ '$PHPCS' = '1' ]; then pear install --alldeps cakephp/CakePHP_CodeSniffer; fi"
+
+  - phpenv rehash
+  - set +H
+  - cp phpunit.xml.dist phpunit.xml
 
 script:
-  - ./lib/Cake/Console/cake test CakePdf AllCakePdf
-
+  - sh -c "if [ '$DEFAULT' = '1' ]; then phpunit --stderr; fi"
+  - sh -c "if [ '$PHPCS' = '1' ]; then phpcs -p --extensions=php --standard=CakePHP --ignore=vendor --ignore=tests --ignore=config . ; fi"
 
 notifications:
   email: false
