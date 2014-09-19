@@ -8,15 +8,14 @@ Current engines:
 * DomPdf
 * Mpdf
 * Tcpdf
-* WkHtmlToPdf (requires additional installation) **RECOMMENDED ENGINE**
+* WkHtmlToPdf **RECOMMENDED ENGINE**
 
 
 ## Requirements
 
 * PHP 5.4.16+
 * CakePHP 3.0+
-* DomPdf, Mpdf, Tcpdf
-* wkhtmltopdf (optional) See: http://wkhtmltopdf.org/
+* One of the following render engines: DomPdf, Mpdf, Tcpdf or wkhtmltopdf
 * pdftk (optional) See: http://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/
 
 
@@ -28,7 +27,7 @@ following to your `composer.json` file:
 
 ```javascript
 "require": {
-    "friendsofcake/cake-pdf": "3.0.x-dev"
+    "friendsofcake/cakepdf": "3.0.x-dev"
 }
 ```
 
@@ -50,7 +49,7 @@ composer require mpdf/mpdf
 
 In `config/bootstrap.php` add:
 ```php
-CakePlugin::load('CakePdf', array('bootstrap' => true, 'routes' => true));
+Plugin::load('CakePdf', array('bootstrap' => true, 'routes' => true));
 ```
 
 ## Configuration
