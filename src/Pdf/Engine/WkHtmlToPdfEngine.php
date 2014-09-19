@@ -2,7 +2,6 @@
 namespace CakePdf\Pdf\Engine;
 
 use CakePdf\Pdf\CakePdf;
-use CakePdf\Pdf\Engine\AbstractPdfEngine;
 use Cake\Core\Exception\Exception;
 
 class WkHtmlToPdfEngine extends AbstractPdfEngine {
@@ -18,7 +17,7 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine {
 /**
  * Constructor
  *
- * @param $Pdf CakePdf instance
+ * @param CakePdf $Pdf CakePdf instance
  */
 	public function __construct(CakePdf $Pdf) {
 		parent::__construct($Pdf);
@@ -27,8 +26,8 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine {
 /**
  * Generates Pdf from html
  *
+ * @throws \Cake\Core\Exception\Exception
  * @return string raw pdf data
- * @throws Exception
  */
 	public function output() {
 		$content = $this->_exec($this->_getCommand(), $this->_Pdf->html());
@@ -52,13 +51,13 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine {
  * Execute the WkHtmlToPdf commands for rendering pdfs
  *
  * @param string $cmd the command to execute
- * @param string $input
+ * @param string $input Html to pass to wkhtmltopdf
  * @return string the result of running the command to generate the pdf
  */
 	protected function _exec($cmd, $input) {
-		$result = array('stdout' => '', 'stderr' => '', 'return' => '');
+		$result = ['stdout' => '', 'stderr' => '', 'return' => ''];
 
-		$proc = proc_open($cmd, array(0 => array('pipe', 'r'), 1 => array('pipe', 'w'), 2 => array('pipe', 'w')), $pipes);
+		$proc = proc_open($cmd, [0 => ['pipe', 'r'], 1 => ['pipe', 'w'], 2 => ['pipe', 'w']], $pipes);
 		fwrite($pipes[0], $input);
 		fclose($pipes[0]);
 
@@ -77,7 +76,7 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine {
  * Get the command to render a pdf
  *
  * @return string the command for generating the pdf
- * @throws Exception
+ * @throws \Cake\Core\Exception\Exception
  */
 	protected function _getCommand() {
 		$binary = $this->config('binary');
@@ -89,14 +88,14 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine {
 			throw new Exception(sprintf('wkhtmltopdf binary is not found or not executable: %s', $this->_binary));
 		}
 
-		$options = array(
+		$options = [
 			'quiet' => true,
 			'print-media-type' => true,
 			'orientation' => $this->_Pdf->orientation(),
 			'page-size' => $this->_Pdf->pageSize(),
 			'encoding' => $this->_Pdf->encoding(),
 			'title' => $this->_Pdf->title()
-		);
+		];
 
 		$margin = $this->_Pdf->margin();
 		foreach ($margin as $key => $value) {

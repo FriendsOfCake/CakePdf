@@ -19,7 +19,7 @@ class PdftkCrypto extends AbstractPdfCrypto {
  * @access protected
  * @var string
  */
-	protected $_permissionsMap = array(
+	protected $_permissionsMap = [
 		'print' => 'Printing',
 		'degraded_print' => 'DegradedPrinting',
 		'modify' => 'ModifyContents',
@@ -28,12 +28,13 @@ class PdftkCrypto extends AbstractPdfCrypto {
 		'screen_readers' => 'ScreenReaders',
 		'annotate' => 'ModifyAnnotations',
 		'fill_in' => 'FillIn'
-	);
+	];
 
 /**
  * Encrypt a pdf file
  *
  * @param string $data raw pdf data
+ * @throws \Cake\Core\Exception\Exception
  * @return string raw pdf data
  */
 	public function encrypt($data) {
@@ -47,7 +48,7 @@ class PdftkCrypto extends AbstractPdfCrypto {
 			throw new Exception(sprintf('pdftk binary is not found or not executable: %s', $this->_binary));
 		}
 
-		$arguments = array();
+		$arguments = [];
 
 		$ownerPassword = $this->_Pdf->ownerPassword();
 		if ($ownerPassword !== null) {
@@ -74,11 +75,11 @@ class PdftkCrypto extends AbstractPdfCrypto {
 
 		$command = sprintf('%s - output - %s', $this->_binary, $this->__buildArguments($arguments));
 
-		$descriptorspec = array(
-			0 => array('pipe', 'r'), // feed stdin of process from this file descriptor
-			1 => array('pipe', 'w'), // Note you can also grab stdout from a pipe, no need for temp file
-			2 => array('pipe', 'w'), // stderr
-		);
+		$descriptorspec = [
+			0 => ['pipe', 'r'], // feed stdin of process from this file descriptor
+			1 => ['pipe', 'w'], // Note you can also grab stdout from a pipe, no need for temp file
+			2 => ['pipe', 'w'], // stderr
+		];
 
 		$prochandle = proc_open($command, $descriptorspec, $pipes);
 
@@ -103,7 +104,7 @@ class PdftkCrypto extends AbstractPdfCrypto {
  * Checks if a CakePdf permission is implemented
  *
  * @param string $permission permission name
- * @return boolean
+ * @return bool
  */
 	public function permissionImplemented($permission) {
 		return array_key_exists($permission, $this->_permissionsMap);
@@ -112,11 +113,11 @@ class PdftkCrypto extends AbstractPdfCrypto {
 /**
  * Builds a shell safe argument list
  *
- * @param array $arguments
+ * @param array $arguments arguments to pass to pdftk
  * @return string list of arguments
  */
 	private function __buildArguments($arguments) {
-		$output = array();
+		$output = [];
 
 		foreach ($arguments as $argument => $value) {
 			$output[] = $argument . ' ' . $value;
@@ -128,7 +129,6 @@ class PdftkCrypto extends AbstractPdfCrypto {
 /**
  * Generate the permissions argument
  *
- * @param array $arguments
  * @return string list of arguments
  */
 	protected function _buildPermissionsArgument() {
@@ -138,7 +138,7 @@ class PdftkCrypto extends AbstractPdfCrypto {
 			return false;
 		}
 
-		$allowed = array();
+		$allowed = [];
 
 		if ($permissions === true) {
 			$allowed[] = 'AllFeatures';

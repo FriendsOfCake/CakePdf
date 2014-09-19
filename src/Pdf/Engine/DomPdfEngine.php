@@ -8,7 +8,7 @@ class DomPdfEngine extends AbstractPdfEngine {
 /**
  * Constructor
  *
- * @param $Pdf CakePdf instance
+ * @param CakePdf $Pdf CakePdf instance
  */
 	public function __construct(CakePdf $Pdf) {
 		parent::__construct($Pdf);

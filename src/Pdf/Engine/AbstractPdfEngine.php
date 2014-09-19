@@ -5,6 +5,7 @@ namespace CakePdf\Pdf\Engine;
 use CakePdf\Pdf\CakePdf;
 
 abstract class AbstractPdfEngine {
+
 /**
  * Instance of CakePdf class
  *
@@ -22,7 +23,7 @@ abstract class AbstractPdfEngine {
 /**
  * Constructor
  *
- * @param $Pdf CakePdf instance
+ * @param CakePdf $Pdf CakePdf instance
  */
 	public function __construct(CakePdf $Pdf) {
 		$this->_Pdf = $Pdf;
@@ -31,6 +32,7 @@ abstract class AbstractPdfEngine {
 /**
  * Implement in subclass to return raw pdf data.
  *
+ * @return string
  */
 	abstract public function output();
 

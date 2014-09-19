@@ -14,11 +14,11 @@ namespace CakePdf\View;
 
 use CakePdf\Pdf\CakePdf;
 use Cake\Core\Configure;
-use Cake\View\View;
+use Cake\Core\Exception\Exception;
+use Cake\Event\EventManager;
 use Cake\Network\Request;
 use Cake\Network\Response;
-use Cake\Event\EventManager;
-use Cake\Core\Exception\Exception;
+use Cake\View\View;
 
 /**
  * @package       Cake.View
@@ -62,8 +62,7 @@ class PdfView extends View {
  * @param array $viewOptions View options. See View::$_passedVars for list of
  *   options which get set as class properties.
  *
- * @throws \Exception
- * @return void
+ * @throws \Cake\Core\Exception\Exception
  */
 	public function __construct(Request $request = null, Response $response = null,
 		EventManager $eventManager = null, array $viewOptions = []) {
@@ -82,13 +81,14 @@ class PdfView extends View {
 			return;
 		}
 		if (!$this->pdfConfig) {
-			throw new \Exception(__d('cakepdf', 'Controller attribute $pdfConfig is not correct or missing'));
+			throw new Exception(__d('cakepdf', 'Controller attribute $pdfConfig is not correct or missing'));
 		}
 		$this->renderer($this->pdfConfig);
 	}
 
 /**
  * Return CakePdf instance, optionally set engine to be used
+ *
  * @param array $config Array of pdf configs. When empty CakePdf instance will be returned.
  * @return CakePdf
  */
@@ -101,6 +101,7 @@ class PdfView extends View {
 
 /**
  * Render a Pdf view.
+ *
  * @param string $view The view being rendered.
  * @param string $layout The layout being rendered.
  * @return string The rendered view.
@@ -126,6 +127,7 @@ class PdfView extends View {
 
 /**
  * Get or build a filename for forced download
+ *
  * @return string The filename
  */
 	public function getFilename() {
