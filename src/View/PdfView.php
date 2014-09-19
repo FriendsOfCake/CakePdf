@@ -51,11 +51,18 @@ class PdfView extends View {
  *
  * @var array
  */
-	public $pdfConfig = array();
+	public $pdfConfig = [];
 
 /**
  * Constructor
  *
+ * @param \Cake\Network\Request $request Request instance.
+ * @param \Cake\Network\Response $response Response instance.
+ * @param \Cake\Event\EventManager $eventManager Event manager instance.
+ * @param array $viewOptions View options. See View::$_passedVars for list of
+ *   options which get set as class properties.
+ *
+ * @throws \Exception
  * @return void
  */
 	public function __construct(Request $request = null, Response $response = null,
@@ -75,7 +82,7 @@ class PdfView extends View {
 			return;
 		}
 		if (!$this->pdfConfig) {
-			throw new Exception(__d('cakepdf', 'Controller attribute $pdfConfig is not correct or missing'));
+			throw new \Exception(__d('cakepdf', 'Controller attribute $pdfConfig is not correct or missing'));
 		}
 		$this->renderer($this->pdfConfig);
 	}
