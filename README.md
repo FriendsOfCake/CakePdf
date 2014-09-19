@@ -61,7 +61,12 @@ The value for engine should have the `Plugin.ClassName` format without the Engin
 
 Configuration options:
 * engine: Engine to be used (required), or an array of engine config options
+  * className: Engine class to use
+  * binary: Binary file to use (Only for wkhtmltopdf)
+  * options: Options to pass on to wkhtmltopdf
 * crypto: Crypto engine to be used, or an array of crypto config options
+  * className: Crypto class to use
+  * binary: Binary file to use
 * pageSize: Change the default size, defaults to A4
 * orientation: Change the default orientation, defaults to potrait
 * margin: Array or margins with the keys: bottom, left, right, top and their values
@@ -75,11 +80,6 @@ Example:
 <?php
     Configure::write('CakePdf', [
         'engine' => 'CakePdf.WkHtmlToPdf',
-        'options' => [
-            'print-media-type' => false,
-            'outline' => true,
-            'dpi' => 96
-        ],
         'margin' => [
             'bottom' => 15,
             'left' => 50,
@@ -112,7 +112,12 @@ The `engine` and `crypto` config options can also be arrays with configuration o
     Configure::write('CakePdf', [
         'engine' => [
             'className' => 'CakePdf.WkHtmlToPdf',
-            'binary' => '/usr/local/bin/wkhtmltopdf'
+            'binary' => '/usr/local/bin/wkhtmltopdf',
+	        'options' => [
+	            'print-media-type' => false,
+	            'outline' => true,
+	            'dpi' => 96
+	        ],
         ],
     ]);
 ```
