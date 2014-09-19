@@ -1,6 +1,6 @@
 # CakePdf plugin
 
-[![Build Status](https://secure.travis-ci.org/friendsofcake/CakePdf.png)](http://travis-ci.org/friendsofcake/CakePdf)
+[![Build Status](https://travis-ci.org/FriendsOfCake/CakePdf.svg?branch=3.0)](https://travis-ci.org/FriendsOfCake/CakePdf)
 
 Plugin containing CakePdf lib which will use a pdf engine to convert html to pdf.
 
