@@ -2,6 +2,7 @@
 
 namespace CakePdf\Test\TestCase\View;
 
+use Cake\Network\Response;
 use CakePdf\Pdf\Engine\AbstractPdfEngine;
 use CakePdf\View\PdfView;
 use Cake\Controller\Controller;
@@ -29,7 +30,7 @@ class PdfTestPostsController extends Controller {
 
 	public $name = 'Posts';
 
-	public $pdfConfig = array('engine' => 'PdfTest');
+	public $pdfConfig = ['engine' => 'PdfTest'];
 
 }
 
@@ -54,8 +55,8 @@ class PdfViewTest extends TestCase {
 
 
 		$request = new Request();
-		$Controller = new PdfTestPostsController($request);
-		$this->View = new PdfView($request);
+		$response = new Response();
+		$this->View = new PdfView($request, $response);
 		$this->View->layoutPath = 'pdf';
 	}
 
@@ -68,7 +69,7 @@ class PdfViewTest extends TestCase {
 		$this->assertEquals('application/pdf', $result);
 
 		$result = $this->View->pdfConfig;
-		$this->assertEquals(array('engine' => '\\' . __NAMESPACE__ . '\PdfTestEngine'), $result);
+		$this->assertEquals(['engine' => '\\' . __NAMESPACE__ . '\PdfTestEngine'], $result);
 
 		$result = $this->View->renderer();
 		$this->assertInstanceOf('CakePdf\Pdf\CakePdf', $result);
