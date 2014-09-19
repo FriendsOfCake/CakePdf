@@ -1,13 +1,12 @@
 <?php
 namespace CakePdf\Pdf;
 
+use Cake\Cache\Cache;
 use Cake\Core\App;
-use Cake\Controller\Controller;
-use Cake\Network\Request;
-use Cake\Utility\File;
-use Cake\View\View;
 use Cake\Core\Configure;
 use Cake\Core\Exception\Exception;
+use Cake\Filesystem\File;
+use Cake\Network\Request;
 
 class CakePdf {
 
@@ -37,7 +36,7 @@ class CakePdf {
  *
  * @var array
  */
-	protected $_viewVars = array();
+	protected $_viewVars = [];
 
 /**
  * Theme for the View
@@ -51,7 +50,7 @@ class CakePdf {
  *
  * @var array
  */
-	protected $_helpers = array('Html');
+	protected $_helpers = ['Html'];
 
 /**
  * Instance of PdfEngine class
@@ -100,14 +99,14 @@ class CakePdf {
  * 
  * @var string
  */
-	protected $_footer = array('left' => null, 'center' => null, 'right' => null);
+	protected $_footer = ['left' => null, 'center' => null, 'right' => null];
 
 /**
  * Header HTML
  * 
  * @var string
  */
-	protected $_header = array('left' => null, 'center' => null, 'right' => null);
+	protected $_header = ['left' => null, 'center' => null, 'right' => null];
 
 /**
  * Bottom margin in mm
@@ -183,13 +182,12 @@ class CakePdf {
  */
 	protected $_allow = false;
 
-
 /**
  * Available permissions
  *
  * @var array
  */
-	private $__availablePermissions = array(
+	private $__availablePermissions = [
 		'print',
 		'degraded_print',
 		'modify',
@@ -198,18 +196,18 @@ class CakePdf {
 		'screen_readers',
 		'annotate',
 		'fill_in'
-	);
+	];
 
 /**
  * Constructor
  *
  * @param array $config Pdf configs to use
  */
-	public function __construct($config = array()) {
-		$config = array_merge(array(
+	public function __construct($config = []) {
+		$config = array_merge([
 			'engine' => Configure::read('CakePdf.engine'),
 			'crypto' => Configure::read('CakePdf.crypto')
-		), $config);
+		], $config);
 		if ($config['engine']) {
 			$this->engine($config['engine']);
 		}
@@ -218,7 +216,7 @@ class CakePdf {
 			$this->crypto($config['crypto']);
 		}
 
-		$options = array('pageSize', 'orientation', 'margin', 'title', 'encoding', 'protect', 'userPassword', 'ownerPassword', 'permissions', 'cache');
+		$options = ['pageSize', 'orientation', 'margin', 'title', 'encoding', 'protect', 'userPassword', 'ownerPassword', 'permissions', 'cache'];
 		foreach ($options as $option) {
 			if (isset($config[$option])) {
 				$this->{$option}($config[$option]);
@@ -305,7 +303,7 @@ class CakePdf {
 		$config = [];
 		if (is_array($name)) {
 			$config = $name;
-			$name = $name['engine'];
+			$name = $name['className'];
 		}
 
 		$engineClassName = App::className($name, 'Pdf/Engine', 'Engine');
@@ -325,6 +323,7 @@ class CakePdf {
  * Load PdfCrypto
  *
  * @param string $name Classname of crypto engine without `Crypto` suffix. For example `CakePdf.Pdftk`
+ * @throws \Exception
  * @return object PdfCrypto
  */
 	public function crypto($name = null) {
@@ -337,15 +336,15 @@ class CakePdf {
 		$config = [];
 		if (is_array($name)) {
 			$config = $name;
-			$name = $name['engine'];
+			$name = $name['className'];
 		}
 
 		$engineClassName = App::className($name, 'Pdf/Crypto', 'Crypto');
 		if (!class_exists($engineClassName)) {
-			throw new Exception(__d('cake_pdf', 'Pdf crypto "%s" not found', $name));
+			throw new \Exception(__d('cake_pdf', 'Pdf crypto "%s" not found', $name));
 		}
 		if (!is_subclass_of($engineClassName, 'CakePdf\Pdf\Crypto\AbstractPdfCrypto')) {
-			throw new Exception(__d('cake_pdf', 'Crypto engine must extend "AbstractPdfCrypto"'));
+			throw new \Exception(__d('cake_pdf', 'Crypto engine must extend "AbstractPdfCrypto"'));
 		}
 		$this->_cryptoClass = new $engineClassName($this);
 		$this->_cryptoClass->config($config);
@@ -403,7 +402,7 @@ class CakePdf {
  * @return mixed
  */
 	public function footer($left = null, $center = null, $right = null) {
-		if($left === null && $center === null && $right === null) {
+		if ($left === null && $center === null && $right === null) {
 			return $this->_footer;
 		}
 
@@ -424,7 +423,7 @@ class CakePdf {
  * @return mixed
  */
 	public function header($left = null, $center = null, $right = null) {
-		if($left === null && $center === null && $right === null) {
+		if ($left === null && $center === null && $right === null) {
 			return $this->_header;
 		}
 
@@ -467,12 +466,12 @@ class CakePdf {
  */
 	public function margin($bottom = null, $left = null, $right = null, $top = null) {
 		if ($bottom === null) {
-			return array(
+			return [
 				'bottom' => $this->_marginBottom,
 				'left' => $this->_marginLeft,
 				'right' => $this->_marginRight,
 				'top' => $this->_marginTop
-			);
+			];
 		}
 
 		if (is_array($bottom)) {
@@ -623,7 +622,8 @@ class CakePdf {
  * none: allow no permissions
  * array: list of permissions that are allowed
  *
- * @param null|bool|array $permissions
+ * @param null|bool|array $permissions Permissions to set
+ * @throws \Exception
  * @return mixed
  */
 	public function permissions($permissions = null) {
@@ -646,11 +646,11 @@ class CakePdf {
 		if (is_array($permissions)) {
 			foreach ($permissions as $permission) {
 				if (!in_array($permission, $this->__availablePermissions)) {
-					throw new CakeException(sprintf('Invalid permission: %s', $permission));
+					throw new \Exception(sprintf('Invalid permission: %s', $permission));
 				}
 
 				if (!$this->crypto()->permissionImplemented($permission)) {
-					throw new CakeException(sprintf('Permission not implemented in crypto engine: %s', $permission));
+					throw new \Exception(sprintf('Permission not implemented in crypto engine: %s', $permission));
 				}
 			}
 		}
@@ -663,7 +663,9 @@ class CakePdf {
 /**
  * Get/Set caching.
  *
- * @param null|boolean|string $cache Cache config name to use, If true is passed, 'cake_pdf' will be used.
+ * @param null|bool|string $cache Cache config name to use, If true is passed, 'cake_pdf' will be used.
+ *
+ * @throws \Exception
  * @return mixed
  */
 	public function cache($cache = null) {
@@ -681,7 +683,7 @@ class CakePdf {
 		}
 
 		if (!in_array($cache, Cache::configured())) {
-			throw new CakeException(sprintf('CakePdf cache is not configured: %s', $cache));
+			throw new \Exception(sprintf('CakePdf cache is not configured: %s', $cache));
 		}
 
 		$this->_cache = $cache;
@@ -696,10 +698,10 @@ class CakePdf {
  */
 	public function template($template = false, $layout = null) {
 		if ($template === false) {
-			return array(
+			return [
 				'template' => $this->_template,
 				'layout' => $this->_layout
-			);
+			];
 		}
 		$this->_template = $template;
 		if ($layout !== null) {

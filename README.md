@@ -1,6 +1,6 @@
 # CakePdf plugin
 
-[![Build Status](https://secure.travis-ci.org/ceeram/CakePdf.png)](http://travis-ci.org/ceeram/CakePdf)
+[![Build Status](https://travis-ci.org/FriendsOfCake/CakePdf.svg?branch=3.0)](https://travis-ci.org/FriendsOfCake/CakePdf)
 
 Plugin containing CakePdf lib which will use a pdf engine to convert html to pdf.
 
@@ -13,7 +13,7 @@ Current engines:
 
 ## Requirements
 
-* PHP 5.4.19+
+* PHP 5.4.16+
 * CakePHP 3.0+
 * DomPdf, Mpdf, Tcpdf
 * wkhtmltopdf (optional) See: http://wkhtmltopdf.org/
@@ -28,11 +28,23 @@ following to your `composer.json` file:
 
 ```javascript
 "require": {
-    "ceeram/cakepdf": "3.0.x-dev"
+    "friendsofcake/CakePdf": "3.0.x-dev"
 }
 ```
 
 And run `php composer.phar update`, or `composer update` (Depending on your composer setup)
+
+CakePdf does not include any of the supported PDF engines, you need to install them yourself.
+The recommend wkhtmltopdf engine can be downloaded from http://wkhtmltopdf.org/, by default CakePdf expects the
+wkhtmltopdf binary to be located in /usr/bin/wkhtmltopdf.
+
+DomPdf, Mpdf and Tcpdf can be installed via composer using on of the following commands:
+
+```
+composer require dompdf/dompdf
+composer require tecnick.com/tcpdf
+composer require mpdf/mpdf
+```
 
 ## Setup
 
@@ -48,61 +60,67 @@ You need to define at least `$config['engine']`. When using CakePdf directly you
 The value for engine should have the `Plugin.ClassName` format without the Engine suffix
 
 Configuration options:
-* engine: Engine to be used (required)
-* options: Engine options, this may vary between Engines
+* engine: Engine to be used (required), or an array of engine config options
+* crypto: Crypto engine to be used, or an array of crypto config options
 * pageSize: Change the default size, defaults to A4
 * orientation: Change the default orientation, defaults to potrait
 * margin: Array or margins with the keys: bottom, left, right, top and their values
 * title: Title of the document
 * encoding: Change the encoding, defaults to UTF-8
-* binary: Path to binary (WkHtmlToPdfEngine only), defaults to /usr/bin/wkhtmltopdf
 * download: Set to true to force a download, only when using PdfView
 * filename: Filename for the document when using forced download
 
 Example:
 ```php
 <?php
-    Configure::write('CakePdf', array(
+    Configure::write('CakePdf', [
         'engine' => 'CakePdf.WkHtmlToPdf',
-        'options' => array(
+        'options' => [
             'print-media-type' => false,
             'outline' => true,
             'dpi' => 96
-        ),
-        'margin' => array(
+        ],
+        'margin' => [
             'bottom' => 15,
             'left' => 50,
             'right' => 30,
             'top' => 45
-        ),
+        ],
         'orientation' => 'landscape',
         'download' => true
-    ));
+    ]);
 ?>
 
 <?php
     class InvoicesController extends AppController {
         //in your Invoices controller you could set additional configs, or override the global ones:
         public function view($id = null) {
-            $this->Invoice->id = $id;
-            if (!$this->Invoice->exists()) {
-                throw new NotFoundException(__('Invalid invoice'));
-            }
+            $invoice = $this->Invoice->get($id);
             $this->pdfConfig = array(
                 'orientation' => 'portrait',
                 'filename' => 'Invoice_' . $id
             );
-            $this->set('invoice', $this->Invoice->read(null, $id));
+            $this->set('invoice', $invoice);
         }
     }
 ?>
 ```
 
+The `engine` and `crypto` config options can also be arrays with configuration options for the relevant class. For example,
+
+```php
+    Configure::write('CakePdf', [
+        'engine' => [
+            'className' => 'CakePdf.WkHtmlToPdf',
+            'binary' => '/usr/local/bin/wkhtmltopdf'
+        ],
+    ]);
+```
 
 ## Usage
 
 You can use CakePdf in 2 ways, read carefully which one you actually need.
-Many people mix both ways and dont get the expected results.
+Many people mix both ways and don't get the expected results.
 
 
 ### 1: Render as pdf (including forced download) in the browser with PdfView

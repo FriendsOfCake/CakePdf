@@ -1,11 +1,11 @@
 {
-	"name": "ceeram/CakePdf",
+	"name": "friendsofcake/CakePdf",
 	"type": "cakephp-plugin",
-        "description": "CakePHP plugin for creating and/or rendering Pdf, several Pdf engines supported.",
-	"homepage": "http://github.com/ceeram/CakePdf",
+    "description": "CakePHP plugin for creating and/or rendering Pdfs, several Pdf engines supported.",
+	"homepage": "http://github.com/friendsofcake/CakePdf",
 	"license": "MIT",
 	"require": {
-		"php": ">=5.4.19",
+		"php": ">=5.4.16",
 		"cakephp/plugin-installer": "dev-master",
 		"cakephp/cakephp": "3.0.x-dev"
 	},
@@ -27,5 +27,8 @@
 			"Cake\\Test\\": "vendor/cakephp/cakephp/tests",
 			"CakePdf\\Test\\": "tests"
 		}
+	},
+	"replace": {
+		"ceeram/CakePdf": "self.version"
 	}
 }
