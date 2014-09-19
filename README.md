@@ -48,7 +48,7 @@ _[Composer]_
 
 In your app directory type
 ```bash
-composer require friendsofcake/CakePdf
+composer require friendsofcake/cake-pdf
 ```
 
 ## Setup
