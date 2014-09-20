@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/FriendsOfCake/CakePdf.svg?branch=master)](https://travis-ci.org/FriendsOfCake/CakePdf)
 [![License](https://poser.pugx.org/FriendsOfCake/CakePdf/license.png)](https://packagist.org/packages/FriendsOfCake/CakePdf)
 
-Plugin containing CakePdf lib which will use a pdf engine to convert html to pdf.
+Plugin containing CakePdf lib which will use a PDF engine to convert HTML to PDF.
 
 Current engines:
 * DomPdf
@@ -124,9 +124,9 @@ You can use CakePdf in 2 ways, read carefully which one you actually need.
 Many people mix both ways and dont get the expected results.
 
 
-### 1: Render as pdf (including forced download) in the browser with PdfView
+### 1: Render as PDF (including forced download) in the browser with PdfView
 
-You can create pdf view and layout files for your controller actions and have them automatically rendered.
+You can create PDF view and layout files for your controller actions and have them automatically rendered.
 Place the view templates in a 'pdf' subdir, for instance `app/View/Invoices/pdf/view.ctp`
 Layouts will be in `app/View/Layouts/pdf/default.ctp`
 
@@ -137,9 +137,9 @@ Additionally you can map resources by adding `Router::mapResources(array('Invoic
 file and you can access the same document at http://localhost/invoices/1.pdf
 
 
-### 2: Create pdf for email attachment, file storage etc.
+### 2: Create PDF for email attachment, file storage etc.
 
-You can use CakePdf lib to create raw pdf data with a view template.
+You can use CakePdf lib to create raw PDF data with a view template.
 The view file path would look like `app/View/Pdf/newsletter.ctp`.
 Layout file path would be like `app/View/Layouts/pdf/default.ctp`
 Note that layouts for both usage types are within same directory, but the view templates use different file paths
@@ -203,7 +203,7 @@ Set 'permissions' to an array with a combination of the following available perm
 
 ## Note about static assets
 
-Use absolute urls for static assets in your view templates for pdf.
+Use absolute URLs for static assets in your view templates for PDFs.
 If you use `HtmlHelper::image()`, `HtmlHelper::script()` or `HtmlHelper::css()` make sure you have `$options['fullBase'] = true`
 
 Another solution would be to create a `AppHelper` of which it would force `$options['fullBase'] = true` for PDF requests. e.g:
