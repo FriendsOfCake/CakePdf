@@ -10,5 +10,8 @@
 	},
 	"replace": {
 		"ceeram/cakepdf": "self.version"
-	}
+	},
+	"extra": {
+		"installer-name": "CakePdf"
+ 	}
 }
