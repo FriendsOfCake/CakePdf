@@ -90,11 +90,17 @@ class PdfView extends View {
 			return $content;
 		}
 
+		// reset config to CakePdf (updates with anythin set from View)
+		$this->renderer()->config($this->pdfConfig);
+
+		// force download
 		if (isset($this->pdfConfig['download']) && $this->pdfConfig['download'] === true) {
 			$this->response->download($this->getFilename());
 		}
 
+		// set content
 		$this->Blocks->set('content', $this->renderer()->output($content));
+
 		return $this->Blocks->get('content');
 	}
 
