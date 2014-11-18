@@ -68,7 +68,7 @@ The value for engine should have the `Plugin.ClassName` format without the Engin
 
 Configuration options:
 * engine: Engine to be used (required)
-* options: Engine options, this may vary between Engines
+* options: Engine options, this varies between Engines
 * pageSize: Change the default size, defaults to A4
 * orientation: Change the default orientation, defaults to potrait
 * margin: Array or margins with the keys: bottom, left, right, top and their values
@@ -81,25 +81,33 @@ Configuration options:
 Example:
 ```php
 <?php
+    // app/Config/core.php (or anywhere you want to configure)
     Configure::write('CakePdf', array(
-        'engine' => 'CakePdf.WkHtmlToPdf',
+        'engine'  => 'CakePdf.WkHtmlToPdf',
         'options' => array(
             'print-media-type' => false,
-            'outline' => true,
-            'dpi' => 96
+            'outline'          => true,
+            'dpi'              => 96,
+            'cache-dir'        => TMP,
+            'viewport-size'    => '1024x768',
         ),
         'margin' => array(
             'bottom' => 15,
-            'left' => 50,
-            'right' => 30,
-            'top' => 45
+            'left'   => 50,
+            'right'  => 30,
+            'top'    => 45
         ),
         'orientation' => 'landscape',
-        'download' => true
+        'download'    => true,
+
+        // WkHtmlToPdfEngine extra config
+        'webroot-temp-folder' => 'cache',  // inside WWW_ROOT, webroot writeable
+
     ));
 ?>
 
 <?php
+    // app/Controller/InvoicesController.php
     class InvoicesController extends AppController {
         //in your Invoices controller you could set additional configs, or override the global ones:
         public function view($id = null) {
@@ -115,6 +123,95 @@ Example:
         }
     }
 ?>
+
+<?php
+    // app/View/Layouts/pdf/default.php
+    $this->pdfOptions([
+
+        // header (only supported in WkHtmlToPdf)
+        'header-spacing' => 8,
+        'header-html' => sprintf('
+          <table style="width: 100%%; border: 0; vertical-align: middle; font-size: 13px; color: #666666; margin: 0; padding: 0;" cellpadding="0" cellspacing="0">
+          <tr>
+            <td style="text-align: left;">
+              <p style="vertical-align: middle; font-size: 13px; color: #666666; margin: 2px 0 10px 0; padding: 0;">
+                <a href="%s" target="_blank"><img src="%s" border="0" height="20" width="20" style="float: left; vertical-align: middle;" align="middle"></a>
+
+                &nbsp; &nbsp;
+                <strong>%s</strong>
+              </p>
+            </td>
+            <td style="text-align: right;">
+              <p style="vertical-align: middle; font-size: 13px; color: #666666; margin: 2px 0 10px 0; padding: 0;">
+                Page <span class="page"></span> of <span class="topage"></span>
+              </p>
+            </td>
+          </tr>
+          </table>'.
+          '<hr style="display: block; height: 1px; border: 0; border-top: 1px solid #ccc; margin: 1px 0 15px 0; padding: 0;">',
+          'https://example.com/',
+          $this->Html->url('/favicon.png'),
+          $title_for_layout
+        ),
+        // or if you don't want custom HTML....
+        //'header-left' => $title_for_layout,
+        //'header-right' => 'Page [page] of [toPage]',
+        //'header-line' => true,
+        //   see: http://wkhtmltopdf.org/usage/wkhtmltopdf.txt
+
+        // footer (only supported in WkHtmlToPdf)
+        'footer-html' => sprintf(
+          '<hr style="display: block; height: 1px; border: 0; border-top: 1px solid #ccc; margin: 1em 0 10px 0; padding: 0;">'.
+          '<div style="text-align: center; font-size: 11px; color: #666666;">
+            %s
+            &nbsp; &nbsp;
+            %s voice &middot; %s fax
+            &nbsp; &nbsp;
+            &copy; %s %s
+          </div>',
+          Configure::read('site-address'),
+          Configure::read('site-phone'),
+          Configure::read('site-fax'),
+          date('Y'),
+          Configure::read('site-domain')
+        ),
+
+    ]);
+
+
+    // ---------------------------------------
+    // Gather HTML for rendering
+    // ---------------------------------------
+    $html = '<!DOCTYPE html><html lang="en" class="no-js" xmlns="//www.w3.org/1999/xhtml" xmlns:og="http://ogp.me/ns#">';
+    $html .= '<head><!-- whatever you might want in here --></head>';
+    $html .= '<body class="pdf printable">';
+    $html .= '<link href="/css/my-normal-full.css" type="text/css" rel="stylesheet">';
+    $html .= '<link href="/css/my-pdf-overrides.css" type="text/css" rel="stylesheet">';
+
+    // ---------------------------------------
+    // PDF Content (from view)
+    // ---------------------------------------
+    $html .= $content_for_layout;
+
+    // ---------------------------------------
+    // PDF End of Page
+    // ---------------------------------------
+    $html .= '</body></html>';
+
+    // ---------------------------------------
+    // PDF content cleanup
+    // ---------------------------------------
+    $html = preg_replace('#(src|href)="\/#', '$1="'.$domain.'/', $html);
+
+    echo $html;
+?>
+
+<?php
+    // app/View/Invoices/pdf/view.php
+    echo $this->Html->tag('strong', '#' . $invoice['Invoice']['id']);
+    // .. rest of your view here ..
+?>
+
 ```
 
 
@@ -207,17 +304,17 @@ Use absolute URLs for static assets in your view templates for PDFs.
 If you use `HtmlHelper::image()`, `HtmlHelper::script()` or `HtmlHelper::css()` make sure you have `$options['fullBase'] = true`
 
 Another solution would be to create a `AppHelper` of which it would force `$options['fullBase'] = true` for PDF requests. e.g:
+
 ```php
 class AppHelper extends Helper {
     public function assetUrl($path, $options = array()) {
-    	if (!empty($this->request->params['ext']) && $this->request->params['ext'] === 'pdf') {
-			$options['fullBase'] = true;
-		}
-		return parent::assetUrl($path, $options);
-	}
+        if (!empty($this->request->params['ext']) && $this->request->params['ext'] === 'pdf') {
+            $options['fullBase'] = true;
+        }
+        return parent::assetUrl($path, $options);
+    }
 }
 ```
-
 
 ## Thanks
 
