@@ -118,23 +118,23 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine {
 		return $command;
 	}
 
-	/**
-	 * Convert a HTML block passed in as text
-	 * into a webroot accessible HTML file, which can be requested and rendered via wkhtmltopdf
-	 *
-	 *   input: <p>Some HTML here</p>
-	 *   output: http://example.com/pdf-temp/header-html-52bf266917d266accbb0b794fae83062.html
-	 *
-	 * Config:
-	 *   'webroot-temp-folder' (string) name of folder in webroot [default: 'pdf-temp']
-	 *   'webroot-temp-as-full-url' (boolean) if true, use full URL when requesting [default: false]
-	 *   'webroot-temp-disable-wrapper' (boolean) if true, we will not wrap content block
-	 *                                            in html/JS recommended by wkhtmltopdf
-	 *
-	 * @link http://wkhtmltopdf.org/usage/wkhtmltopdf.txt
-	 * @param string $content either a HTML block or a URL to a HTML fragment document
-	 * @return string $url to a HTML fragment document
-	 */
+/**
+ * Convert a HTML block passed in as text
+ * into a webroot accessible HTML file, which can be requested and rendered via wkhtmltopdf
+ *
+ *   input: <p>Some HTML here</p>
+ *   output: http://example.com/pdf-temp/header-html-52bf266917d266accbb0b794fae83062.html
+ *
+ * Config:
+ *   'webroot-temp-folder' (string) name of folder in webroot [default: 'pdf-temp']
+ *   'webroot-temp-as-full-url' (boolean) if true, use full URL when requesting [default: false]
+ *   'webroot-temp-disable-wrapper' (boolean) if true, we will not wrap content block
+ *                                            in html/JS recommended by wkhtmltopdf
+ *
+ * @link http://wkhtmltopdf.org/usage/wkhtmltopdf.txt
+ * @param string $content either a HTML block or a URL to a HTML fragment document
+ * @return string $url to a HTML fragment document
+ */
 	public function handleInlineHtmlBlock($key, $content) {
 		if (substr($content, 0, 4) == 'http' || substr($content, -5) == '.html') {
 			return $content;
@@ -154,9 +154,9 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine {
 		}
 
 		App::uses('File', 'Utility');
-		$F = new File($filepath, true, 0777);
-		if (!$F->exists()) {
-			debug([
+		$File = new File($filepath, true, 0777);
+		if (!$File->exists()) {
+			debug(array(
 				'error' => 'CakePdf, WkHtmlToPdfEngine needs to be able to make webroot accessible temp files',
 				'solution' => sprintf('mkdir -p %s && chmod 777 %s',
 					dirname($filepath),
@@ -165,7 +165,7 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine {
 				'errorFromFile' => __file__,
 				'path' => $filepath,
 				'url' => $fileurl,
-			]);
+			));
 			throw new OutOfBoundsException('Please make webroot/pdf and chmod it to 777');
 		}
 		if (!($this->config('webroot-temp-disable-wrapper'))) {
@@ -175,7 +175,7 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine {
 				$content
 			);
 		}
-		$F->write($content);
+		$File->write($content);
 		return $fileurl;
 	}
 }

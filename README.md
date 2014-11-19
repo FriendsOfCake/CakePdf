@@ -86,19 +86,19 @@ Example:
         'engine'  => 'CakePdf.WkHtmlToPdf',
         'options' => array(
             'print-media-type' => false,
-            'outline'          => true,
-            'dpi'              => 96,
-            'cache-dir'        => TMP,
-            'viewport-size'    => '1024x768',
+            'outline' => true,
+            'dpi' => 96,
+            'cache-dir' => TMP,
+            'viewport-size' => '1024x768',
         ),
         'margin' => array(
             'bottom' => 15,
-            'left'   => 50,
-            'right'  => 30,
-            'top'    => 45
+            'left' => 50,
+            'right' => 30,
+            'top' => 45
         ),
         'orientation' => 'landscape',
-        'download'    => true,
+        'download' => true,
 
         // WkHtmlToPdfEngine extra config
         'webroot-temp-folder' => 'cache',  // inside WWW_ROOT, webroot writeable
