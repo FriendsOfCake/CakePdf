@@ -156,7 +156,7 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine {
 		App::uses('File', 'Utility');
 		$File = new File($filepath, true, 0777);
 		if (!$File->exists()) {
-			debug(array(
+			/* debug(array(
 				'error' => 'CakePdf, WkHtmlToPdfEngine needs to be able to make webroot accessible temp files',
 				'solution' => sprintf('mkdir -p %s && chmod 777 %s',
 					dirname($filepath),
@@ -165,7 +165,7 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine {
 				'errorFromFile' => __file__,
 				'path' => $filepath,
 				'url' => $fileurl,
-			));
+			)); */
 			throw new OutOfBoundsException('Please make webroot/pdf and chmod it to 777');
 		}
 		if (!($this->config('webroot-temp-disable-wrapper'))) {

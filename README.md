@@ -83,7 +83,7 @@ Example:
 <?php
     // app/Config/core.php (or anywhere you want to configure)
     Configure::write('CakePdf', array(
-        'engine'  => 'CakePdf.WkHtmlToPdf',
+        'engine' => 'CakePdf.WkHtmlToPdf',
         'options' => array(
             'print-media-type' => false,
             'outline' => true,
