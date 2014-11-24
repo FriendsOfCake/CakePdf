@@ -99,10 +99,6 @@ Example:
         ),
         'orientation' => 'landscape',
         'download' => true,
-
-        // WkHtmlToPdfEngine extra config
-        'webroot-temp-folder' => 'cache',  // inside WWW_ROOT, webroot writeable
-
     ));
 ?>
 
@@ -123,6 +119,14 @@ Example:
         }
     }
 ?>
+
+## Header / Footer example in WkHtmlToPdfEngine
+
+You can set this up in your Configuration, or you can use the following method
+to pass in from the View level as well.
+
+*NOTE: for now, this is specific to `WkHtmlToPdfEngine` but we may abstract
+header/footer methods for other engines as well.*
 
 <?php
     // app/View/Layouts/pdf/default.php
