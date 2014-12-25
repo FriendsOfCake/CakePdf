@@ -96,14 +96,14 @@ class CakePdf {
 
 /**
  * Footer HTML
- * 
+ *
  * @var string
  */
 	protected $_footer = ['left' => null, 'center' => null, 'right' => null];
 
 /**
  * Header HTML
- * 
+ *
  * @var string
  */
 	protected $_header = ['left' => null, 'center' => null, 'right' => null];
@@ -398,7 +398,7 @@ class CakePdf {
 
 /**
  * Get/Set footer HTML.
- * 
+ *
  * @param null|string $left left side footer
  * @param null|string $center center footer
  * @param null|string $right right side footer
@@ -419,7 +419,7 @@ class CakePdf {
 
 /**
  * Get/Set header HTML.
- * 
+ *
  * @param null|string $left left side header
  * @param null|string $center center header
  * @param null|string $right right side header
@@ -784,6 +784,8 @@ class CakePdf {
 		$View->viewPath = 'Pdf';
 		$View->view = $this->_template;
 		$View->layout = $this->_layout;
+		$View->helpers = $this->_helpers;
+		$View->loadHelpers();
 		return $View->render();
 	}
 }

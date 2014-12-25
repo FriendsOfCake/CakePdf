@@ -6,8 +6,8 @@ use CakePdf\Pdf\CakePdf;
 use CakePdf\Pdf\Engine\AbstractPdfEngine;
 use Cake\Controller\Controller;
 use Cake\Core\App;
-use Cake\Core\Plugin;
 use Cake\Core\Configure;
+use Cake\Core\Plugin;
 use Cake\TestSuite\TestCase;
 
 /**
@@ -18,6 +18,7 @@ class PdfTest2Engine extends AbstractPdfEngine {
 	public function output() {
 		return $this->_Pdf->html();
 	}
+
 }
 
 /**
@@ -81,7 +82,7 @@ class CakePdfTest extends TestCase {
  */
 	public function testPluginOutput($config) {
 		$pdf = new CakePdf($config);
-		Plugin::load('MyPlugin');
+		Plugin::load('MyPlugin', ['autoload' => true]);
 		$pdf->viewVars(array('data' => 'testing'));
 		$pdf->template('MyPlugin.testing', 'MyPlugin.pdf');
 		$pdf->helpers('MyPlugin.MyTest');
@@ -165,5 +166,5 @@ class CakePdfTest extends TestCase {
 			'top' => 45
 		);
 		$this->assertEquals($expected, $pdf->margin());
-	}	
+	}
 }
