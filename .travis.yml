@@ -33,16 +33,14 @@ before_script:
   - composer self-update
   - composer install --prefer-source --no-interaction --dev
 
-  - sh -c "if [ '$PHPCS' = '1' ]; then pear channel-discover pear.cakephp.org; fi"
-  - sh -c "if [ '$PHPCS' = '1' ]; then pear install --alldeps cakephp/CakePHP_CodeSniffer; fi"
+  - sh -c "if [ '$PHPCS' = '1' ]; then composer require cakephp/cakephp-codesniffer:dev-master; fi"
 
   - phpenv rehash
   - set +H
-  - cp phpunit.xml.dist phpunit.xml
 
 script:
   - sh -c "if [ '$DEFAULT' = '1' ]; then phpunit --stderr; fi"
-  - sh -c "if [ '$PHPCS' = '1' ]; then phpcs -p --extensions=php --standard=CakePHP --ignore=vendor --ignore=tests --ignore=config . ; fi"
+  - sh -c "if [ '$PHPCS' = '1' ]; then ./vendor/bin/phpcs -p --extensions=php --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./src ./tests ./config; fi"
 
 notifications:
   email: false
