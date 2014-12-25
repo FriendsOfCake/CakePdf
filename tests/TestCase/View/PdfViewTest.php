@@ -2,7 +2,6 @@
 
 namespace CakePdf\Test\TestCase\View;
 
-use Cake\Network\Response;
 use CakePdf\Pdf\Engine\AbstractPdfEngine;
 use CakePdf\View\PdfView;
 use Cake\Controller\Controller;
@@ -10,6 +9,7 @@ use Cake\Core\App;
 use Cake\Core\Configure;
 use Cake\Core\Plugin;
 use Cake\Network\Request;
+use Cake\Network\Response;
 use Cake\TestSuite\TestCase;
 
 /**
