@@ -28,58 +28,58 @@ require ROOT . '/vendor/autoload.php';
 
 Configure::write('debug', true);
 Configure::write('App', [
-	'namespace' => 'App',
-	'encoding' => 'UTF-8',
-	'base' => false,
-	'baseUrl' => false,
-	'dir' => 'src',
-	'webroot' => 'webroot',
-	'www_root' => APP . 'webroot',
-	'fullBaseUrl' => 'http://localhost',
-	'imageBaseUrl' => 'img/',
-	'jsBaseUrl' => 'js/',
-	'cssBaseUrl' => 'css/',
-	'paths' => [
-		'plugins' => [APP . 'Plugin' . DS],
-		'templates' => [APP . 'Template' . DS]
-	]
+    'namespace' => 'App',
+    'encoding' => 'UTF-8',
+    'base' => false,
+    'baseUrl' => false,
+    'dir' => 'src',
+    'webroot' => 'webroot',
+    'www_root' => APP . 'webroot',
+    'fullBaseUrl' => 'http://localhost',
+    'imageBaseUrl' => 'img/',
+    'jsBaseUrl' => 'js/',
+    'cssBaseUrl' => 'css/',
+    'paths' => [
+        'plugins' => [APP . 'Plugin' . DS],
+        'templates' => [APP . 'Template' . DS]
+    ]
 ]);
 Configure::write('Session', [
-	'defaults' => 'php'
+    'defaults' => 'php'
 ]);
 
 $TMP = new Folder(TMP);
 $TMP->create(TMP . 'cache/persistent', 0777);
 
 $cache = [
-	'default' => [
-		'engine' => 'Null'
-	],
-	'_cake_core_' => [
-		'className' => 'Null',
-		'prefix' => 'cakepdf_myapp_cake_core_',
-		'path' => CACHE . 'persistent/',
-		'serialize' => 'File',
-		'duration' => '+10 seconds'
-	]
+    'default' => [
+        'engine' => 'Null'
+    ],
+    '_cake_core_' => [
+        'className' => 'Null',
+        'prefix' => 'cakepdf_myapp_cake_core_',
+        'path' => CACHE . 'persistent/',
+        'serialize' => 'File',
+        'duration' => '+10 seconds'
+    ]
 ];
 
 Cache::config($cache);
 
 // Ensure default test connection is defined
 if (!getenv('db_class')) {
-	putenv('db_class=Cake\Database\Driver\Sqlite');
-	putenv('db_dsn=sqlite::memory:');
+    putenv('db_class=Cake\Database\Driver\Sqlite');
+    putenv('db_dsn=sqlite::memory:');
 }
 
 ConnectionManager::config('test', [
-	'className' => 'Cake\Database\Connection',
-	'driver' => getenv('db_class'),
-	'dsn' => getenv('db_dsn'),
-	'database' => getenv('db_database'),
-	'login' => getenv('db_login'),
-	'password' => getenv('db_password'),
-	'timezone' => 'UTC'
+    'className' => 'Cake\Database\Connection',
+    'driver' => getenv('db_class'),
+    'dsn' => getenv('db_dsn'),
+    'database' => getenv('db_database'),
+    'login' => getenv('db_login'),
+    'password' => getenv('db_password'),
+    'timezone' => 'UTC'
 ]);
 
 Plugin::load('CakePdf', ['path' => ROOT, 'routes' => true]);
