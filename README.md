@@ -1,8 +1,10 @@
 # CakePdf plugin
 
 [![Build Status](https://travis-ci.org/FriendsOfCake/CakePdf.svg?branch=3.0)](https://travis-ci.org/FriendsOfCake/CakePdf)
+[![Build Status](https://travis-ci.org/FriendsOfCake/CakePdf.svg?branch=master)](https://travis-ci.org/FriendsOfCake/CakePdf)
+[![License](https://poser.pugx.org/FriendsOfCake/CakePdf/license.png)](https://packagist.org/packages/FriendsOfCake/CakePdf)
 
-Plugin containing CakePdf lib which will use a pdf engine to convert html to pdf.
+Plugin containing CakePdf lib which will use a PDF engine to convert HTML to PDF.
 
 Current engines:
 * DomPdf
@@ -127,9 +129,9 @@ You can use CakePdf in 2 ways, read carefully which one you actually need.
 Many people mix both ways and don't get the expected results.
 
 
-### 1: Render as pdf (including forced download) in the browser with PdfView
+### 1: Render as PDF (including forced download) in the browser with PdfView
 
-You can create pdf view and layout files for your controller actions and have them automatically rendered.
+You can create PDF view and layout files for your controller actions and have them automatically rendered.
 Place the view templates in a 'pdf' subdir, for instance `src/Template/Invoices/pdf/view.ctp`
 Layouts will be in `src/Template/Layouts/pdf/default.ctp`
 
@@ -140,9 +142,9 @@ Additionally you can map resources by adding `Router::mapResources(array('Invoic
 file and you can access the same document at http://localhost/invoices/1.pdf
 
 
-### 2: Create pdf for email attachment, file storage etc.
+### 2: Create PDF for email attachment, file storage etc.
 
-You can use CakePdf lib to create raw pdf data with a view template.
+You can use CakePdf lib to create raw PDF data with a view template.
 The view file path would look like `src/Template/Pdf/newsletter.ctp`.
 Layout file path would be like `src/Template/Layouts/pdf/default.ctp`
 Note that layouts for both usage types are within same directory, but the view templates use different file paths
@@ -206,7 +208,7 @@ Set 'permissions' to an array with a combination of the following available perm
 
 ## Note about static assets
 
-Use absolute urls for static assets in your view templates for pdf.
+Use absolute URLs for static assets in your view templates for PDFs.
 If you use `HtmlHelper::image()`, `HtmlHelper::script()` or `HtmlHelper::css()` make sure you have `$options['fullBase'] = true`
 
 Another solution would be to create a `AppHelper` of which it would force `$options['fullBase'] = true` for PDF requests. e.g:
@@ -225,27 +227,4 @@ class AppHelper extends Helper {
 ## Thanks
 
 Many thanks to Kim Biesbjerg and Jelle Henkens for their contributions.
-Want your name here as well? Create a pull request for improvements/other pdf engines.
-
-
-## License
-
-Copyright (c) 2013 Ceeram
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
+Want your name here as well? Create a pull request for improvements/other PDF engines.
