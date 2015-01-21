@@ -78,6 +78,7 @@ class CakePdfTest extends CakeTestCase {
 		CakePlugin::load('MyPlugin');
 		$pdf->viewVars(array('data' => 'testing'));
 		$pdf->template('MyPlugin.testing', 'MyPlugin.pdf');
+		$pdf->helpers('MyPlugin.MyTest');
 		$result = $pdf->output();
 		$expected = 'MyPlugin Layout Data: testing';
 		$this->assertEquals($expected, $result);
@@ -86,7 +87,8 @@ class CakePdfTest extends CakeTestCase {
 		$result = $pdf->output();
 		$lines = array(
 			'<h2>Rendered with default layout from MyPlugin</h2>',
-			'MyPlugin view Data: testing'
+			'MyPlugin view Data: testing',
+			'MyPlugin Helper Test: successful'
 		);
 		foreach ($lines as $line) {
 			$this->assertTrue(strpos($result, $line) !== false);

@@ -6,19 +6,25 @@ php:
   - 5.5
 
 env:
-  - CAKE_VERSION=2.2.9
-  - CAKE_VERSION=2.3.10
-  - CAKE_VERSION=master
-  - CAKE_VERSION=2.5
+  global:
+    - PLUGIN_NAME=CakePdf
+
+  matrix:
+    - CAKE_VERSION=2.4
+    - CAKE_VERSION=2.5
+    - CAKE_VERSION=2.6
+    - CAKE_VERSION=master
 
 before_script:
-  - git clone --depth 1 --branch $CAKE_VERSION git://github.com/cakephp/cakephp ../cakephp && cd ../cakephp
-  - cp -R ../CakePdf plugins/CakePdf
   - sudo touch /usr/bin/wkhtmltopdf && sudo chmod +x /usr/bin/wkhtmltopdf
+  - git clone -b master https://github.com/FriendsOfCake/travis.git --depth 1 ../travis
+  - ../travis/before_script.sh
 
 script:
-  - ./lib/Cake/Console/cake test CakePdf AllCakePdf
+  - ../travis/script.sh
 
+after_success:
+  - ../travis/after_success.sh
 
 notifications:
   email: false
