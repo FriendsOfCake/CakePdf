@@ -187,10 +187,23 @@ class CakePdf {
  * @param array $config Pdf configs to use
  */
 	public function __construct($config = array()) {
+		$this->config($config);
+	}
+
+/**
+ * Config getter/setter
+ *   called in __construct()
+ *   also can be called from any PdfView, View
+ *
+ * @param array $config Pdf config to use/set
+ * @return array $config
+ */
+	public function config($config = array()) {
 		$config = array_merge(array(
 			'engine' => Configure::read('CakePdf.engine'),
 			'crypto' => Configure::read('CakePdf.crypto')
 		), $config);
+
 		if ($config['engine']) {
 			$this->engine($config['engine'])->config($config);
 		}
@@ -205,6 +218,7 @@ class CakePdf {
 				$this->{$option}($config[$option]);
 			}
 		}
+		return $config;
 	}
 
 /**
