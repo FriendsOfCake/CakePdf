@@ -13,7 +13,7 @@ env:
     - CAKE_VERSION=2.4
     - CAKE_VERSION=2.5
     - CAKE_VERSION=2.6
-    - CAKE_VERSION=master
+    - CAKE_VERSION=2.7
 
 before_script:
   - sudo touch /usr/bin/wkhtmltopdf && sudo chmod +x /usr/bin/wkhtmltopdf
