@@ -18,6 +18,9 @@ class DomPdfEngine extends AbstractPdfEngine {
 			define('DOMPDF_TEMP_DIR', TMP);
 		}
 
+		if (App::import('Vendor', 'DomPDF', array('file' => 'dompdf' . DS . 'dompdf' . DS . 'dompdf_config.inc.php'))) {
+			return;
+		}
 		App::import('Vendor', 'CakePdf.DomPDF', array('file' => 'dompdf' . DS . 'dompdf_config.inc.php'));
 	}
 

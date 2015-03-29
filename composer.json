@@ -11,6 +11,9 @@
 	"replace": {
 		"ceeram/cakepdf": "self.version"
 	},
+	"suggest": {
+		"dompdf/dompdf": "When using DomPDF as engine."
+	},
 	"extra": {
 		"installer-name": "CakePdf"
  	}
