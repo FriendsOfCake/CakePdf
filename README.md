@@ -112,7 +112,12 @@ The `engine` and `crypto` config options can also be arrays with configuration o
     Configure::write('CakePdf', [
         'engine' => [
             'className' => 'CakePdf.WkHtmlToPdf',
+            // Mac OS X / Linux is usually like:
             'binary' => '/usr/local/bin/wkhtmltopdf',
+            // On Windows environmnent you NEED to use the path like
+            // old fashioned MS-DOS Paths, otherwise you will keep getting:
+            // WKHTMLTOPDF didn't return any data
+            // 'binary' => 'C:\\Progra~1\\wkhtmltopdf\\bin\\wkhtmltopdf.exe',
 	        'options' => [
 	            'print-media-type' => false,
 	            'outline' => true,
