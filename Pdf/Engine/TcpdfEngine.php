@@ -2,20 +2,15 @@
 App::uses('AbstractPdfEngine', 'CakePdf.Pdf/Engine');
 App::uses('Multibyte', 'I18n');
 
+use \TCPDF;
+
+/**
+ * TCPDF Engine
+ */
 class TcpdfEngine extends AbstractPdfEngine {
 
 /**
- * Constructor
- *
- * @param $Pdf CakePdf instance
- */
-	public function __construct(CakePdf $Pdf) {
-		parent::__construct($Pdf);
-		App::import('Vendor', 'CakePdf.TCPDF', array('file' => 'tcpdf' . DS . 'tcpdf.php'));
-	}
-
-/**
- * Generates Pdf from html
+ * Generates PDF from HTML
  *
  * @return string raw pdf data
  */

@@ -6,13 +6,14 @@
 	"license": "MIT",
 	"require": {
 		"php": ">=5.3.0",
-		"composer/installers": "*"
+		"composer/installers": "^1.0"
 	},
 	"replace": {
 		"ceeram/cakepdf": "self.version"
 	},
 	"suggest": {
-		"dompdf/dompdf": "When using DomPDF as engine."
+		"dompdf/dompdf": "When using DomPDF as engine.",
+		"tecnick.com/tcpdf": "When using TCPDF as engine."
 	},
 	"extra": {
 		"installer-name": "CakePdf"
