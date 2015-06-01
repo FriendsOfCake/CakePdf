@@ -12,7 +12,8 @@
 		"ceeram/cakepdf": "self.version"
 	},
 	"suggest": {
-		"dompdf/dompdf": "When using DomPDF as engine."
+		"dompdf/dompdf": "When using DomPDF as engine.",
+		"tecnick.com/tcpdf": "When using TCPDF as engine."
 	},
 	"extra": {
 		"installer-name": "CakePdf"
