@@ -6,7 +6,7 @@
 	"license": "MIT",
 	"require": {
 		"php": ">=5.3.0",
-		"composer/installers": "*"
+		"composer/installers": "^1.0"
 	},
 	"replace": {
 		"ceeram/cakepdf": "self.version"
