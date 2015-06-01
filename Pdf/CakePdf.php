@@ -76,6 +76,20 @@ class CakePdf {
  */
 	protected $_pageSize = 'A4';
 
+	/**
+	 * Page width of the pdf
+	 *
+	 * @var string
+	 */
+	protected $_pageWidth = null;
+
+	/**
+	 * Page height of the pdf
+	 *
+	 * @var string
+	 */
+	protected $_pageHeight = null;
+
 /**
  * Orientation of the pdf
  *
@@ -199,7 +213,7 @@ class CakePdf {
 			$this->crypto($config['crypto'])->config($config);
 		}
 
-		$options = array('pageSize', 'orientation', 'margin', 'title', 'encoding', 'protect', 'userPassword', 'ownerPassword', 'permissions', 'cache');
+		$options = array('pageSize', 'orientation', 'margin', 'title', 'encoding', 'protect', 'userPassword', 'ownerPassword', 'permissions', 'cache','pageWidth','pageHeight');
 		foreach ($options as $option) {
 			if (isset($config[$option])) {
 				$this->{$option}($config[$option]);
@@ -335,6 +349,34 @@ class CakePdf {
 			return $this->_pageSize;
 		}
 		$this->_pageSize = $pageSize;
+		return $this;
+	}
+
+	/**
+	 * Get/Set Page width.
+	 *
+	 * @param null|string $pageWidth
+	 * @return mixed
+	 */
+	public function pageWidth($pageWidth = null) {
+		if ($pageWidth === null) {
+			return $this->_pageWidth;
+		}
+		$this->_pageWidth = $pageWidth;
+		return $this;
+	}
+
+	/**
+	 * Get/Set Page height.
+	 *
+	 * @param null|string $pageHeight
+	 * @return mixed
+	 */
+	public function pageHeight($pageHeight = null) {
+		if ($pageHeight === null) {
+			return $this->_pageHeight;
+		}
+		$this->_pageHeight = $pageHeight;
 		return $this;
 	}
 
