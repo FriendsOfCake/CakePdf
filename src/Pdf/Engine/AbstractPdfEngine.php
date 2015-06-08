@@ -19,7 +19,7 @@ abstract class AbstractPdfEngine
      *
      * @var array
      */
-    protected $_config = array();
+    protected $_config = [];
 
     /**
      * Constructor
