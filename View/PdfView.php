@@ -49,7 +49,7 @@ class PdfView extends View {
 	public function __construct(Controller $Controller = null) {
 		$this->_passedVars[] = 'pdfConfig';
 		parent::__construct($Controller);
-		$this->pdfConfig = array_merge(
+		$this->pdfConfig = Hash::merge(
 			(array)Configure::read('Pdf'),//BC line, remove later @todo
 			(array)Configure::read('CakePdf'),
 			(array)$this->pdfConfig
@@ -63,7 +63,6 @@ class PdfView extends View {
 		if (!$this->pdfConfig) {
 			throw new CakeException(__d('cakepdf', 'Controller attribute $pdfConfig is not correct or missing'));
 		}
-		$this->renderer($this->pdfConfig);
 	}
 
 /**
@@ -86,7 +85,7 @@ class PdfView extends View {
  */
 	public function render($view = null, $layout = null) {
 		$content = parent::render($view, $layout);
-		if ($this->response->type() == 'text/html') {
+		if ($this->response->type() === 'text/html') {
 			return $content;
 		}
 
@@ -94,8 +93,10 @@ class PdfView extends View {
 			$this->response->download($this->getFilename());
 		}
 
-		$this->Blocks->set('content', $this->renderer()->output($content));
-		return $this->Blocks->get('content');
+		$content = $this->renderer($this->pdfConfig)->output($content);
+		$this->Blocks->set('content', $content);
+
+		return $content;
 	}
 
 /**

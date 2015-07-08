@@ -104,10 +104,21 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine {
 		foreach ($options as $key => $value) {
 			if (empty($value)) {
 				continue;
+			} elseif (is_array($value)) {
+				foreach ($value as $subKey => $subValue) {
+					$command .= sprintf(' --%s %s %s',
+						$key,
+						escapeshellarg($subKey),
+						escapeshellarg($subValue)
+					);
+				}
 			} elseif ($value === true) {
 				$command .= ' --' . $key;
 			} else {
-				$command .= sprintf(' --%s %s', $key, escapeshellarg($value));
+				$command .= sprintf(' --%s %s',
+					$key,
+					escapeshellarg($value)
+				);
 			}
 		}
 		$command .= " - -";

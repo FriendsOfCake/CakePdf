@@ -191,6 +191,8 @@ class CakePdf {
 			'engine' => Configure::read('CakePdf.engine'),
 			'crypto' => Configure::read('CakePdf.crypto')
 		), $config);
+		$this->config = $config;
+
 		if ($config['engine']) {
 			$this->engine($config['engine'])->config($config);
 		}
@@ -234,13 +236,34 @@ class CakePdf {
 		}
 
 		$output = $Engine->output();
-
-		if ($this->protect()) {
-			$output = $this->crypto()->encrypt($output);
-		}
+		$output = $this->_postProcess($output);
 
 		if ($cache) {
 			Cache::write($cacheKey, $output, $cache);
+		}
+
+		return $output;
+	}
+
+	protected function _postProcess($output) {
+		$processors = !empty($this->config['postProcess']) ? $this->config['postProcess'] : array();
+
+		if (!empty($this->config['background'])) {
+			$processors[] = 'CakePdf.PdftkBackgroundPostProcessor';
+		}
+
+		foreach ($processors as $processor) {
+			list($pluginDot, $class) = pluginSplit($processor, true);
+
+			App::uses($class, $pluginDot . 'Pdf/PostProcessor');
+			$PostProcessor = new $class($this);
+			$PostProcessor->config($this->config);
+
+			$output = $PostProcessor->output($output);
+		}
+
+		if ($this->protect()) {
+			$output = $this->crypto()->encrypt($output);
 		}
 
 		return $output;
