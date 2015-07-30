@@ -806,7 +806,7 @@ class CakePdf
     {
         $viewClass = $this->viewRender();
         $viewClass = App::className($viewClass, 'View', $viewClass == 'View' ? '' : 'View');
-        $View = new $viewClass(new Request());
+        $View = new $viewClass(Request::createFromGlobals());
         $View->viewVars = $this->_viewVars;
         $View->theme = $this->_theme;
         $View->layoutPath = 'pdf';
