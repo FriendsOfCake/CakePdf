@@ -1,9 +1,8 @@
 <?php
-
 namespace CakePdf\Pdf\Engine;
 
-use Cake\Core\InstanceConfigTrait;
 use CakePdf\Pdf\CakePdf;
+use Cake\Core\InstanceConfigTrait;
 
 abstract class AbstractPdfEngine
 {
