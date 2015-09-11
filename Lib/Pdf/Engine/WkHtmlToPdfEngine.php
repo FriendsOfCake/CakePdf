@@ -9,6 +9,20 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine {
  * @var string
  */
 	protected $_binary = '/usr/bin/wkhtmltopdf';
+	
+/**
+ * Constructor
+ * 
+ * Overwrite WkHtmlToPdf binary path if set in configuation.
+ *
+ * @param CakePdf $Pdf  CakePdf instance.
+ */	
+	public function __construct(CakePdf $Pdf) {
+		parent::__construct($Pdf);
+		if (Configure::check('CakePdf.binary')) {
+			$this->binary = Configure::read('CakePdf.binary');
+		}
+	}
 
 /**
  * Generates Pdf from html
