@@ -7,7 +7,7 @@ EventManager::instance()
         function (Cake\Event\Event $event) {
             $controller = $event->subject();
             if ($controller->components()->has('RequestHandler')) {
-                $controller->RequestHandler->viewClassMap('pdf', 'CakePdf.Pdf');
+                $controller->RequestHandler->config('viewClassMap.pdf', 'CakePdf.Pdf');
             }
         }
     );
