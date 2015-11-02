@@ -97,10 +97,12 @@ Example:
         //in your Invoices controller you could set additional configs, or override the global ones:
         public function view($id = null) {
             $invoice = $this->Invoice->get($id);
-            $this->pdfConfig = array(
-                'orientation' => 'portrait',
-                'filename' => 'Invoice_' . $id
-            );
+            $this->viewBuilder()->options([
+                'pdfConfig' => [
+                    'orientation' => 'portrait',
+                    'filename' => 'Invoice_' . $id
+                ]
+            ]);
             $this->set('invoice', $invoice);
         }
     }
