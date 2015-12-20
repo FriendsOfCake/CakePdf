@@ -15,7 +15,6 @@ class WkHtmlToPdfEngineTest extends TestCase
 
     /**
      * Tests that the engine generates the right command
-     *
      */
     public function testGetCommand()
     {
@@ -33,6 +32,7 @@ class WkHtmlToPdfEngineTest extends TestCase
             ],
             'title' => 'CakePdf rules',
         ]);
+
         $result = $method->invokeArgs($Pdf->engine(), []);
         $expected = "/usr/bin/wkhtmltopdf --print-media-type --orientation 'portrait' --page-size 'A4' --encoding 'ISO-8859-1' --title 'CakePdf rules' - -";
         $this->assertEquals($expected, $result);
