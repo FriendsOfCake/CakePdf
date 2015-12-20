@@ -8,7 +8,6 @@ use Cake\I18n\I18n;
 use Cake\Log\Log;
 use Cake\Routing\DispatcherFactory;
 
-define('DS', DIRECTORY_SEPARATOR);
 define('ROOT', dirname(__DIR__) . DS);
 define('APP_DIR', 'test_app');
 define('WEBROOT_DIR', 'webroot');
