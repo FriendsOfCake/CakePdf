@@ -27,6 +27,11 @@ class TexToPdfEngine extends AbstractPdfEngine
         $this->_defaultConfig['options']['output-directory'] = TMP . 'pdf';
     }
 
+    /**
+     * Write the tex file.
+     *
+     * @return string Returns the file name of the written tex file.
+     */
     protected function _writeTexFile()
     {
         $output = $this->_Pdf->html();
