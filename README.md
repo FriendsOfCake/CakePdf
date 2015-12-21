@@ -28,7 +28,7 @@ following to your `composer.json` file:
 
 ```javascript
 "require": {
-    "friendsofcake/cakepdf": "3.0.x-dev"
+    "friendsofcake/cakepdf": "^3.1"
 }
 ```
 
