@@ -29,7 +29,11 @@ class TexToPdfEngineTest extends TestCase
         ]);
 
         $result = $method->invokeArgs($Pdf->engine(), []);
-        $expected = '/usr/bin/latexpdf --output-directory "' . TMP . 'pdf"';
+        if (DS === '\\') {
+            $expected = '/usr/bin/latexpdf --output-directory "' . TMP . 'pdf"';
+        } else {
+            $expected = '/usr/bin/latexpdf --output-directory \'' . TMP . 'pdf\'';
+        }
         $this->assertEquals($expected, $result);
     }
 }
