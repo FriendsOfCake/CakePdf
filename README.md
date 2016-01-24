@@ -50,7 +50,7 @@ composer require mpdf/mpdf
 
 In `config/bootstrap.php` add:
 ```php
-Plugin::load('CakePdf', array('bootstrap' => true, 'routes' => true));
+Plugin::load('CakePdf', ['bootstrap' => true, 'routes' => true]);
 ```
 
 
@@ -93,9 +93,11 @@ Example:
 ?>
 
 <?php
-    class InvoicesController extends AppController {
-        //in your Invoices controller you could set additional configs, or override the global ones:
-        public function view($id = null) {
+    class InvoicesController extends AppController 
+    {
+        // In your Invoices controller you could set additional configs, or override the global ones:
+        public function view($id = null) 
+        {
             $invoice = $this->Invoice->get($id);
             $this->viewBuilder()->options([
                 'pdfConfig' => [
@@ -145,7 +147,7 @@ Layouts will be in `src/Template/Layouts/pdf/default.ctp`
 Make sure your InvoicesController has RequestHandler Component in the `$components` array.
 Browse to http://localhost/invoices/view/1.pdf
 
-Additionally you can map resources by adding `Router::mapResources(array('Invoices'));` to your routes
+Additionally you can map resources by adding `Router::mapResources(['Invoices']);` to your routes
 file and you can access the same document at http://localhost/invoices/1.pdf
 
 
@@ -162,9 +164,9 @@ Example:
 <?php
     $CakePdf = new \CakePdf\Pdf\CakePdf();
     $CakePdf->template('newsletter', 'default');
-    //get the pdf string returned
+    // Get the PDF string returned
     $pdf = $CakePdf->output();
-    //or write it to file directly
+    // Or write it to file directly
     $pdf = $CakePdf->write(APP . 'files' . DS . 'newsletter.pdf');
 ```
 
@@ -220,13 +222,15 @@ If you use `HtmlHelper::image()`, `HtmlHelper::script()` or `HtmlHelper::css()` 
 
 Another solution would be to create a `AppHelper` of which it would force `$options['fullBase'] = true` for PDF requests. e.g:
 ```php
-class AppHelper extends Helper {
-    public function assetUrl($path, $options = array()) {
-    	if (!empty($this->request->params['ext']) && $this->request->params['ext'] === 'pdf') {
-			$options['fullBase'] = true;
-		}
-		return parent::assetUrl($path, $options);
-	}
+class AppHelper extends Helper 
+{
+    public function assetUrl($path, $options = []) 
+    {
+        if (!empty($this->request->params['_ext']) && $this->request->params['_ext'] === 'pdf') {
+            $options['fullBase'] = true;
+        }
+        return parent::assetUrl($path, $options);
+    }
 }
 ```
 
