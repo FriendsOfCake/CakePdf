@@ -79,6 +79,10 @@ class CakePdfTest extends TestCase
         $html = '<h2>Title</h2>';
         $result = $pdf->output($html);
         $this->assertEquals($html, $result);
+
+        $html = '';
+        $result = $pdf->output($html);
+        $this->assertEquals($html, $result);
     }
 
     /**

@@ -92,4 +92,15 @@ class PdfViewTest extends TestCase
         $this->assertTrue(strpos($result, '<h2>Rendered with default layout</h2>') !== false);
         $this->assertTrue(strpos($result, 'Post data: This is the post') !== false);
     }
+
+    /**
+     * Test rendering a template that does not generate any output
+     *
+     */
+    public function testRenderTemplateWithNoOutput()
+    {
+        $this->View->viewPath = 'Posts';
+        $result = $this->View->render('empty', 'empty');
+        $this->assertEquals('', $result);
+    }
 }
