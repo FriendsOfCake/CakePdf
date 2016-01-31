@@ -229,7 +229,7 @@ class CakePdf
     /**
      * Create pdf content from html. Can be used to write to file or with PdfView to display
      *
-     * @param mixed $html Html content to render. If left empty, the template will be rendered with viewVars and layout that have been set.
+     * @param null|string $html Html content to render. If omitted, the template will be rendered with viewVars and layout that have been set.
      * @throws \Cake\Core\Exception\Exception
      * @return string
      */
@@ -240,7 +240,7 @@ class CakePdf
             throw new Exception(__d('cake_pdf', 'Engine is not loaded'));
         }
 
-        if (!$html) {
+        if ($html === null) {
             $html = $this->_render();
         }
         $this->html($html);
