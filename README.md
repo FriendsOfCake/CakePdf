@@ -80,6 +80,11 @@ Router::scope('/', function (\Cake\Routing\RouteBuilder $routes) {
 Further setup information can be found in the usage section.
 
 
+### This plugin requires an AppView to be present
+Please make sure your app contains an `App/View/AppView.php` file as this plugin View class extends it.
+This is new in `3.0.0` and allows you to use the already configured helpers in your `AppView::initialize()`.
+
+
 ## Configuration
 
 Use `Configure::write('CakePdf', $config);` or set Controller property `$pdfConfig`
