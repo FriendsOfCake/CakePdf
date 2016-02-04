@@ -19,11 +19,25 @@ class CakePdf
     protected $_layout = 'default';
 
     /**
+     * Path to the layout - defaults to 'pdf'
+     *
+     * @var string
+     */
+    protected $_layoutPath = 'pdf';
+
+    /**
      * Template for the view
      *
      * @var string
      */
     protected $_template = null;
+
+    /**
+     * Path to the template - defaults to 'Pdf'
+     *
+     * @var string
+     */
+    protected $_templatePath = 'Pdf';
 
     /**
      * View for render
@@ -738,6 +752,40 @@ class CakePdf
     }
 
     /**
+     * Template path
+     *
+     * @param mixed $templatePath The path of the template to use
+     * @return mixed
+     */
+    public function templatePath($templatePath = false)
+    {
+        if ($templatePath === false) {
+            return $this->_templatePath;
+        }
+
+        $this->_templatePath = $templatePath;
+
+        return $this;
+    }
+
+    /**
+     * Layout path
+     *
+     * @param mixed $layoutPath The path of the layout file to use
+     * @return mixed
+     */
+    public function layoutPath($layoutPath = false)
+    {
+        if ($layoutPath === false) {
+            return $this->_layoutPath;
+        }
+
+        $this->_layoutPath = $layoutPath;
+
+        return $this;
+    }
+
+    /**
      * View class for render
      *
      * @param string $viewClass name of the view class to use
@@ -809,8 +857,8 @@ class CakePdf
         $View = new $viewClass(Request::createFromGlobals());
         $View->viewVars = $this->_viewVars;
         $View->theme = $this->_theme;
-        $View->layoutPath = 'pdf';
-        $View->viewPath = 'Pdf';
+        $View->layoutPath = $this->_layoutPath;
+        $View->templatePath = $this->_templatePath;
         $View->view = $this->_template;
         $View->layout = $this->_layout;
         $View->helpers = $this->_helpers;

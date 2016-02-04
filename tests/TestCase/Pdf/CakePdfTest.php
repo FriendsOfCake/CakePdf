@@ -86,6 +86,38 @@ class CakePdfTest extends TestCase
     }
 
     /**
+     * Test the custom paths for Layouts
+     *
+     * @dataProvider provider
+     */
+    public function testCustomLayoutPaths($config)
+    {
+        $pdf = new CakePdf($config);
+        $pdf->viewVars(['data' => 'testing']);
+        $pdf->template('testing', 'pdf');
+        $pdf->layoutPath('customPath');
+        $result = $pdf->output();
+        $expected = 'CustomLayoutData: testing';
+        $this->assertEquals($expected, $result);
+    }
+
+    /**
+     * Test the custom paths for Templates
+     *
+     * @dataProvider provider
+     */
+    public function testCustomTemplatePaths($config)
+    {
+        $pdf = new CakePdf($config);
+        $pdf->viewVars(['post' => 'testing']);
+        $pdf->template('view', 'default');
+        $pdf->templatePath('Posts/pdf');
+        $result = $pdf->output();
+        $expected = '<h2>Rendered with default layout</h2>' . "\n" . 'Post data: testing';
+        $this->assertEquals($expected, $result);
+    }
+
+    /**
      * testPluginOutput
      *
      * @dataProvider provider
