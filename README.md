@@ -50,8 +50,27 @@ composer require mpdf/mpdf
 
 In `config/bootstrap.php` add:
 ```php
-Plugin::load('CakePdf', ['bootstrap' => true, 'routes' => true]);
+Plugin::load('CakePdf', ['bootstrap' => true]);
 ```
+
+If you plan to use [the PDF view functionality](#1-render-as-pdf-including-forced-download-in-the-browser-with-pdfview)
+that automatically renders and returns the PDF for sending it to the browser, you should also register the `pdf`
+extension in your `config/routes.php` file, either globally before the routes that should be affected:
+
+```php
+Router::extensions(['pdf']);
+```
+
+or for a specific route scope:
+
+```php
+Router::scope('/', function (\Cake\Routing\RouteBuilder $routes) {
+    $routes->extensions(['pdf']);
+    // ...
+});
+```
+
+Further setup information can be found in the usage section.
 
 
 ## Configuration
@@ -144,11 +163,15 @@ You can create PDF view and layout files for your controller actions and have th
 Place the view templates in a 'pdf' subdir, for instance `src/Template/Invoices/pdf/view.ctp`
 Layouts will be in `src/Template/Layouts/pdf/default.ctp`
 
-Make sure your InvoicesController has RequestHandler Component in the `$components` array.
-Browse to http://localhost/invoices/view/1.pdf
+Make sure your `InvoicesController` class
+[loads the `RequestHandler` component](http://book.cakephp.org/3.0/en/controllers/components/request-handling.html)
+and browse to `http://localhost/invoices/view/1.pdf`
 
 Additionally you can map resources by adding `Router::mapResources(['Invoices']);` to your routes
-file and you can access the same document at http://localhost/invoices/1.pdf
+file and you can access the same document at `http://localhost/invoices/1.pdf`
+
+In case you don't want to use the `pdf` extension in your URLs, you can omit registering it in your routes
+configuration, and have your requests send a `Accept: application/pdf` header instead.
 
 
 ### 2: Create PDF for email attachment, file storage etc.
