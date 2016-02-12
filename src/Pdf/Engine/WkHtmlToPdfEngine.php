@@ -99,7 +99,7 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
             if (!is_executable($binaryWrapper)) {
                 throw new Exception(sprintf('wrapper binary is not found or not executable: %s', $binaryWrapper));
             }
-            $this->_binary = $binaryWrapper . $this->_binary;
+            $this->_binary = $binaryWrapper . ' ' . $this->_binary;
         }
 
         $options = [
