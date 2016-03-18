@@ -30,7 +30,7 @@ class DomPdfEngine extends AbstractPdfEngine
      */
     public function output()
     {
-        $Dompdf = new DOMPDF();
+        $Dompdf = new Dompdf();
         $Dompdf->set_paper($this->_Pdf->pageSize(), $this->_Pdf->orientation());
         $Dompdf->load_html($this->_Pdf->html());
         $Dompdf->render();
