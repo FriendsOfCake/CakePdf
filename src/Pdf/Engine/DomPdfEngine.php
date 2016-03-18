@@ -2,6 +2,7 @@
 namespace CakePdf\Pdf\Engine;
 
 use CakePdf\Pdf\CakePdf;
+use Dompdf\Dompdf;
 
 class DomPdfEngine extends AbstractPdfEngine
 {
@@ -29,7 +30,7 @@ class DomPdfEngine extends AbstractPdfEngine
      */
     public function output()
     {
-        $DomPDF = new \DOMPDF();
+        $DomPDF = new Dompdf();
         $DomPDF->set_paper($this->_Pdf->pageSize(), $this->_Pdf->orientation());
         $DomPDF->load_html($this->_Pdf->html());
         $DomPDF->render();
