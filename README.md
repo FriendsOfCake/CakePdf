@@ -1,7 +1,9 @@
 # CakePdf plugin
 
-[![Build Status](https://travis-ci.org/FriendsOfCake/CakePdf.svg?branch=3.0)](https://travis-ci.org/FriendsOfCake/CakePdf)
-[![License](https://poser.pugx.org/FriendsOfCake/CakePdf/license.png)](https://packagist.org/packages/FriendsOfCake/CakePdf)
+
+[![Build Status](https://img.shields.io/travis/FriendsOfCake/CakePdf/master.svg?style=flat-square)](https://travis-ci.org/FriendsOfCake/CakePdf)
+[![Total Downloads](https://img.shields.io/packagist/dt/friendsofcake/CakePdf.svg?style=flat-square)](https://packagist.org/packages/friendsofcake/CakePdf)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://packagist.org/packages/friendsofcake/CakePdf)
 
 Plugin containing CakePdf lib which will use a PDF engine to convert HTML to PDF.
 
@@ -22,21 +24,16 @@ Current engines:
 
 ## Installation
 
-You can install this plugin into your CakePHP application using
-[composer](http://getcomposer.org). For existing applications you can add the
-following to your `composer.json` file:
+Using [Composer][http://getcomposer.org]:
 
-```javascript
-"require": {
-    "friendsofcake/cakepdf": "^3.1"
-}
+```
+composer require friendsofcake/CakePdf
 ```
 
-And run `php composer.phar update`, or `composer update` (Depending on your composer setup)
-
-CakePdf does not include any of the supported PDF engines, you need to install them yourself.
-The recommend wkhtmltopdf engine can be downloaded from http://wkhtmltopdf.org/, by default CakePdf expects the
-wkhtmltopdf binary to be located in /usr/bin/wkhtmltopdf.
+CakePdf does not include any of the supported PDF engines, you need to install
+the ones you intend to use yourself.
+The recommend wkhtmltopdf engine can be downloaded from http://wkhtmltopdf.org/,
+by default CakePdf expects the wkhtmltopdf binary to be located in /usr/bin/wkhtmltopdf.
 
 DomPdf, Mpdf and Tcpdf can be installed via composer using on of the following commands:
 
@@ -49,13 +46,21 @@ composer require mpdf/mpdf
 ## Setup
 
 In `config/bootstrap.php` add:
+
 ```php
 Plugin::load('CakePdf', ['bootstrap' => true]);
 ```
 
+or using CakePHP's console:
+
+```
+./bin/cake plugin load CakePdf -b
+```
+
 If you plan to use [the PDF view functionality](#1-render-as-pdf-including-forced-download-in-the-browser-with-pdfview)
-that automatically renders and returns the PDF for sending it to the browser, you should also register the `pdf`
-extension in your `config/routes.php` file, either globally before the routes that should be affected:
+that automatically renders and returns the PDF for sending it to the browser,
+you should also register the `pdf` extension in your `config/routes.php` file,
+either globally before the routes that should be affected:
 
 ```php
 Router::extensions(['pdf']);
@@ -65,7 +70,7 @@ or for a specific route scope:
 
 ```php
 Router::scope('/', function (\Cake\Routing\RouteBuilder $routes) {
-    $routes->extensions(['pdf']);
+    $routes->addExtensions(['pdf']);
     // ...
 });
 ```
@@ -75,9 +80,10 @@ Further setup information can be found in the usage section.
 
 ## Configuration
 
-Use `Configure::write('CakePdf', $config);` or set Controller property `$pdfConfig` (only when used with PdfView)
-You need to define at least `$config['engine']`. When using CakePdf directly you can also pass the config array to constructor.
-The value for engine should have the `Plugin.ClassName` format without the Engine suffix
+Use `Configure::write('CakePdf', $config);` or set Controller property `$pdfConfig`
+(only when used with PdfView). You need to define at least `$config['engine']`.
+When using CakePdf directly you can also pass the config array to constructor.
+The value for engine should have the `Plugin.ClassName` format without the Engine suffix.
 
 Configuration options:
 * engine: Engine to be used (required), or an array of engine config options
@@ -112,10 +118,11 @@ Example:
 ?>
 
 <?php
-    class InvoicesController extends AppController 
+    class InvoicesController extends AppController
     {
-        // In your Invoices controller you could set additional configs, or override the global ones:
-        public function view($id = null) 
+        // In your Invoices controller you could set additional configs,
+        // or override the global ones:
+        public function view($id = null)
         {
             $invoice = $this->Invoice->get($id);
             $this->viewBuilder()->options([
@@ -130,7 +137,8 @@ Example:
 ?>
 ```
 
-The `engine` and `crypto` config options can also be arrays with configuration options for the relevant class. For example,
+The `engine` and `crypto` config options can also be arrays with configuration
+options for the relevant class. For example:
 
 ```php
     Configure::write('CakePdf', [
@@ -153,25 +161,28 @@ The `engine` and `crypto` config options can also be arrays with configuration o
 
 ## Usage
 
-You can use CakePdf in 2 ways, read carefully which one you actually need.
+You can use CakePdf in two ways, read carefully which one you actually need.
 Many people mix both ways and don't get the expected results.
 
 
 ### 1: Render as PDF (including forced download) in the browser with PdfView
 
-You can create PDF view and layout files for your controller actions and have them automatically rendered.
-Place the view templates in a 'pdf' subdir, for instance `src/Template/Invoices/pdf/view.ctp`
-Layouts will be in `src/Template/Layouts/pdf/default.ctp`
+You can create PDF view and layout files for your controller actions and have
+them automatically rendered. Place the view templates in a 'pdf' subdir, for
+instance `src/Template/Invoices/pdf/view.ctp`, layouts will be in
+`src/Template/Layouts/pdf/default.ctp`.
 
 Make sure your `InvoicesController` class
 [loads the `RequestHandler` component](http://book.cakephp.org/3.0/en/controllers/components/request-handling.html)
 and browse to `http://localhost/invoices/view/1.pdf`
 
-Additionally you can map resources by adding `Router::mapResources(['Invoices']);` to your routes
-file and you can access the same document at `http://localhost/invoices/1.pdf`
+Additionally you can map resources by adding `Router::mapResources(['Invoices']);`
+to your routes file and you can access the same document at
+`http://localhost/invoices/1.pdf`.
 
-In case you don't want to use the `pdf` extension in your URLs, you can omit registering it in your routes
-configuration, and have your requests send a `Accept: application/pdf` header instead.
+In case you don't want to use the `pdf` extension in your URLs, you can omit
+registering it in your routes configuration, and have your requests send a
+`Accept: application/pdf` header instead.
 
 
 ### 2: Create PDF for email attachment, file storage etc.
@@ -179,8 +190,9 @@ configuration, and have your requests send a `Accept: application/pdf` header in
 You can use CakePdf lib to create raw PDF data with a view template.
 The view file path would look like `src/Template/Pdf/newsletter.ctp`.
 Layout file path would be like `src/Template/Layouts/pdf/default.ctp`
-Note that layouts for both usage types are within same directory, but the view templates use different file paths
-Optionally you can also write the raw data to file.
+Note that layouts for both usage types are within same directory, but the view
+templates use different file paths Optionally you can also write the raw data to
+file.
 
 Example:
 ```php
@@ -199,7 +211,8 @@ Example:
 
 You can optionally encrypt the PDF with permissions
 
-To use encryption you first need to select a crypto engine. Currently we support the following crypto engines:
+To use encryption you first need to select a crypto engine. Currently we support
+the following crypto engines:
 * Pdftk
 
 
@@ -242,21 +255,8 @@ Set 'permissions' to an array with a combination of the following available perm
 ## Note about static assets
 
 Use absolute URLs for static assets in your view templates for PDFs.
-If you use `HtmlHelper::image()`, `HtmlHelper::script()` or `HtmlHelper::css()` make sure you have `$options['fullBase'] = true`
-
-Another solution would be to create a `AppHelper` of which it would force `$options['fullBase'] = true` for PDF requests. e.g:
-```php
-class AppHelper extends Helper 
-{
-    public function assetUrl($path, $options = []) 
-    {
-        if (!empty($this->request->params['_ext']) && $this->request->params['_ext'] === 'pdf') {
-            $options['fullBase'] = true;
-        }
-        return parent::assetUrl($path, $options);
-    }
-}
-```
+If you use `HtmlHelper::image()`, `HtmlHelper::script()` or `HtmlHelper::css()`
+make sure you have `$options['_full'] = true`.
 
 
 ## Thanks
