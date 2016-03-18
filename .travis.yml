@@ -4,41 +4,41 @@ php:
   - 5.4
   - 5.5
   - 5.6
+  - 7
 
 env:
   global:
     - DEFAULT=1
 
 matrix:
-  allow_failures:
-    - php: hhvm
-
-    - php: hhvm-nightly
-
   fast_finish: true
 
   include:
-    - php: 5.4
+    - php: 7.0
       env: PHPCS=1 DEFAULT=0
 
-    - php: hhvm
-
-    - php: hhvm-nightly
+    - php: 7.0
+      env: CODECOVERAGE=1 DEFAULT=0
 
 before_script:
-  - sudo touch /usr/bin/wkhtmltopdf && sudo chmod +x /usr/bin/wkhtmltopdf
+  - sh -c "if [ '$CODECOVERAGE' != '1' ]; then phpenv config-rm xdebug.ini; fi"
+
+  - sudo apt-get install wkhtmltopdf -y
   - sudo touch /usr/bin/latexpdf && sudo chmod +x /usr/bin/latexpdf
+
   - composer self-update
-  - composer install --prefer-source --no-interaction --dev
+  - composer install --no-interaction
 
   - sh -c "if [ '$PHPCS' = '1' ]; then composer require cakephp/cakephp-codesniffer:dev-master; fi"
 
-  - phpenv rehash
-  - set +H
-
 script:
-  - sh -c "if [ '$DEFAULT' = '1' ]; then phpunit --stderr; fi"
-  - sh -c "if [ '$PHPCS' = '1' ]; then ./vendor/bin/phpcs -p -n --extensions=php --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./src ./tests ./config; fi"
+  - sh -c "if [ '$DEFAULT' = '1' ]; then vendor/bin/phpunit; fi"
+
+  - sh -c "if [ '$PHPCS' = '1' ]; then vendor/bin/phpcs -p --extensions=php --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./src ./tests ./config; fi"
+
+  - sh -c "if [ '$CODECOVERAGE' = '1' ]; then vendor/bin/phpunit --coverage-clover=clover.xml; fi"
+  - sh -c "if [ '$CODECOVERAGE' = '1' ]; then wget -O codecov.sh https://codecov.io/bash; fi"
+  - sh -c "if [ '$CODECOVERAGE' = '1' ]; then bash codecov.sh; fi"
 
 notifications:
   email: false

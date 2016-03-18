@@ -8,7 +8,9 @@ use Cake\I18n\I18n;
 use Cake\Log\Log;
 use Cake\Routing\DispatcherFactory;
 
-define('DS', DIRECTORY_SEPARATOR);
+if (!defined('DS')) {
+    define('DS', DIRECTORY_SEPARATOR);
+}
 define('ROOT', dirname(__DIR__) . DS);
 define('APP_DIR', 'test_app');
 define('WEBROOT_DIR', 'webroot');
@@ -23,8 +25,8 @@ define('CAKE_CORE_INCLUDE_PATH', ROOT . '/vendor/cakephp/cakephp');
 define('CORE_PATH', CAKE_CORE_INCLUDE_PATH . DS);
 define('CAKE', CORE_PATH . 'src' . DS);
 
-require ROOT . '/vendor/cakephp/cakephp/src/basics.php';
 require ROOT . '/vendor/autoload.php';
+require CORE_PATH . 'config/bootstrap.php';
 
 Configure::write('debug', true);
 Configure::write('App', [

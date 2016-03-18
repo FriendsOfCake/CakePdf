@@ -6,7 +6,6 @@
     "license": "MIT",
     "require": {
         "php": ">=5.4.16",
-        "cakephp/plugin-installer": "*",
         "cakephp/cakephp": "~3.1"
     },
     "require-dev": {
@@ -27,8 +26,5 @@
             "Cake\\Test\\": "vendor/cakephp/cakephp/tests",
             "CakePdf\\Test\\": "tests"
         }
-    },
-    "replace": {
-        "ceeram/cakepdf": "self.version"
     }
 }
