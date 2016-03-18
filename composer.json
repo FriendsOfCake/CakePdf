@@ -26,5 +26,8 @@
             "Cake\\Test\\": "vendor/cakephp/cakephp/tests",
             "CakePdf\\Test\\": "tests"
         }
+    },
+    "replace": {
+        "ceeram/cakepdf": "self.version"
     }
 }
