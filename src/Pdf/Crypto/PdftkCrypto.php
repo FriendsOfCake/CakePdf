@@ -75,7 +75,7 @@ class PdftkCrypto extends AbstractPdfCrypto
             throw new Exception('Crypto: ownerPassword and userPassword cannot be the same');
         }
 
-        $command = sprintf('%s - output - %s', $this->_binary, $this->__buildArguments($arguments));
+        $command = sprintf('%s - output - %s', $this->_binary, $this->_buildArguments($arguments));
 
         $descriptorspec = [
             0 => ['pipe', 'r'], // feed stdin of process from this file descriptor
@@ -119,7 +119,7 @@ class PdftkCrypto extends AbstractPdfCrypto
      * @param array $arguments arguments to pass to pdftk
      * @return string list of arguments
      */
-    private function __buildArguments($arguments)
+    protected function _buildArguments($arguments)
     {
         $output = [];
 
