@@ -24,7 +24,7 @@ Current engines:
 
 ## Installation
 
-Using [Composer][http://getcomposer.org]:
+Using [Composer](http://getcomposer.org):
 
 ```
 composer require friendsofcake/CakePdf
