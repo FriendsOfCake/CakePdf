@@ -9,9 +9,6 @@ use Cake\Network\Request;
 use Cake\Network\Response;
 use Cake\View\View;
 
-/**
- * @package       Cake.View
- */
 class PdfView extends View
 {
 
@@ -32,7 +29,7 @@ class PdfView extends View
     /**
      * CakePdf Instance
      *
-     * @var object
+     * @var \CakePdf\Pdf\CakePdf|null
      */
     protected $_renderer = null;
 
@@ -84,7 +81,7 @@ class PdfView extends View
      * Return CakePdf instance, optionally set engine to be used
      *
      * @param array $config Array of pdf configs. When empty CakePdf instance will be returned.
-     * @return CakePdf
+     * @return \CakePdf\Pdf\CakePdf
      */
     public function renderer($config = null)
     {
