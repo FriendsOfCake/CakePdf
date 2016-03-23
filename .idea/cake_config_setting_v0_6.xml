@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CakeStormCakeSettings">
+    <option name="cakeVersionAbsorption">
+      <map>
+        <entry key="Controller" value="/src/Controller/" />
+        <entry key="View" value="/src/View/" />
+        <entry key="Model" value="/src/Model/" />
+        <entry key="Template" value="/src/Template/" />
+        <entry key="Helper" value="/src/View/Helper/" />
+        <entry key="Component" value="/src/Controller/Component/" />
+        <entry key="Behavior" value="/src/Model/Behavior/" />
+        <entry key="Plugin" value="/plugins/" />
+        <entry key="Shell" value="/src/Shell/" />
+        <entry key="ControllerTest" value="/tests/TestCase/Controller/" />
+        <entry key="TableTest" value="/tests/TestCase/Model/Table/" />
+        <entry key="ModelTest" value="/tests/TestCase/Model/" />
+        <entry key="BehaviorTest" value="/tests/TesTCase/Model/Behavior/" />
+        <entry key="ComponentTest" value="/tests/TestCase/Controller/Component/" />
+        <entry key="HelperTest" value="/tests/TestCase/View/Helper/" />
+        <entry key="TestFile" value="Test" />
+        <entry key="FileSeparator" value="" />
+        <entry key="FileWordSeparator" value="" />
+        <entry key="Fixture" value="/tests/Fixture/" />
+        <entry key="FixtureFile" value="Fixture" />
+      </map>
+    </option>
+    <option name="cakeVersion" value="3" />
+  </component>
+</project>
