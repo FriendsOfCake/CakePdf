@@ -112,7 +112,7 @@ class CakePdf
     /**
      * Footer HTML
      *
-     * @var string
+     * @var array
      */
     protected $_footer = ['left' => null, 'center' => null, 'right' => null];
 
@@ -121,35 +121,35 @@ class CakePdf
      *
      * @var string
      */
-    protected $_footer_html = null;
+    protected $_footerHtml = null;
 
     /**
      * Footer spacing in mm
      *
      * @var number
      */
-    protected $_footer_spacing = null;
+    protected $_footerSpacing = null;
 
     /**
      * Header HTML
      *
-     * @var string
+     * @var array
      */
-    protected $_header= ['left' => null, 'center' => null, 'right' => null];
+    protected $_header = ['left' => null, 'center' => null, 'right' => null];
 
     /**
      * Header String HTML
      *
      * @var string
      */
-    protected $_header_html = null;
+    protected $_headerHtml = null;
 
     /**
      * Header spacing in mm
      *
      * @var number
      */
-    protected $_header_spacing = null;
+    protected $_headerSpacing = null;
 
     /**
      * Bottom margin in mm
@@ -473,30 +473,30 @@ class CakePdf
     /**
      * Get/Set footer HTML in string.
      *
-     * @param string $html
+     * @param string $html Html content in string
      * @return mixed
      */
     public function footerHtml($html = null)
     {
         if ($html === null) {
-            return $this->_footer_html;
+            return $this->_footerHtml;
         }
-        $this->_footer_html = $html;
+        $this->_footerHtml = $html;
         return $this;
     }
 
     /**
      * Get/Set footer Spacing.
      *
-     * @param null $value
+     * @param null $value return spacing value
      * @return mixed
      */
     public function footerSpacing($value = null)
     {
         if ($value === null) {
-            return $this->_footer_spacing;
+            return $this->_footerSpacing;
         }
-        $this->_footer_spacing = $value;
+        $this->_footerSpacing = $value;
         return $this;
     }
 
@@ -525,29 +525,29 @@ class CakePdf
     /**
      * Get/Set header HTML in string.
      *
-     * @param string $html
+     * @param string $html Html content in string
      * @return mixed
      */
     public function headerHtml($html = null)
     {
         if ($html === null) {
-            return $this->_header_html;
+            return $this->_headerHtml;
         }
-        $this->_header_html = $html;
+        $this->_headerHtml = $html;
         return $this;
     }
     /**
      * Get/Set header Spacing.
      *
-     * @param null $value
+     * @param null $value return spacing value
      * @return mixed
      */
     public function headerSpacing($value = null)
     {
         if ($value === null) {
-            return $this->_header_spacing;
+            return $this->_headerSpacing;
         }
-        $this->_header_spacing = $value;
+        $this->_headerSpacing = $value;
         return $this;
     }
 

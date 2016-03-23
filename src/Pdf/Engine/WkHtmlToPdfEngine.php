@@ -1,9 +1,9 @@
 <?php
 namespace CakePdf\Pdf\Engine;
 
-use Cake\Filesystem\File;
 use CakePdf\Pdf\CakePdf;
 use Cake\Core\Exception\Exception;
+use Cake\Filesystem\File;
 
 class WkHtmlToPdfEngine extends AbstractPdfEngine
 {
@@ -130,13 +130,13 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
                 $command .= " --footer-$location \"" . addslashes($text) . "\"";
             }
         }
-        $footer_html = $this->_Pdf->footerHtml();
-        if ($footer_html !== null) {
-            $command .= " --footer-html \"" . $this->handleInlineHtmlBlock("--footer-html" , $footer_html) . "\"";
+        $footerHtml = $this->_Pdf->footerHtml();
+        if ($footerHtml !== null) {
+            $command .= " --footer-html \"" . $this->handleInlineHtmlBlock("--footer-html", $footerHtml) . "\"";
         }
-        $footer_spacing = $this->_Pdf->footerSpacing();
-        if ($footer_spacing !== null) {
-            $command .= " --footer-spacing \"" . $footer_spacing . "\"";
+        $footerSpacing = $this->_Pdf->footerSpacing();
+        if ($footerSpacing !== null) {
+            $command .= " --footer-spacing \"" . $footerSpacing . "\"";
         }
         $header = $this->_Pdf->header();
         foreach ($header as $location => $text) {
@@ -144,13 +144,13 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
                 $command .= " --header-$location \"" . addslashes($text) . "\"";
             }
         }
-        $header_html = $this->_Pdf->headerHtml();
-        if ($header_html !== null) {
-            $command .= " --header-html \"" . $this->handleInlineHtmlBlock("--header-html" , $header_html) . "\"";
+        $headerHtml = $this->_Pdf->headerHtml();
+        if ($headerHtml !== null) {
+            $command .= " --header-html \"" . $this->handleInlineHtmlBlock("--header-html", $headerHtml) . "\"";
         }
-        $header_spacing = $this->_Pdf->headerSpacing();
-        if ($header_spacing !== null) {
-            $command .= " --header-spacing \"" . $header_spacing . "\"";
+        $headerSpacing = $this->_Pdf->headerSpacing();
+        if ($headerSpacing !== null) {
+            $command .= " --header-spacing \"" . $headerSpacing . "\"";
         }
         $command .= " - -";
 
@@ -169,12 +169,13 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
      *                                            in html/JS recommended by wkhtmltopdf
      *
      * @link http://wkhtmltopdf.org/usage/wkhtmltopdf.txt
-     * @param $key
+     * @param string $key string to add for cache file
      * @param string $content either a HTML block or a URL to a HTML fragment document
      * @return string $url to a HTML fragment document
      * @throws Exception
      */
-    public function handleInlineHtmlBlock($key, $content) {
+    public function handleInlineHtmlBlock($key, $content)
+    {
         if (substr($content, 0, 4) == 'http' || substr($content, -5) == '.html') {
             return $content;
         }
@@ -190,7 +191,7 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
         if (!$File->exists()) {
             throw new Exception('Unable to make temp file for PDF rendering: ' . $key);
         }
-        if (!($this->config('webroot-temp-disable-wrapper'))) {
+        if (!$this->config('webroot-temp-disable-wrapper')) {
             $content = sprintf('<!DOCTYPE html><html><head><script>' .
                 'function subst() { var vars={}; var x=window.location.search.substring(1).split("&"); for (var i in x) {var z=x[i].split("=",2);vars[z[0]] = unescape(z[1]);} var x=["frompage","topage","page","webpage","section","subsection","subsubsection"]; for (var i in x) { var y = document.getElementsByClassName(x[i]); for (var j=0; j<y.length; ++j) y[j].textContent = vars[x[i]]; } }' .
                 '</script></head><body style="border:0; margin: 0;padding: 0;line-height: 1;vertical-align: baseline;" onload="subst()">%s</body></html>',
