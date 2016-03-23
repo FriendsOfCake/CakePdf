@@ -128,7 +128,7 @@ class CakePdf
      *
      * @var number
      */
-    protected $_footer_spacing = 1;
+    protected $_footer_spacing = null;
 
     /**
      * Header HTML
@@ -149,7 +149,7 @@ class CakePdf
      *
      * @var number
      */
-    protected $_header_spacing = 1;
+    protected $_header_spacing = null;
 
     /**
      * Bottom margin in mm
