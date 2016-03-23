@@ -1,6 +1,7 @@
 <?php
 namespace CakePdf\Pdf\Engine;
 
+use Cake\Filesystem\File;
 use CakePdf\Pdf\CakePdf;
 use Cake\Core\Exception\Exception;
 
@@ -117,6 +118,9 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
             } elseif ($value === true) {
                 $command .= ' --' . $key;
             } else {
+                if ($key == 'header-html' || $key == 'footer-html') {
+                    $value = $this->handleInlineHtmlBlock($key, $value);
+                }
                 $command .= sprintf(' --%s %s', $key, escapeshellarg($value));
             }
         }
@@ -126,15 +130,75 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
                 $command .= " --footer-$location \"" . addslashes($text) . "\"";
             }
         }
-
+        $footer_html = $this->_Pdf->footerHtml();
+        if ($footer_html !== null) {
+            $command .= " --footer-html \"" . $this->handleInlineHtmlBlock("--footer-html" , $footer_html) . "\"";
+        }
+        $footer_spacing = $this->_Pdf->footerSpacing();
+        if ($footer_spacing !== null) {
+            $command .= " --footer-spacing \"" . $footer_spacing . "\"";
+        }
         $header = $this->_Pdf->header();
         foreach ($header as $location => $text) {
             if ($text !== null) {
                 $command .= " --header-$location \"" . addslashes($text) . "\"";
             }
         }
+        $header_html = $this->_Pdf->headerHtml();
+        if ($header_html !== null) {
+            $command .= " --header-html \"" . $this->handleInlineHtmlBlock("--header-html" , $header_html) . "\"";
+        }
+        $header_spacing = $this->_Pdf->headerSpacing();
+        if ($header_spacing !== null) {
+            $command .= " --header-spacing \"" . $header_spacing . "\"";
+        }
         $command .= " - -";
 
         return $command;
+    }
+
+    /**
+     * Convert a HTML block, passed in as text, into a temporary HTML file,
+     * which can be requested and rendered via wkhtmltopdf
+     *
+     *   input: <p>Some HTML here</p>
+     *   output: app/tmp/cache/cakepdf-header-html-52bf266917d266accbb0b794fae83062.html
+     *
+     * Config:
+     *   'webroot-temp-disable-wrapper' (boolean) if true, we will not wrap content block
+     *                                            in html/JS recommended by wkhtmltopdf
+     *
+     * @link http://wkhtmltopdf.org/usage/wkhtmltopdf.txt
+     * @param $key
+     * @param string $content either a HTML block or a URL to a HTML fragment document
+     * @return string $url to a HTML fragment document
+     * @throws Exception
+     */
+    public function handleInlineHtmlBlock($key, $content) {
+        if (substr($content, 0, 4) == 'http' || substr($content, -5) == '.html') {
+            return $content;
+        }
+        $prefix = 'cakepdf-';
+        $filename = $prefix . $key . '-' . md5($content) . '.html';
+        if (defined('CACHE') && is_dir(CACHE) && is_writeable(CACHE)) {
+            $filepath = CACHE . $filename;
+        } else {
+            $filepath = TMP . $filename;
+        }
+
+        $File = new File($filepath, true, 0777);
+        if (!$File->exists()) {
+            throw new Exception('Unable to make temp file for PDF rendering: ' . $key);
+        }
+        if (!($this->config('webroot-temp-disable-wrapper'))) {
+            $content = sprintf('<!DOCTYPE html><html><head><script>' .
+                'function subst() { var vars={}; var x=window.location.search.substring(1).split("&"); for (var i in x) {var z=x[i].split("=",2);vars[z[0]] = unescape(z[1]);} var x=["frompage","topage","page","webpage","section","subsection","subsubsection"]; for (var i in x) { var y = document.getElementsByClassName(x[i]); for (var j=0; j<y.length; ++j) y[j].textContent = vars[x[i]]; } }' .
+                '</script></head><body style="border:0; margin: 0;padding: 0;line-height: 1;vertical-align: baseline;" onload="subst()">%s</body></html>',
+                $content
+            );
+        }
+        $File->write($content);
+
+        return $filepath;
     }
 }

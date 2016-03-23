@@ -117,11 +117,39 @@ class CakePdf
     protected $_footer = ['left' => null, 'center' => null, 'right' => null];
 
     /**
+     * Footer String HTML
+     *
+     * @var string
+     */
+    protected $_footer_html = null;
+
+    /**
+     * Footer spacing in mm
+     *
+     * @var number
+     */
+    protected $_footer_spacing = 1;
+
+    /**
      * Header HTML
      *
      * @var string
      */
-    protected $_header = ['left' => null, 'center' => null, 'right' => null];
+    protected $_header= ['left' => null, 'center' => null, 'right' => null];
+
+    /**
+     * Header String HTML
+     *
+     * @var string
+     */
+    protected $_header_html = null;
+
+    /**
+     * Header spacing in mm
+     *
+     * @var number
+     */
+    protected $_header_spacing = 1;
 
     /**
      * Bottom margin in mm
@@ -443,6 +471,37 @@ class CakePdf
     }
 
     /**
+     * Get/Set footer HTML in string.
+     *
+     * @param string $html
+     * @return mixed
+     */
+    public function footerHtml($html = null)
+    {
+        if ($html === null) {
+            return $this->_footer_html;
+        }
+        $this->_footer_html = $html;
+        return $this;
+    }
+
+    /**
+     * Get/Set footer Spacing.
+     *
+     * @param null $value
+     * @return mixed
+     */
+    public function footerSpacing($value = null)
+    {
+        if ($value === null) {
+            return $this->_footer_spacing;
+        }
+        $this->_footer_spacing = $value;
+        return $this;
+    }
+
+
+    /**
      * Get/Set header HTML.
      *
      * @param null|string $left left side header
@@ -461,6 +520,34 @@ class CakePdf
         }
 
         $this->_header = compact('left', 'center', 'right');
+        return $this;
+    }
+    /**
+     * Get/Set header HTML in string.
+     *
+     * @param string $html
+     * @return mixed
+     */
+    public function headerHtml($html = null)
+    {
+        if ($html === null) {
+            return $this->_header_html;
+        }
+        $this->_header_html = $html;
+        return $this;
+    }
+    /**
+     * Get/Set header Spacing.
+     *
+     * @param null $value
+     * @return mixed
+     */
+    public function headerSpacing($value = null)
+    {
+        if ($value === null) {
+            return $this->_header_spacing;
+        }
+        $this->_header_spacing = $value;
         return $this;
     }
 
