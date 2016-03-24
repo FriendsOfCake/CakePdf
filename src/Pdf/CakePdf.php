@@ -220,19 +220,30 @@ class CakePdf
      */
     public function __construct($config = [])
     {
-        $config = array_merge([
-            'engine' => Configure::read('CakePdf.engine'),
-            'crypto' => Configure::read('CakePdf.crypto')
-        ], $config);
-        if ($config['engine']) {
+        $config = array_merge(
+            (array)Configure::read('CakePdf'),
+            $config
+        );
+
+        if (!empty($config['engine'])) {
             $this->engine($config['engine']);
         }
-
-        if ($config['crypto']) {
+        if (!empty($config['crypto'])) {
             $this->crypto($config['crypto']);
         }
 
-        $options = ['pageSize', 'orientation', 'margin', 'title', 'encoding', 'protect', 'userPassword', 'ownerPassword', 'permissions', 'cache'];
+        $options = [
+            'pageSize',
+            'orientation',
+            'margin',
+            'title',
+            'encoding',
+            'protect',
+            'userPassword',
+            'ownerPassword',
+            'permissions',
+            'cache'
+        ];
         foreach ($options as $option) {
             if (isset($config[$option])) {
                 $this->{$option}($config[$option]);
