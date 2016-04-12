@@ -110,26 +110,22 @@ class DomPdfEngineTest extends TestCase
 
         $DomPDF = new Dompdf();
 
-        $Pdf
-            ->engine()
+        $Engine = $Pdf->engine();
+        $Engine
             ->expects($this->at(0))
             ->method('_createInstance')
             ->willReturn($DomPDF);
-
-        $Pdf
-            ->engine()
+        $Engine
             ->expects($this->at(1))
             ->method('_render')
             ->with($Pdf, $DomPDF)
             ->willReturn($DomPDF);
-
-        $Pdf
-            ->engine()
+        $Engine
             ->expects($this->at(2))
             ->method('_output')
             ->with($DomPDF);
 
-        $Pdf->engine()->output();
+        $Engine->output();
     }
 
     /**
