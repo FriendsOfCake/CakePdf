@@ -8,16 +8,6 @@ class DomPdfEngine extends AbstractPdfEngine
 {
 
     /**
-     * Constructor
-     *
-     * @param CakePdf $Pdf CakePdf instance
-     */
-    public function __construct(CakePdf $Pdf)
-    {
-        parent::__construct($Pdf);
-    }
-
-    /**
      * Generates Pdf from html
      *
      * @return string raw pdf data
@@ -30,10 +20,45 @@ class DomPdfEngine extends AbstractPdfEngine
         ];
         $options = (array)$this->config('options') + $defaults;
 
-        $DomPDF = new Dompdf($options);
+        $DomPDF = $this->_createInstance($options);
         $DomPDF->setPaper($this->_Pdf->pageSize(), $this->_Pdf->orientation());
-        $DomPDF->loadHtml($this->_Pdf->html());
+        $DomPDF = $this->_render($this->_Pdf, $DomPDF);
+        return $this->_output($DomPDF);
+    }
+
+    /**
+     * Creates the Dompdf instance.
+     *
+     * @param array $options The engine options.
+     * @return Dompdf
+     */
+    protected function _createInstance($options)
+    {
+        return new Dompdf($options);
+    }
+
+    /**
+     * Renders the Dompdf instance.
+     *
+     * @param CakePdf $Pdf The CakePdf instance that supplies the content to render.
+     * @param Dompdf $DomPDF The Dompdf instance to render.
+     * @return Dompdf
+     */
+    protected function _render($Pdf, $DomPDF)
+    {
+        $DomPDF->loadHtml($Pdf->html());
         $DomPDF->render();
+        return $DomPDF;
+    }
+
+    /**
+     * Generates the PDF output.
+     *
+     * @param Dompdf $DomPDF The Dompdf instance from which to generate the output from.
+     * @return string
+     */
+    protected function _output($DomPDF)
+    {
         return $DomPDF->output();
     }
 }
