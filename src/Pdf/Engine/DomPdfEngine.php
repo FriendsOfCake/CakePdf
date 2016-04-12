@@ -2,6 +2,7 @@
 namespace CakePdf\Pdf\Engine;
 
 use CakePdf\Pdf\CakePdf;
+use Dompdf\Dompdf;
 
 class DomPdfEngine extends AbstractPdfEngine
 {
@@ -14,12 +15,6 @@ class DomPdfEngine extends AbstractPdfEngine
     public function __construct(CakePdf $Pdf)
     {
         parent::__construct($Pdf);
-        if (!defined('DOMPDF_FONT_CACHE')) {
-            define('DOMPDF_FONT_CACHE', TMP);
-        }
-        if (!defined('DOMPDF_TEMP_DIR')) {
-            define('DOMPDF_TEMP_DIR', TMP);
-        }
     }
 
     /**
@@ -29,9 +24,15 @@ class DomPdfEngine extends AbstractPdfEngine
      */
     public function output()
     {
-        $DomPDF = new \DOMPDF();
-        $DomPDF->set_paper($this->_Pdf->pageSize(), $this->_Pdf->orientation());
-        $DomPDF->load_html($this->_Pdf->html());
+        $defaults = [
+            'fontCache' => TMP,
+            'tempDir' => TMP
+        ];
+        $options = (array)$this->config('options') + $defaults;
+
+        $DomPDF = new Dompdf($options);
+        $DomPDF->setPaper($this->_Pdf->pageSize(), $this->_Pdf->orientation());
+        $DomPDF->loadHtml($this->_Pdf->html());
         $DomPDF->render();
         return $DomPDF->output();
     }

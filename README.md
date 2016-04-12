@@ -89,7 +89,9 @@ Configuration options:
 * engine: Engine to be used (required), or an array of engine config options
   * className: Engine class to use
   * binary: Binary file to use (Only for wkhtmltopdf)
-  * options: Options to pass on to wkhtmltopdf
+  * options: Engine specific options. Currently only for `WkHtmlToPdf`, where the options
+    are passed as CLI arguments, and for `DomPdf`, where the options are passed to the
+    `DomPdf` class constructor.
 * crypto: Crypto engine to be used, or an array of crypto config options
   * className: Crypto class to use
   * binary: Binary file to use
