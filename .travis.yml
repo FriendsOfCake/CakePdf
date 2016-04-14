@@ -27,6 +27,7 @@ before_script:
   - sudo touch /usr/bin/latexpdf && sudo chmod +x /usr/bin/latexpdf
 
   - composer self-update
+  - composer require dompdf/dompdf:~0.7@beta --no-update
   - composer install --no-interaction
 
   - sh -c "if [ '$PHPCS' = '1' ]; then composer require cakephp/cakephp-codesniffer:dev-master; fi"

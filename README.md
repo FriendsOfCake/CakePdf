@@ -38,10 +38,14 @@ by default CakePdf expects the wkhtmltopdf binary to be located in /usr/bin/wkht
 DomPdf, Mpdf and Tcpdf can be installed via composer using on of the following commands:
 
 ```
-composer require dompdf/dompdf
+composer require dompdf/dompdf:~0.7@beta
 composer require tecnick.com/tcpdf
 composer require mpdf/mpdf
 ```
+
+Please note that this branch of CakePDF requires at least DomPdf version `0.7`, which is
+currently in beta stage. Once it becomes stable, you should make sure to require the
+stable, non-suffixed version, ie use a constraint like `~0.7`.
 
 ## Setup
 
@@ -89,7 +93,9 @@ Configuration options:
 * engine: Engine to be used (required), or an array of engine config options
   * className: Engine class to use
   * binary: Binary file to use (Only for wkhtmltopdf)
-  * options: Options to pass on to wkhtmltopdf
+  * options: Engine specific options. Currently only for `WkHtmlToPdf`, where the options
+    are passed as CLI arguments, and for `DomPdf`, where the options are passed to the
+    `DomPdf` class constructor.
 * crypto: Crypto engine to be used, or an array of crypto config options
   * className: Crypto class to use
   * binary: Binary file to use
