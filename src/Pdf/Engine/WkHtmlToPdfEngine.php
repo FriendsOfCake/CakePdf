@@ -99,7 +99,9 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
             'orientation' => $this->_Pdf->orientation(),
             'page-size' => $this->_Pdf->pageSize(),
             'encoding' => $this->_Pdf->encoding(),
-            'title' => $this->_Pdf->title()
+            'title' => $this->_Pdf->title(),
+            'javascript-delay' => $this->_Pdf->delay(),
+            'window-status' => $this->_Pdf->windowStatus()
         ];
 
         $margin = $this->_Pdf->margin();
