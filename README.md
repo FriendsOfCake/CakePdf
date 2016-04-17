@@ -34,6 +34,8 @@ CakePdf does not include any of the supported PDF engines, you need to install
 the ones you intend to use yourself.
 The recommend wkhtmltopdf engine can be downloaded from http://wkhtmltopdf.org/,
 by default CakePdf expects the wkhtmltopdf binary to be located in /usr/bin/wkhtmltopdf.
+If you are using wkhtmltopdf in Windows, remove any spaces in the path name. For example
+use `C:/Progra~1/wkhtmltopdf/bin/wkhtmltopdf.exe`
 
 DomPdf, Mpdf and Tcpdf can be installed via composer using on of the following commands:
 
@@ -103,6 +105,8 @@ Configuration options:
 * orientation: Change the default orientation, defaults to potrait
 * margin: Array or margins with the keys: bottom, left, right, top and their values
 * title: Title of the document
+* delay: A delay in milliseconds to wait before rendering the pdf
+* windowStatus: The required window status before rendering the pdf
 * encoding: Change the encoding, defaults to UTF-8
 * download: Set to true to force a download, only when using PdfView
 * filename: Filename for the document when using forced download
@@ -264,6 +268,11 @@ Use absolute URLs for static assets in your view templates for PDFs.
 If you use `HtmlHelper::image()`, `HtmlHelper::script()` or `HtmlHelper::css()`
 make sure you have `$options['_full'] = true`.
 
+For example
+```
+echo $this->Html->script('jquery/jquery.js', ['fullBase' => true]);
+echo $this->Html->css('bootstrap/bootstrap.css', ['fullBase' => true]);
+```
 
 ## Thanks
 
