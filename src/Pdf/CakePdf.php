@@ -161,17 +161,17 @@ class CakePdf
     /**
      * Javascript delay before rendering document in milliseconds
      *
-     * @var number
+     * @var int
      */
     protected $_delay = null;
 
     /**
      * Window status required before rendering document
      *
-     * @var number
+     * @var string
      */
     protected $_windowStatus = null;
-    
+
     /**
      * Flag that tells if we need to pass it through crypto
      *
@@ -633,7 +633,7 @@ class CakePdf
     /**
      * Get/Set javascript delay.
      *
-     * @param null|number $delay delay to set in milliseconds
+     * @param null|int $delay delay to set in milliseconds
      * @return mixed
      */
     public function delay($delay = null)
@@ -644,7 +644,6 @@ class CakePdf
         $this->_delay = $delay;
         return $this;
     }
-
 
     /**
      * Get/Set the required window status for rendering
