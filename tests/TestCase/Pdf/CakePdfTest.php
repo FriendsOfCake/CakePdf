@@ -22,13 +22,14 @@ class PdfTest2Engine extends AbstractPdfEngine
     }
 }
 
-/**
- * CakePdfTest class
- *
- * @package       CakePdf.Test.Case.Pdf
- */
 class CakePdfTest extends TestCase
 {
+
+    public function setUp()
+    {
+        parent::setUp();
+        Configure::delete('Pdf');
+    }
 
     /**
      *
@@ -44,7 +45,8 @@ class CakePdfTest extends TestCase
                         'left' => 50,
                         'right' => 30,
                         'top' => 45
-                    ]
+                    ],
+                    'orientation' => 'landscape'
                 ]
             ]
         ];
@@ -211,5 +213,18 @@ class CakePdfTest extends TestCase
             'top' => 45
         ];
         $this->assertEquals($expected, $pdf->margin());
+    }
+
+    /**
+     *
+     * @dataProvider provider
+     */
+    public function testConfigRead($config)
+    {
+        Configure::write('CakePdf', $config);
+        $pdf = new CakePdf();
+
+        $this->assertEquals($config['margin'], $pdf->margin());
+        $this->assertEquals($config['orientation'], $pdf->orientation());
     }
 }

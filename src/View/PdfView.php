@@ -1,15 +1,4 @@
 <?php
-/**
- * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
- *
- * Licensed under The MIT License
- * Redistributions of files must retain the above copyright notice.
- *
- * @copyright     Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://cakephp.org CakePHP(tm) Project
- * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
- */
 namespace CakePdf\View;
 
 use CakePdf\Pdf\CakePdf;
@@ -20,9 +9,6 @@ use Cake\Network\Request;
 use Cake\Network\Response;
 use Cake\View\View;
 
-/**
- * @package       Cake.View
- */
 class PdfView extends View
 {
 
@@ -43,7 +29,7 @@ class PdfView extends View
     /**
      * CakePdf Instance
      *
-     * @var object
+     * @var \CakePdf\Pdf\CakePdf|null
      */
     protected $_renderer = null;
 
@@ -95,7 +81,7 @@ class PdfView extends View
      * Return CakePdf instance, optionally set engine to be used
      *
      * @param array $config Array of pdf configs. When empty CakePdf instance will be returned.
-     * @return CakePdf
+     * @return \CakePdf\Pdf\CakePdf
      */
     public function renderer($config = null)
     {

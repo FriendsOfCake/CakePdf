@@ -159,6 +159,20 @@ class CakePdf
     protected $_title = null;
 
     /**
+     * Javascript delay before rendering document in milliseconds
+     *
+     * @var int
+     */
+    protected $_delay = null;
+
+    /**
+     * Window status required before rendering document
+     *
+     * @var string
+     */
+    protected $_windowStatus = null;
+
+    /**
      * Flag that tells if we need to pass it through crypto
      *
      * @var bool
@@ -202,7 +216,7 @@ class CakePdf
      *
      * @var array
      */
-    private $__availablePermissions = [
+    protected $_availablePermissions = [
         'print',
         'degraded_print',
         'modify',
@@ -220,19 +234,32 @@ class CakePdf
      */
     public function __construct($config = [])
     {
-        $config = array_merge([
-            'engine' => Configure::read('CakePdf.engine'),
-            'crypto' => Configure::read('CakePdf.crypto')
-        ], $config);
-        if ($config['engine']) {
+        $config = array_merge(
+            (array)Configure::read('CakePdf'),
+            $config
+        );
+
+        if (!empty($config['engine'])) {
             $this->engine($config['engine']);
         }
-
-        if ($config['crypto']) {
+        if (!empty($config['crypto'])) {
             $this->crypto($config['crypto']);
         }
 
-        $options = ['pageSize', 'orientation', 'margin', 'title', 'encoding', 'protect', 'userPassword', 'ownerPassword', 'permissions', 'cache'];
+        $options = [
+            'pageSize',
+            'orientation',
+            'margin',
+            'title',
+            'encoding',
+            'protect',
+            'userPassword',
+            'ownerPassword',
+            'permissions',
+            'cache',
+            'delay',
+            'windowStatus'
+        ];
         foreach ($options as $option) {
             if (isset($config[$option])) {
                 $this->{$option}($config[$option]);
@@ -604,6 +631,37 @@ class CakePdf
     }
 
     /**
+     * Get/Set javascript delay.
+     *
+     * @param null|int $delay delay to set in milliseconds
+     * @return mixed
+     */
+    public function delay($delay = null)
+    {
+        if ($delay === null) {
+            return $this->_delay;
+        }
+        $this->_delay = $delay;
+        return $this;
+    }
+
+    /**
+     * Get/Set the required window status for rendering
+     * Waits until the status is equal to the string before rendering the pdf
+     *
+     * @param null|string $status status to set as string
+     * @return mixed
+     */
+    public function windowStatus($status = null)
+    {
+        if ($status === null) {
+            return $this->_windowStatus;
+        }
+        $this->_windowStatus = $status;
+        return $this;
+    }
+
+    /**
      * Get/Set protection.
      *
      * @param null|bool $protect True or false
@@ -684,7 +742,7 @@ class CakePdf
 
         if (is_array($permissions)) {
             foreach ($permissions as $permission) {
-                if (!in_array($permission, $this->__availablePermissions)) {
+                if (!in_array($permission, $this->_availablePermissions)) {
                     throw new Exception(sprintf('Invalid permission: %s', $permission));
                 }
 

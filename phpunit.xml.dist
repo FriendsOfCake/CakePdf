@@ -13,8 +13,14 @@
          syntaxCheck="false">
 
     <testsuites>
-        <testsuite name="CakePdf">
-            <directory>./tests/</directory>
+        <testsuite name="CakePdf Plugin Tests">
+            <directory>./tests/TestCase</directory>
         </testsuite>
     </testsuites>
+
+    <filter>
+        <whitelist>
+            <directory suffix=".php">./src/</directory>
+        </whitelist>
+    </filter>
 </phpunit>
