@@ -29,8 +29,9 @@ var page = require('webpage').create(),
     fs = require('fs'),
     size;
 
-page.content = fs.read('/proc/self/3');
+page.content = fs.read('/proc/self/fd/3');
 page.render('/dev/stdout', { format: 'pdf' });
+phantom.exit();
 EOT;
 
     /**
@@ -81,7 +82,7 @@ EOT;
 
         $proc = proc_open($cmd, [0 => ['pipe', 'r'], 1 => ['pipe', 'w'], 2 => ['pipe', 'w'], 3 => ['pipe', 'r']], $pipes);
         
-        fwrite($pipes[0], $_phantomJsScript);
+        fwrite($pipes[0], $this->_phantomJsScript);
         fclose($pipes[0]);
         
         fwrite($pipes[3], $input);
@@ -115,7 +116,7 @@ EOT;
             throw new Exception(sprintf('phantomjs binary is not found or not executable: %s', $this->_binary));
         }
 
-        $command = $this->_binary;
+        $command = $this->_binary . ' /dev/stdin';
         //TODO: Add support for options like paper size etc.
 
         return $command;
