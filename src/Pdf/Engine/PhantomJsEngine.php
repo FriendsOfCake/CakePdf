@@ -10,7 +10,6 @@ class PhantomJsEngine extends AbstractPdfEngine
     /**
      * Path to the phantomjs executable binary
      *
-     * @access protected
      * @var string
      */
     protected $_binary = '/usr/bin/phantomjs';
@@ -18,7 +17,6 @@ class PhantomJsEngine extends AbstractPdfEngine
     /**
      * Script used by PhantomJs for rendering the PDF
      *
-     * @access protected
      * @var string
      */
      protected $_phantomJsScript = <<<'EOT'
