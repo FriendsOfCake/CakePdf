@@ -29,6 +29,7 @@ var page = require('webpage').create(),
     fs = require('fs'),
     size;
 
+page.paperSize = { format: 'A4', orientation: 'portrait', margin: '1cm' };
 page.content = fs.read('/proc/self/fd/3');
 page.render('/dev/stdout', { format: 'pdf' });
 phantom.exit();
