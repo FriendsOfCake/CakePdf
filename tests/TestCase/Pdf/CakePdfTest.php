@@ -212,4 +212,16 @@ class CakePdfTest extends TestCase
         ];
         $this->assertEquals($expected, $pdf->margin());
     }
+    /**
+     *
+     * @dataProvider provider
+     */
+    public function testHeaderHtml($config)
+    {
+        $pdf = new CakePdf($config);
+        $content = "<div>Test</div>";
+        $pdf->headerHtml($content);
+        $expected = $content;
+        $this->assertEquals($expected, $pdf->headerHtml());
+    }
 }
