@@ -22,11 +22,6 @@ class PdfTest2Engine extends AbstractPdfEngine
     }
 }
 
-/**
- * CakePdfTest class
- *
- * @package       CakePdf.Test.Case.Pdf
- */
 class CakePdfTest extends TestCase
 {
 
@@ -44,10 +39,17 @@ class CakePdfTest extends TestCase
                         'left' => 50,
                         'right' => 30,
                         'top' => 45
-                    ]
+                    ],
+                    'orientation' => 'landscape'
                 ]
             ]
         ];
+    }
+
+    public function setUp()
+    {
+        parent::setUp();
+        Configure::delete('Pdf');
     }
 
     /**
