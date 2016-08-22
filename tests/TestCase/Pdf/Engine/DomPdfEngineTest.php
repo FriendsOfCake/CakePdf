@@ -72,6 +72,7 @@ class DomPdfEngineTest extends TestCase
                 $this->assertEquals(TMP, $Options->getTempDir());
                 $this->assertFalse($Options->getIsJavascriptEnabled());
                 $this->assertTrue($Options->getIsHtml5ParserEnabled());
+
                 return $Dompdf->output();
             }));
 
