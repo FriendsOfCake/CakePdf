@@ -69,6 +69,7 @@ class PdfView extends View
             $this->subDir = null;
             $this->layoutPath = null;
             $response->type('html');
+
             return;
         }
         if (!$this->pdfConfig) {
