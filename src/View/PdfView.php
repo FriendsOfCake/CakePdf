@@ -88,6 +88,7 @@ class PdfView extends View
         if ($config !== null) {
             $this->_renderer = new CakePdf($config);
         }
+
         return $this->_renderer;
     }
 
@@ -115,6 +116,7 @@ class PdfView extends View
         }
 
         $this->Blocks->set('content', $this->renderer()->output($content));
+
         return $this->Blocks->get('content');
     }
 
@@ -129,6 +131,7 @@ class PdfView extends View
             return $this->pdfConfig['filename'];
         }
         $id = current($this->request->params['pass']);
+
         return strtolower($this->viewPath) . $id . '.pdf';
     }
 }
