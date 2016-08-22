@@ -320,6 +320,7 @@ class CakePdf
             return $this->_html;
         }
         $this->_html = $html;
+
         return $this;
     }
 
@@ -335,6 +336,7 @@ class CakePdf
     {
         $output = $this->output($html);
         $File = new File($destination, $create);
+
         return $File->write($output) && $File->close();
     }
 
@@ -366,6 +368,7 @@ class CakePdf
         }
         $this->_engineClass = new $engineClassName($this);
         $this->_engineClass->config($config);
+
         return $this->_engineClass;
     }
 
@@ -399,6 +402,7 @@ class CakePdf
         }
         $this->_cryptoClass = new $engineClassName($this);
         $this->_cryptoClass->config($config);
+
         return $this->_cryptoClass;
     }
 
@@ -429,6 +433,7 @@ class CakePdf
             return $this->_orientation;
         }
         $this->_orientation = $orientation;
+
         return $this;
     }
 
@@ -444,6 +449,7 @@ class CakePdf
             return $this->_encoding;
         }
         $this->_encoding = $encoding;
+
         return $this;
     }
 
@@ -466,6 +472,7 @@ class CakePdf
         }
 
         $this->_footer = compact('left', 'center', 'right');
+
         return $this;
     }
 
@@ -488,6 +495,7 @@ class CakePdf
         }
 
         $this->_header = compact('left', 'center', 'right');
+
         return $this;
     }
 
@@ -567,6 +575,7 @@ class CakePdf
             return $this->_marginBottom;
         }
         $this->_marginBottom = $margin;
+
         return $this;
     }
 
@@ -582,6 +591,7 @@ class CakePdf
             return $this->_marginLeft;
         }
         $this->_marginLeft = $margin;
+
         return $this;
     }
 
@@ -597,6 +607,7 @@ class CakePdf
             return $this->_marginRight;
         }
         $this->_marginRight = $margin;
+
         return $this;
     }
 
@@ -612,6 +623,7 @@ class CakePdf
             return $this->_marginTop;
         }
         $this->_marginTop = $margin;
+
         return $this;
     }
 
@@ -627,6 +639,7 @@ class CakePdf
             return $this->_title;
         }
         $this->_title = $title;
+
         return $this;
     }
 
@@ -642,6 +655,7 @@ class CakePdf
             return $this->_delay;
         }
         $this->_delay = $delay;
+
         return $this;
     }
 
@@ -658,6 +672,7 @@ class CakePdf
             return $this->_windowStatus;
         }
         $this->_windowStatus = $status;
+
         return $this;
     }
 
@@ -673,6 +688,7 @@ class CakePdf
             return $this->_protect;
         }
         $this->_protect = $protect;
+
         return $this;
     }
 
@@ -708,6 +724,7 @@ class CakePdf
             return $this->_ownerPassword;
         }
         $this->_ownerPassword = $password;
+
         return $this;
     }
 
@@ -784,6 +801,7 @@ class CakePdf
         }
 
         $this->_cache = $cache;
+
         return $this;
     }
     /**
@@ -855,6 +873,7 @@ class CakePdf
             return $this->_viewRender;
         }
         $this->_viewRender = $viewClass;
+
         return $this;
     }
 
@@ -870,6 +889,7 @@ class CakePdf
             return $this->_viewVars;
         }
         $this->_viewVars = array_merge($this->_viewVars, (array)$viewVars);
+
         return $this;
     }
 
@@ -885,6 +905,7 @@ class CakePdf
             return $this->_theme;
         }
         $this->_theme = $theme;
+
         return $this;
     }
 
@@ -900,6 +921,7 @@ class CakePdf
             return $this->_helpers;
         }
         $this->_helpers = (array)$helpers;
+
         return $this;
     }
 
@@ -921,6 +943,7 @@ class CakePdf
         $View->layout = $this->_layout;
         $View->helpers = $this->_helpers;
         $View->loadHelpers();
+
         return $View->render();
     }
 }
