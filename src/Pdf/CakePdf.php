@@ -418,6 +418,7 @@ class CakePdf
             return $this->_pageSize;
         }
         $this->_pageSize = $pageSize;
+
         return $this;
     }
 
@@ -789,6 +790,7 @@ class CakePdf
 
         if ($cache === false) {
             $this->_cache = false;
+
             return $this;
         }
 
