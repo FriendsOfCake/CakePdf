@@ -41,7 +41,7 @@ DomPdf, Mpdf and Tcpdf can be installed via composer using on of the following c
 
 ```
 composer require dompdf/dompdf
-composer require tecnick.com/tcpdf
+composer require tecnickcom/tcpdf
 composer require mpdf/mpdf
 ```
 
