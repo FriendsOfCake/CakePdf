@@ -23,6 +23,7 @@ class DomPdfEngine extends AbstractPdfEngine
         $DomPDF = $this->_createInstance($options);
         $DomPDF->setPaper($this->_Pdf->pageSize(), $this->_Pdf->orientation());
         $DomPDF = $this->_render($this->_Pdf, $DomPDF);
+
         return $this->_output($DomPDF);
     }
 
@@ -48,6 +49,7 @@ class DomPdfEngine extends AbstractPdfEngine
     {
         $DomPDF->loadHtml($Pdf->html());
         $DomPDF->render();
+
         return $DomPDF;
     }
 

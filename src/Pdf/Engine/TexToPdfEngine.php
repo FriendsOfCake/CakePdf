@@ -38,6 +38,7 @@ class TexToPdfEngine extends AbstractPdfEngine
         $file = sha1($output);
         $texFile = $this->config('options.output-directory') . DS . $file;
         file_put_contents($texFile, $output);
+
         return $texFile;
     }
 
@@ -83,6 +84,7 @@ class TexToPdfEngine extends AbstractPdfEngine
 
         $result = file_get_contents($texFile . '.pdf');
         $this->_cleanUpTexFiles($texFile);
+
         return $result;
     }
 
@@ -132,6 +134,7 @@ class TexToPdfEngine extends AbstractPdfEngine
                 $command .= sprintf(' --%s %s', $key, escapeshellarg($value));
             }
         }
+
         return $command;
     }
 

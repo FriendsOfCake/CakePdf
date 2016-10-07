@@ -16,6 +16,7 @@ class MpdfEngine extends AbstractPdfEngine
         $orientation = $this->_Pdf->orientation() == 'landscape' ? 'L' : 'P';
         $MPDF = new \mPDF($this->_Pdf->encoding(), $this->_Pdf->pageSize() . '-' . $orientation);
         $MPDF->writeHTML($this->_Pdf->html());
+
         return $MPDF->Output('', 'S');
     }
 }

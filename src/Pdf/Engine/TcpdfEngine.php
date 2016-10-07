@@ -16,6 +16,7 @@ class TcpdfEngine extends AbstractPdfEngine
         $TCPDF = new \TCPDF($this->_Pdf->orientation(), 'mm', $this->_Pdf->pageSize());
         $TCPDF->AddPage();
         $TCPDF->writeHTML($this->_Pdf->html());
+
         return $TCPDF->Output('', 'S');
     }
 }

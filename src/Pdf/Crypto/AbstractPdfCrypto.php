@@ -61,8 +61,10 @@ abstract class AbstractPdfCrypto
             if (!empty($this->_config[$config])) {
                 return $this->_config[$config];
             }
+
             return false;
         }
+
         return $this->_config;
     }
 }
