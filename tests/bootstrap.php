@@ -4,9 +4,8 @@ use Cake\Core\Configure;
 use Cake\Core\Plugin;
 use Cake\Datasource\ConnectionManager;
 use Cake\Filesystem\Folder;
-use Cake\I18n\I18n;
-use Cake\Log\Log;
 use Cake\Routing\DispatcherFactory;
+use Cake\View\View;
 
 if (!defined('DS')) {
     define('DS', DIRECTORY_SEPARATOR);
