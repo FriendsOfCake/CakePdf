@@ -86,3 +86,6 @@ ConnectionManager::config('test', [
 
 Plugin::load('CakePdf', ['path' => ROOT, 'routes' => true]);
 DispatcherFactory::add('ControllerFactory');
+
+// Faking the AppView class for tests
+class_alias(View::class, 'App\View\AppView');
