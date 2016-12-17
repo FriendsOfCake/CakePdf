@@ -176,7 +176,7 @@ Many people mix both ways and don't get the expected results.
 You can create PDF view and layout files for your controller actions and have
 them automatically rendered. Place the view templates in a 'pdf' subdir, for
 instance `src/Template/Invoices/pdf/view.ctp`, layouts will be in
-`src/Template/Layouts/pdf/default.ctp`.
+`src/Template/Layout/pdf/default.ctp`.
 
 Make sure your `InvoicesController` class
 [loads the `RequestHandler` component](http://book.cakephp.org/3.0/en/controllers/components/request-handling.html)
@@ -195,7 +195,7 @@ registering it in your routes configuration, and have your requests send a
 
 You can use CakePdf lib to create raw PDF data with a view template.
 The view file path would look like `src/Template/Pdf/newsletter.ctp`.
-Layout file path would be like `src/Template/Layouts/pdf/default.ctp`
+Layout file path would be like `src/Template/Layout/pdf/default.ctp`
 Note that layouts for both usage types are within same directory, but the view
 templates use different file paths Optionally you can also write the raw data to
 file.
