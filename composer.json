@@ -13,7 +13,7 @@
     },
     "suggest": {
         "dompdf/dompdf": "If you wish to use the DomPdf engine",
-        "tecnick.com/tcpdf": "If you wish to use the Tcpdf engine",
+        "tecnickcom/tcpdf": "If you wish to use the Tcpdf engine",
         "mpdf/mpdf": "If you wish to use the Mpdf engine"
     },
     "autoload": {
