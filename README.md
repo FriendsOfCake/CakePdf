@@ -27,7 +27,7 @@ Current engines:
 Using [Composer](http://getcomposer.org):
 
 ```
-composer require friendsofcake/CakePdf
+composer require friendsofcake/cakepdf
 ```
 
 CakePdf does not include any of the supported PDF engines, you need to install
