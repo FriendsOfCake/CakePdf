@@ -114,7 +114,11 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
 
         $command = $this->_binary;
         foreach ($options as $key => $value) {
-            if (empty($value)) {
+            if (is_array($value)) {
+                foreach($value as $k => $v) {
+                    $command .= sprintf(' --%s %s %s', $key, escapeshellarg($k), escapeshellarg($v));
+                }
+            } elseif (empty($value)) {
                 continue;
             } elseif ($value === true) {
                 $command .= ' --' . $key;
