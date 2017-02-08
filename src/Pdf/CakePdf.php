@@ -234,6 +234,10 @@ class CakePdf
      */
     public function __construct($config = [])
     {
+        $this->config($config);
+    }
+    
+    public function config($config = []) {
         $config = array_merge(
             (array)Configure::read('CakePdf'),
             $config
@@ -265,6 +269,8 @@ class CakePdf
                 $this->{$option}($config[$option]);
             }
         }
+        
+        return $config;
     }
 
     /**
