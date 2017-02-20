@@ -45,7 +45,7 @@ class WkHtmlToPdfEngineTest extends TestCase
                     'string' => 'value',
                     'integer' => 42,
                     'array' => [
-                        'first' => 'fistValue',
+                        'first' => 'firstValue',
                         'second' => 'secondValue'
                     ]
                 ]
