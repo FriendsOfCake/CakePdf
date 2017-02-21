@@ -145,11 +145,10 @@ class DomPdfEngineTest extends TestCase
             ->expects($this->once())
             ->method('_createInstance')
             ->will($this->returnCallback(function ($options) {
-                $Dompdf = $this->getMock(
-                    '\Dompdf\Dompdf',
-                    ['setPaper', 'loadHtml', 'render', 'output'],
-                    [$options]
-                );
+                $Dompdf = $this->getMockBuilder('\Dompdf\Dompdf')
+                    ->setMethods(['setPaper', 'loadHtml', 'render', 'output'])
+                    ->setConstructorArgs([$options])
+                    ->getMock();
                 $Dompdf
                     ->expects($this->at(0))
                     ->method('setPaper')
