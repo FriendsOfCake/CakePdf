@@ -9,7 +9,8 @@
         "cakephp/cakephp": "~3.1"
     },
     "require-dev": {
-        "phpunit/phpunit": "*"
+        "phpunit/phpunit": "<6.0",
+        "dompdf/dompdf":"~0.7"
     },
     "suggest": {
         "dompdf/dompdf": "If you wish to use the DomPdf engine",
