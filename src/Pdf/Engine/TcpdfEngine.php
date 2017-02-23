@@ -14,6 +14,9 @@ class TcpdfEngine extends AbstractPdfEngine
         //TCPDF often produces a whole bunch of errors, although there is a pdf created when debug = 0
         //Configure::write('debug', 0);
         $TCPDF = new \TCPDF($this->_Pdf->orientation(), 'mm', $this->_Pdf->pageSize());
+        $TCPDF->setPrintFooter(false);
+        $TCPDF->setPrintHeader(false);
+        $TCPDF->setFont('freesans');
         $TCPDF->AddPage();
         $TCPDF->writeHTML($this->_Pdf->html());
 
