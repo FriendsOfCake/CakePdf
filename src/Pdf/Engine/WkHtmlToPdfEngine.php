@@ -10,10 +10,16 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
     /**
      * Path to the wkhtmltopdf executable binary
      *
-     * @access protected
      * @var string
      */
     protected $_binary = '/usr/bin/wkhtmltopdf';
+
+    /**
+     * Flag to indicate if the environment is windows
+     *
+     * @var bool
+     */
+    protected $_windowsEnvironment;
 
     /**
      * Constructor
@@ -23,6 +29,7 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
     public function __construct(CakePdf $Pdf)
     {
         parent::__construct($Pdf);
+        $this->_windowsEnvironment = strtoupper(substr(PHP_OS, 0, 3)) === 'WIN';
     }
 
     /**
@@ -114,7 +121,12 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
         }
         $options = array_merge($options, (array)$this->config('options'));
 
-        $command = $this->_binary;
+        if ($this->_windowsEnvironment) {
+            $command = '"' . $this->_binary . '"';
+        } else {
+            $command = $this->_binary;
+        }
+
         foreach ($options as $key => $value) {
             if (empty($value)) {
                 continue;
@@ -138,6 +150,10 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
             }
         }
         $command .= " - -";
+
+        if ($this->_windowsEnvironment) {
+            $command = '"' . $command . '"';
+        }
 
         return $command;
     }
