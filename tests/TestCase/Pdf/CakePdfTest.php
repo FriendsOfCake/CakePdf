@@ -25,12 +25,6 @@ class PdfTest2Engine extends AbstractPdfEngine
 class CakePdfTest extends TestCase
 {
 
-    public function setUp()
-    {
-        parent::setUp();
-        Configure::delete('Pdf');
-    }
-
     /**
      *
      */
@@ -50,6 +44,12 @@ class CakePdfTest extends TestCase
                 ]
             ]
         ];
+    }
+
+    public function setUp()
+    {
+        parent::setUp();
+        Configure::delete('Pdf');
     }
 
     /**
@@ -214,17 +214,16 @@ class CakePdfTest extends TestCase
         ];
         $this->assertEquals($expected, $pdf->margin());
     }
-
     /**
      *
      * @dataProvider provider
      */
-    public function testConfigRead($config)
+    public function testHeaderHtml($config)
     {
-        Configure::write('CakePdf', $config);
-        $pdf = new CakePdf();
-
-        $this->assertEquals($config['margin'], $pdf->margin());
-        $this->assertEquals($config['orientation'], $pdf->orientation());
+        $pdf = new CakePdf($config);
+        $content = "<div>Test</div>";
+        $pdf->headerHtml($content);
+        $expected = $content;
+        $this->assertEquals($expected, $pdf->headerHtml());
     }
 }

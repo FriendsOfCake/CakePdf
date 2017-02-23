@@ -112,16 +112,44 @@ class CakePdf
     /**
      * Footer HTML
      *
-     * @var string
+     * @var array
      */
     protected $_footer = ['left' => null, 'center' => null, 'right' => null];
 
     /**
-     * Header HTML
+     * Footer String HTML
      *
      * @var string
      */
+    protected $_footerHtml = null;
+
+    /**
+     * Footer spacing in mm
+     *
+     * @var number
+     */
+    protected $_footerSpacing = null;
+
+    /**
+     * Header HTML
+     *
+     * @var array
+     */
     protected $_header = ['left' => null, 'center' => null, 'right' => null];
+
+    /**
+     * Header String HTML
+     *
+     * @var string
+     */
+    protected $_headerHtml = null;
+
+    /**
+     * Header spacing in mm
+     *
+     * @var number
+     */
+    protected $_headerSpacing = null;
 
     /**
      * Bottom margin in mm
@@ -268,79 +296,6 @@ class CakePdf
     }
 
     /**
-     * Create pdf content from html. Can be used to write to file or with PdfView to display
-     *
-     * @param null|string $html Html content to render. If omitted, the template will be rendered with viewVars and layout that have been set.
-     * @throws \Cake\Core\Exception\Exception
-     * @return string
-     */
-    public function output($html = null)
-    {
-        $Engine = $this->engine();
-        if (!$Engine) {
-            throw new Exception(__d('cake_pdf', 'Engine is not loaded'));
-        }
-
-        if ($html === null) {
-            $html = $this->_render();
-        }
-        $this->html($html);
-
-        $cache = $this->cache();
-        if ($cache) {
-            $cacheKey = md5(serialize($this));
-            $cached = Cache::read($cacheKey, $cache);
-            if ($cached) {
-                return $cached;
-            }
-        }
-
-        $output = $Engine->output();
-
-        if ($this->protect()) {
-            $output = $this->crypto()->encrypt($output);
-        }
-
-        if ($cache) {
-            Cache::write($cacheKey, $output, $cache);
-        }
-
-        return $output;
-    }
-
-    /**
-     * Get/Set Html.
-     *
-     * @param null|string $html Html to set
-     * @return mixed
-     */
-    public function html($html = null)
-    {
-        if ($html === null) {
-            return $this->_html;
-        }
-        $this->_html = $html;
-
-        return $this;
-    }
-
-    /**
-     * Writes output to file
-     *
-     * @param string $destination Absolute file path to write to
-     * @param bool $create Create file if it does not exist (if true)
-     * @param string $html Html to write
-     * @return bool
-     */
-    public function write($destination, $create = true, $html = null)
-    {
-        $output = $this->output($html);
-        $File = new File($destination, $create);
-
-        return $File->write($output) && $File->close();
-    }
-
-    /**
      * Load PdfEngine
      *
      * @param string $name Classname of pdf engine without `Engine` suffix. For example `CakePdf.DomPdf`
@@ -404,6 +359,165 @@ class CakePdf
         $this->_cryptoClass->config($config);
 
         return $this->_cryptoClass;
+    }
+
+    /**
+     * Writes output to file
+     *
+     * @param string $destination Absolute file path to write to
+     * @param bool $create Create file if it does not exist (if true)
+     * @param string $html Html to write
+     * @return bool
+     */
+    public function write($destination, $create = true, $html = null)
+    {
+        $output = $this->output($html);
+        $File = new File($destination, $create);
+
+        return $File->write($output) && $File->close();
+    }
+
+    /**
+     * Create pdf content from html. Can be used to write to file or with PdfView to display
+     *
+     * @param null|string $html Html content to render. If omitted, the template will be rendered with viewVars and layout that have been set.
+     * @throws \Cake\Core\Exception\Exception
+     * @return string
+     */
+    public function output($html = null)
+    {
+        $Engine = $this->engine();
+        if (!$Engine) {
+            throw new Exception(__d('cake_pdf', 'Engine is not loaded'));
+        }
+
+        if ($html === null) {
+            $html = $this->_render();
+        }
+        $this->html($html);
+
+        $cache = $this->cache();
+        if ($cache) {
+            $cacheKey = md5(serialize($this));
+            $cached = Cache::read($cacheKey, $cache);
+            if ($cached) {
+                return $cached;
+            }
+        }
+
+        $output = $Engine->output();
+
+        if ($this->protect()) {
+            $output = $this->crypto()->encrypt($output);
+        }
+
+        if ($cache) {
+            Cache::write($cacheKey, $output, $cache);
+        }
+
+        return $output;
+    }
+
+    /**
+     * Build and set all the view properties needed to render the layout and template.
+     *
+     * @return array The rendered template wrapped in layout.
+     */
+    protected function _render()
+    {
+        $viewClass = $this->viewRender();
+        $viewClass = App::className($viewClass, 'View', $viewClass == 'View' ? '' : 'View');
+        $View = new $viewClass(Request::createFromGlobals());
+        $View->viewVars = $this->_viewVars;
+        $View->theme = $this->_theme;
+        $View->layoutPath = $this->_layoutPath;
+        $View->templatePath = $this->_templatePath;
+        $View->view = $this->_template;
+        $View->layout = $this->_layout;
+        $View->helpers = $this->_helpers;
+        $View->loadHelpers();
+
+        return $View->render();
+    }
+
+    /**
+     * View class for render
+     *
+     * @param string $viewClass name of the view class to use
+     * @return mixed
+     */
+    public function viewRender($viewClass = null)
+    {
+        if ($viewClass === null) {
+            return $this->_viewRender;
+        }
+        $this->_viewRender = $viewClass;
+
+        return $this;
+    }
+
+    /**
+     * Get/Set Html.
+     *
+     * @param null|string $html Html to set
+     * @return mixed
+     */
+    public function html($html = null)
+    {
+        if ($html === null) {
+            return $this->_html;
+        }
+        $this->_html = $html;
+
+        return $this;
+    }
+
+    /**
+     * Get/Set caching.
+     *
+     * @param null|bool|string $cache Cache config name to use, If true is passed, 'cake_pdf' will be used.
+     * @throws \Cake\Core\Exception\Exception
+     * @return mixed
+     */
+    public function cache($cache = null)
+    {
+        if ($cache === null) {
+            return $this->_cache;
+        }
+
+        if ($cache === false) {
+            $this->_cache = false;
+
+            return $this;
+        }
+
+        if ($cache === true) {
+            $cache = 'cake_pdf';
+        }
+
+        if (!in_array($cache, Cache::configured())) {
+            throw new Exception(sprintf('CakePdf cache is not configured: %s', $cache));
+        }
+
+        $this->_cache = $cache;
+
+        return $this;
+    }
+
+    /**
+     * Get/Set protection.
+     *
+     * @param null|bool $protect True or false
+     * @return mixed
+     */
+    public function protect($protect = null)
+    {
+        if ($protect === null) {
+            return $this->_protect;
+        }
+        $this->_protect = $protect;
+
+        return $this;
     }
 
     /**
@@ -478,6 +592,38 @@ class CakePdf
     }
 
     /**
+     * Get/Set footer HTML in string.
+     *
+     * @param string $html Html content in string
+     * @return mixed
+     */
+    public function footerHtml($html = null)
+    {
+        if ($html === null) {
+            return $this->_footerHtml;
+        }
+        $this->_footerHtml = $html;
+
+        return $this;
+    }
+
+    /**
+     * Get/Set footer Spacing.
+     *
+     * @param null $value return spacing value
+     * @return mixed
+     */
+    public function footerSpacing($value = null)
+    {
+        if ($value === null) {
+            return $this->_footerSpacing;
+        }
+        $this->_footerSpacing = $value;
+
+        return $this;
+    }
+
+    /**
      * Get/Set header HTML.
      *
      * @param null|string $left left side header
@@ -496,6 +642,38 @@ class CakePdf
         }
 
         $this->_header = compact('left', 'center', 'right');
+
+        return $this;
+    }
+
+    /**
+     * Get/Set header HTML in string.
+     *
+     * @param string $html Html content in string
+     * @return mixed
+     */
+    public function headerHtml($html = null)
+    {
+        if ($html === null) {
+            return $this->_headerHtml;
+        }
+        $this->_headerHtml = $html;
+
+        return $this;
+    }
+
+    /**
+     * Get/Set header Spacing.
+     *
+     * @param null $value return spacing value
+     * @return mixed
+     */
+    public function headerSpacing($value = null)
+    {
+        if ($value === null) {
+            return $this->_headerSpacing;
+        }
+        $this->_headerSpacing = $value;
 
         return $this;
     }
@@ -678,22 +856,6 @@ class CakePdf
     }
 
     /**
-     * Get/Set protection.
-     *
-     * @param null|bool $protect True or false
-     * @return mixed
-     */
-    public function protect($protect = null)
-    {
-        if ($protect === null) {
-            return $this->_protect;
-        }
-        $this->_protect = $protect;
-
-        return $this;
-    }
-
-    /**
      * Get/Set userPassword
      *
      * The user password is used to control who can open the PDF document.
@@ -776,37 +938,6 @@ class CakePdf
     }
 
     /**
-     * Get/Set caching.
-     *
-     * @param null|bool|string $cache Cache config name to use, If true is passed, 'cake_pdf' will be used.
-     * @throws \Cake\Core\Exception\Exception
-     * @return mixed
-     */
-    public function cache($cache = null)
-    {
-        if ($cache === null) {
-            return $this->_cache;
-        }
-
-        if ($cache === false) {
-            $this->_cache = false;
-
-            return $this;
-        }
-
-        if ($cache === true) {
-            $cache = 'cake_pdf';
-        }
-
-        if (!in_array($cache, Cache::configured())) {
-            throw new Exception(sprintf('CakePdf cache is not configured: %s', $cache));
-        }
-
-        $this->_cache = $cache;
-
-        return $this;
-    }
-    /**
      * Template and layout
      *
      * @param mixed $template Template name or null to not use
@@ -864,22 +995,6 @@ class CakePdf
     }
 
     /**
-     * View class for render
-     *
-     * @param string $viewClass name of the view class to use
-     * @return mixed
-     */
-    public function viewRender($viewClass = null)
-    {
-        if ($viewClass === null) {
-            return $this->_viewRender;
-        }
-        $this->_viewRender = $viewClass;
-
-        return $this;
-    }
-
-    /**
      * Variables to be set on render
      *
      * @param array $viewVars view variables to set
@@ -925,27 +1040,5 @@ class CakePdf
         $this->_helpers = (array)$helpers;
 
         return $this;
-    }
-
-    /**
-     * Build and set all the view properties needed to render the layout and template.
-     *
-     * @return array The rendered template wrapped in layout.
-     */
-    protected function _render()
-    {
-        $viewClass = $this->viewRender();
-        $viewClass = App::className($viewClass, 'View', $viewClass == 'View' ? '' : 'View');
-        $View = new $viewClass(Request::createFromGlobals());
-        $View->viewVars = $this->_viewVars;
-        $View->theme = $this->_theme;
-        $View->layoutPath = $this->_layoutPath;
-        $View->templatePath = $this->_templatePath;
-        $View->view = $this->_template;
-        $View->layout = $this->_layout;
-        $View->helpers = $this->_helpers;
-        $View->loadHelpers();
-
-        return $View->render();
     }
 }

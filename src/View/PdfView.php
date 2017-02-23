@@ -25,20 +25,18 @@ class PdfView extends View
      * @var string
      */
     public $layoutPath = 'pdf';
-
-    /**
-     * CakePdf Instance
-     *
-     * @var \CakePdf\Pdf\CakePdf|null
-     */
-    protected $_renderer = null;
-
     /**
      * List of pdf configs collected from the associated controller.
      *
      * @var array
      */
     public $pdfConfig = [];
+    /**
+     * CakePdf Instance
+     *
+     * @var \CakePdf\Pdf\CakePdf|null
+     */
+    protected $_renderer = null;
 
     /**
      * Constructor
