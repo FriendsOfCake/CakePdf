@@ -11,10 +11,16 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
     /**
      * Path to the wkhtmltopdf executable binary
      *
-     * @access protected
      * @var string
      */
     protected $_binary = '/usr/bin/wkhtmltopdf';
+
+    /**
+     * Flag to indicate if the environment is windows
+     *
+     * @var bool
+     */
+    protected $_windowsEnvironment;
 
     /**
      * Constructor
@@ -24,31 +30,35 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
     public function __construct(CakePdf $Pdf)
     {
         parent::__construct($Pdf);
+        $this->_windowsEnvironment = strtoupper(substr(PHP_OS, 0, 3)) === 'WIN';
     }
 
     /**
      * Generates Pdf from html
      *
      * @throws \Cake\Core\Exception\Exception
-     * @return string raw pdf data
+     * @return string Raw PDF data
+     * @throws \Exception If no output is generated to stdout by wkhtmltopdf.
      */
     public function output()
     {
-        $content = $this->_exec($this->_getCommand(), $this->_Pdf->html());
+        $command = $this->_getCommand();
+        $content = $this->_exec($command, $this->_Pdf->html());
 
-        if (strpos(mb_strtolower($content['stderr']), 'error')) {
-            throw new Exception("System error <pre>" . $content['stderr'] . "</pre>");
+        if (!empty($content['stdout'])) {
+            return $content['stdout'];
         }
 
-        if (mb_strlen($content['stdout'], $this->_Pdf->encoding()) === 0) {
-            throw new Exception("WKHTMLTOPDF didn't return any data");
+        if (!empty($content['stderr'])) {
+            throw new Exception(sprintf(
+                'System error "%s" when executing command "%s". ' .
+                'Try using the binary provided on http://wkhtmltopdf.org/downloads.html',
+                $content['stderr'],
+                $command
+            ));
         }
 
-        if ((int)$content['return'] !== 0 && !empty($content['stderr'])) {
-            throw new Exception("Shell error, return code: " . (int)$content['return']);
-        }
-
-        return $content['stdout'];
+        throw new Exception("WKHTMLTOPDF didn't return any data");
     }
 
     /**
@@ -113,10 +123,19 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
         }
         $options = array_merge($options, (array)$this->config('options'));
 
-        $command = $this->_binary;
+        if ($this->_windowsEnvironment) {
+            $command = '"' . $this->_binary . '"';
+        } else {
+            $command = $this->_binary;
+        }
+
         foreach ($options as $key => $value) {
             if (empty($value)) {
                 continue;
+            } elseif (is_array($value)) {
+                foreach ($value as $k => $v) {
+                    $command .= sprintf(' --%s %s %s', $key, escapeshellarg($k), escapeshellarg($v));
+                }
             } elseif ($value === true) {
                 $command .= ' --' . $key;
             } else {
@@ -155,6 +174,10 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
             $command .= " --header-spacing \"" . $headerSpacing . "\"";
         }
         $command .= " - -";
+
+        if ($this->_windowsEnvironment) {
+            $command = '"' . $command . '"';
+        }
 
         return $command;
     }
