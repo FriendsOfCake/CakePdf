@@ -1,15 +1,18 @@
 <?php
 namespace CakePdf\View;
 
+use App\View\AppView;
 use CakePdf\Pdf\CakePdf;
 use Cake\Core\Configure;
 use Cake\Core\Exception\Exception;
 use Cake\Event\EventManager;
 use Cake\Network\Request;
 use Cake\Network\Response;
-use Cake\View\View;
 
-class PdfView extends View
+/**
+ * Renders PDFs instead of HTML.
+ */
+class PdfView extends AppView
 {
 
     /**
@@ -65,7 +68,7 @@ class PdfView extends View
         );
 
         $response->type('pdf');
-        if (isset($viewOptions['name']) && $viewOptions['name'] == 'Error') {
+        if (isset($viewOptions['name']) && $viewOptions['name'] === 'Error') {
             $this->subDir = null;
             $this->layoutPath = null;
             $response->type('html');
@@ -103,10 +106,10 @@ class PdfView extends View
     public function render($view = null, $layout = null)
     {
         $content = parent::render($view, $layout);
-        if ($this->response->type() == 'text/html') {
+        if ($this->response->type() === 'text/html') {
             return $content;
         }
-        if ($this->renderer() == null) {
+        if ($this->renderer() === null) {
             $this->response->type('html');
 
             return $content;
