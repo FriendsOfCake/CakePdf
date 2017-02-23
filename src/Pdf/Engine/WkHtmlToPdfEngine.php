@@ -62,32 +62,6 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
     }
 
     /**
-     * Execute the WkHtmlToPdf commands for rendering pdfs
-     *
-     * @param string $cmd the command to execute
-     * @param string $input Html to pass to wkhtmltopdf
-     * @return string the result of running the command to generate the pdf
-     */
-    protected function _exec($cmd, $input)
-    {
-        $result = ['stdout' => '', 'stderr' => '', 'return' => ''];
-
-        $proc = proc_open($cmd, [0 => ['pipe', 'r'], 1 => ['pipe', 'w'], 2 => ['pipe', 'w']], $pipes);
-        fwrite($pipes[0], $input);
-        fclose($pipes[0]);
-
-        $result['stdout'] = stream_get_contents($pipes[1]);
-        fclose($pipes[1]);
-
-        $result['stderr'] = stream_get_contents($pipes[2]);
-        fclose($pipes[2]);
-
-        $result['return'] = proc_close($proc);
-
-        return $result;
-    }
-
-    /**
      * Get the command to render a pdf
      *
      * @return string the command for generating the pdf
@@ -217,7 +191,8 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
             throw new Exception('Unable to make temp file for PDF rendering: ' . $key);
         }
         if (!$this->config('webroot-temp-disable-wrapper')) {
-            $content = sprintf('<!DOCTYPE html><html><head><script>' .
+            $content = sprintf(
+                '<!DOCTYPE html><html><head><script>' .
                 'function subst() { var vars={}; var x=window.location.search.substring(1).split("&"); for (var i in x) {var z=x[i].split("=",2);vars[z[0]] = unescape(z[1]);} var x=["frompage","topage","page","webpage","section","subsection","subsubsection"]; for (var i in x) { var y = document.getElementsByClassName(x[i]); for (var j=0; j<y.length; ++j) y[j].textContent = vars[x[i]]; } }' .
                 '</script></head><body style="border:0; margin: 0;padding: 0;line-height: 1;vertical-align: baseline;" onload="subst()">%s</body></html>',
                 $content
@@ -226,5 +201,31 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
         $File->write($content);
 
         return $filepath;
+    }
+
+    /**
+     * Execute the WkHtmlToPdf commands for rendering pdfs
+     *
+     * @param string $cmd the command to execute
+     * @param string $input Html to pass to wkhtmltopdf
+     * @return string the result of running the command to generate the pdf
+     */
+    protected function _exec($cmd, $input)
+    {
+        $result = ['stdout' => '', 'stderr' => '', 'return' => ''];
+
+        $proc = proc_open($cmd, [0 => ['pipe', 'r'], 1 => ['pipe', 'w'], 2 => ['pipe', 'w']], $pipes);
+        fwrite($pipes[0], $input);
+        fclose($pipes[0]);
+
+        $result['stdout'] = stream_get_contents($pipes[1]);
+        fclose($pipes[1]);
+
+        $result['stderr'] = stream_get_contents($pipes[2]);
+        fclose($pipes[2]);
+
+        $result['return'] = proc_close($proc);
+
+        return $result;
     }
 }

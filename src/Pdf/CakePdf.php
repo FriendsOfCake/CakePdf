@@ -603,6 +603,7 @@ class CakePdf
             return $this->_footerHtml;
         }
         $this->_footerHtml = $html;
+
         return $this;
     }
 
@@ -618,6 +619,7 @@ class CakePdf
             return $this->_footerSpacing;
         }
         $this->_footerSpacing = $value;
+
         return $this;
     }
 
