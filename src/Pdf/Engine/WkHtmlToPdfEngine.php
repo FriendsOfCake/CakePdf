@@ -36,14 +36,19 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
      * Generates Pdf from html
      *
      * @throws \Cake\Core\Exception\Exception
-     * @return string raw pdf data
+     * @return string Raw PDF data
+     * @throws \Exception If no output is generated to stdout by wkhtmltopdf.
      */
     public function output()
     {
         $command = $this->_getCommand();
         $content = $this->_exec($command, $this->_Pdf->html());
 
-        if ((int)$content['return'] !== 0 || !empty($content['stderr'])) {
+        if (!empty($content['stdout'])) {
+            return $content['stdout'];
+        }
+
+        if (!empty($content['stderr'])) {
             throw new Exception(sprintf(
                 'System error "%s" when executing command "%s". ' .
                 'Try using the binary provided on http://wkhtmltopdf.org/downloads.html',
@@ -52,11 +57,7 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
             ));
         }
 
-        if (mb_strlen($content['stdout'], $this->_Pdf->encoding()) === 0) {
-            throw new Exception("WKHTMLTOPDF didn't return any data");
-        }
-
-        return $content['stdout'];
+        throw new Exception("WKHTMLTOPDF didn't return any data");
     }
 
     /**
