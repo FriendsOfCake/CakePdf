@@ -103,6 +103,15 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
             throw new Exception(sprintf('wkhtmltopdf binary is not found or not executable: %s', $this->_binary));
         }
 
+        $binaryWrapper = $this->config('binaryWrapper');
+
+        if ($binaryWrapper) {
+            if (!is_executable($binaryWrapper)) {
+                throw new Exception(sprintf('wrapper binary is not found or not executable: %s', $binaryWrapper));
+            }
+            $this->_binary = $binaryWrapper . ' ' . $this->_binary;
+        }
+
         $options = [
             'quiet' => true,
             'print-media-type' => true,

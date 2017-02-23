@@ -91,6 +91,7 @@ Configuration options:
 * engine: Engine to be used (required), or an array of engine config options
   * className: Engine class to use
   * binary: Binary file to use (Only for wkhtmltopdf)
+  * binaryWrapper: A wrapper binary like `xvfb-run` (Only for wkhtmltopdf)
   * options: Engine specific options. Currently only for `WkHtmlToPdf`, where the options
     are passed as CLI arguments, and for `DomPdf`, where the options are passed to the
     `DomPdf` class constructor.
