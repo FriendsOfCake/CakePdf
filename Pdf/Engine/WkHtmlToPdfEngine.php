@@ -107,7 +107,6 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine {
 		}
 		$command .= " - -";
 
-		die($command);
 		return $command;
 	}
 }
