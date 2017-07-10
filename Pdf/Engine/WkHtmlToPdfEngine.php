@@ -75,6 +75,7 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine {
  */
 	protected function _getCommand() {
 		$binary = $this->config('binary');
+		$options = $this->config('options');
 
 		if ($binary) {
 			$this->binary = $binary;
@@ -85,7 +86,9 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine {
 		$command = $this->binary;
 
 		$command .= " -q";
-		$command .= " --print-media-type";
+		if ($options['print-media-type']) {
+			$command .= " --print-media-type";
+		}
 		$command .= " --orientation " . $this->_Pdf->orientation();
 		$command .= " --page-size " . $this->_Pdf->pageSize();
 		$command .= " --encoding " . $this->_Pdf->encoding();
@@ -104,6 +107,7 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine {
 		}
 		$command .= " - -";
 
+		die($command);
 		return $command;
 	}
 }
