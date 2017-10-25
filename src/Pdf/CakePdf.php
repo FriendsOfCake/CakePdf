@@ -227,6 +227,8 @@ class CakePdf
         'fill_in'
     ];
 
+    protected $_mode = 'th';
+
     /**
      * Constructor
      *
@@ -258,7 +260,8 @@ class CakePdf
             'permissions',
             'cache',
             'delay',
-            'windowStatus'
+            'windowStatus',
+            'mode'
         ];
         foreach ($options as $option) {
             if (isset($config[$option])) {
@@ -452,6 +455,22 @@ class CakePdf
         $this->_encoding = $encoding;
 
         return $this;
+    }
+
+    /**
+     * Get/Set Mode.
+     *
+     * @param null|string $mode mode to set
+     * @return mixed
+     */
+    public function mode($mode = null)
+    {
+        if ($mode === null) {
+            return $this->_mode;
+        }
+        $this->_mode = $mode;
+
+        return $mode;
     }
 
     /**
