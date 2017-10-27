@@ -227,7 +227,15 @@ class CakePdf
         'fill_in'
     ];
 
-    protected $_mode = 'th';
+    /**
+     * Mode of the document. for mPDF
+     * Is parsed from values of various formats:
+     *  Codepage Values (case-insensitive)
+     *  Country/Language code values (case-insensitive)
+     *
+     * @var string
+     */
+    protected $_mode = '';
 
     /**
      * Constructor
