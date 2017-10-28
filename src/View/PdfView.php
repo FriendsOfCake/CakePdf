@@ -65,7 +65,7 @@ class PdfView extends View
         );
 
         $response->type('pdf');
-        if (isset($viewOptions['name']) && $viewOptions['name'] == 'Error') {
+        if (isset($viewOptions['templatePath']) && $viewOptions['templatePath'] == 'Error') {
             $this->subDir = null;
             $this->layoutPath = null;
             $response->type('html');
