@@ -103,4 +103,24 @@ class PdfViewTest extends TestCase
         $result = $this->View->render('empty', 'empty');
         $this->assertEquals('', $result);
     }
+
+
+    /**
+     * Test rendering an Error template, which should
+     * default to standard layout
+     *
+    **/
+    public function testRenderErrorTemplate()
+    {
+        $request = new Request();
+        $response = new Response();
+        $this->View = new PdfView($request, $response, null, [ 'templatePath' => 'Error' ]);
+
+        $this->assertTrue( $this->View->subDir === null );
+        $this->assertTrue( $this->View->layoutPath === null );
+
+        $result = $this->View->response->type();
+        $this->assertEquals('text/html', $result);
+
+    }
 }
