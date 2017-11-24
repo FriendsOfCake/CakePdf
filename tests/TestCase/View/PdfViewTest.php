@@ -56,7 +56,6 @@ class PdfViewTest extends TestCase
             'engine' => '\\' . __NAMESPACE__ . '\PdfTestEngine'
         ]);
 
-
         $request = new Request();
         $response = new Response();
         $this->View = new PdfView($request, $response);
