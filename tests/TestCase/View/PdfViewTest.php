@@ -56,7 +56,6 @@ class PdfViewTest extends TestCase
             'engine' => '\\' . __NAMESPACE__ . '\PdfTestEngine'
         ]);
 
-
         $request = new Request();
         $response = new Response();
         $this->View = new PdfView($request, $response);
@@ -102,5 +101,22 @@ class PdfViewTest extends TestCase
         $this->View->viewPath = 'Posts';
         $result = $this->View->render('empty', 'empty');
         $this->assertEquals('', $result);
+    }
+
+    /**
+     * Test rendering an Error template, which should  default to standard layout
+     *
+     */
+    public function testRenderErrorTemplate()
+    {
+        $request = new Request();
+        $response = new Response();
+        $this->View = new PdfView($request, $response, null, [ 'templatePath' => 'Error' ]);
+
+        $this->assertTrue($this->View->subDir === null);
+        $this->assertTrue($this->View->layoutPath === null);
+
+        $result = $this->View->response->type();
+        $this->assertEquals('text/html', $result);
     }
 }
