@@ -91,6 +91,7 @@ Configuration options:
 * engine: Engine to be used (required), or an array of engine config options
   * className: Engine class to use
   * binary: Binary file to use (Only for wkhtmltopdf)
+  * cwd: current working directory (Only for wkhtmltopdf)
   * options: Engine specific options. Currently only for `WkHtmlToPdf`, where the options
     are passed as CLI arguments, and for `DomPdf`, where the options are passed to the
     `DomPdf` class constructor.
@@ -156,6 +157,7 @@ options for the relevant class. For example:
             // old fashioned MS-DOS Paths, otherwise you will keep getting:
             // WKHTMLTOPDF didn't return any data
             // 'binary' => 'C:\\Progra~1\\wkhtmltopdf\\bin\\wkhtmltopdf.exe',
+            // 'cwd' => 'C:\\Progra~1\\wkhtmltopdf\\bin',
 	        'options' => [
 	            'print-media-type' => false,
 	            'outline' => true,
