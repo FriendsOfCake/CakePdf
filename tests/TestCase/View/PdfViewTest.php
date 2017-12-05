@@ -88,8 +88,8 @@ class PdfViewTest extends TestCase
         $this->View->set('post', 'This is the post');
         $result = $this->View->render('view', 'default');
 
-        $this->assertTrue(strpos($result, '<h2>Rendered with default layout</h2>') !== false);
-        $this->assertTrue(strpos($result, 'Post data: This is the post') !== false);
+        $this->assertContains('<h2>Rendered with default layout</h2>', $result);
+        $this->assertContains('Post data: This is the post', $result);
     }
 
     /**
@@ -100,7 +100,7 @@ class PdfViewTest extends TestCase
     {
         $this->View->viewPath = 'Posts';
         $result = $this->View->render('empty', 'empty');
-        $this->assertEquals('', $result);
+        $this->assertSame('', $result);
     }
 
     /**
@@ -113,8 +113,8 @@ class PdfViewTest extends TestCase
         $response = new Response();
         $this->View = new PdfView($request, $response, null, [ 'templatePath' => 'Error' ]);
 
-        $this->assertTrue($this->View->subDir === null);
-        $this->assertTrue($this->View->layoutPath === null);
+        $this->assertNull($this->View->subDir);
+        $this->assertNull($this->View->layoutPath);
 
         $result = $this->View->response->type();
         $this->assertEquals('text/html', $result);
