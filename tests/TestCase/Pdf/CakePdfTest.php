@@ -143,7 +143,7 @@ class CakePdfTest extends TestCase
             'MyPlugin Helper Test: successful'
         ];
         foreach ($lines as $line) {
-            $this->assertTrue(strpos($result, $line) !== false);
+            $this->assertContains($line, $result);
         }
     }
 
