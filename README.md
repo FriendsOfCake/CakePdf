@@ -16,8 +16,7 @@ Current engines:
 
 ## Requirements
 
-* PHP 5.4.16+
-* CakePHP 3.0+
+* CakePHP 3.4+
 * One of the following render engines: DomPdf, Mpdf, Tcpdf or wkhtmltopdf
 * pdftk (optional) See: http://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/
 
