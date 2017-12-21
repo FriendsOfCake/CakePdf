@@ -19,7 +19,7 @@ class MpdfEngine extends AbstractPdfEngine
             'format' => $this->_Pdf->pageSize(),
             'orientation' => $this->_Pdf->orientation() === 'landscape' ? 'L' : 'P',
         ]);
-        $mpdf->writeHTML($this->_Pdf->html());
+        $mpdf->WriteHTML($this->_Pdf->html());
 
         return $mpdf->Output('', Destination::STRING_RETURN);
     }

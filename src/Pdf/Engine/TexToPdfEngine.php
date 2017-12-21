@@ -93,7 +93,7 @@ class TexToPdfEngine extends AbstractPdfEngine
      *
      * @param string $cmd the command to execute
      * @param string $input Html to pass to wkhtmltopdf
-     * @return string the result of running the command to generate the pdf
+     * @return array the result of running the command to generate the pdf
      */
     protected function _exec($cmd, $input)
     {
