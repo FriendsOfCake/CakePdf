@@ -1,6 +1,9 @@
 <?php
 namespace CakePdf\Pdf\Engine;
 
+use Mpdf\Mpdf;
+use Mpdf\Output\Destination;
+
 class MpdfEngine extends AbstractPdfEngine
 {
 
@@ -11,12 +14,13 @@ class MpdfEngine extends AbstractPdfEngine
      */
     public function output()
     {
-        //mPDF often produces a whole bunch of errors, although there is a pdf created when debug = 0
-        //Configure::write('debug', 0);
-        $orientation = $this->_Pdf->orientation() == 'landscape' ? 'L' : 'P';
-        $MPDF = new \mPDF($this->_Pdf->encoding(), $this->_Pdf->pageSize() . '-' . $orientation);
-        $MPDF->writeHTML($this->_Pdf->html());
+        $mpdf = new Mpdf([
+            'mode' => $this->_Pdf->encoding(),
+            'format' => $this->_Pdf->pageSize(),
+            'orientation' => $this->_Pdf->orientation() === 'landscape' ? 'L' : 'P',
+        ]);
+        $mpdf->writeHTML($this->_Pdf->html());
 
-        return $MPDF->Output('', 'S');
+        return $mpdf->Output('', Destination::STRING_RETURN);
     }
 }
