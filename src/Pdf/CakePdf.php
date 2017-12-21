@@ -56,7 +56,7 @@ class CakePdf
     /**
      * Theme for the View
      *
-     * @var array
+     * @var string
      */
     protected $_theme = null;
 
@@ -112,14 +112,14 @@ class CakePdf
     /**
      * Footer HTML
      *
-     * @var string
+     * @var array
      */
     protected $_footer = ['left' => null, 'center' => null, 'right' => null];
 
     /**
      * Header HTML
      *
-     * @var string
+     * @var array
      */
     protected $_header = ['left' => null, 'center' => null, 'right' => null];
 
@@ -182,14 +182,14 @@ class CakePdf
     /**
      * User password, used with crypto
      *
-     * @var bool
+     * @var string
      */
     protected $_userPassword = null;
 
     /**
      * Owner password, used with crypto
      *
-     * @var bool
+     * @var string
      */
     protected $_ownerPassword = null;
 
@@ -286,6 +286,7 @@ class CakePdf
         }
         $this->html($html);
 
+        $cacheKey = null;
         $cache = $this->cache();
         if ($cache) {
             $cacheKey = md5(serialize($this));
@@ -363,7 +364,6 @@ class CakePdf
             throw new Exception(__d('cake_pdf', sprintf('Pdf engine "%s" not found', $name)));
         }
         if (!is_subclass_of($engineClassName, 'CakePdf\Pdf\Engine\AbstractPdfEngine')) {
-            debug(get_parent_class($engineClassName));
             throw new Exception(__d('cake_pdf', 'Pdf engines must extend "AbstractPdfEngine"'));
         }
         $this->_engineClass = new $engineClassName($this);
