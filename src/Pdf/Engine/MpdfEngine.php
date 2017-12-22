@@ -14,13 +14,35 @@ class MpdfEngine extends AbstractPdfEngine
      */
     public function output()
     {
-        $mpdf = new Mpdf([
-            'mode' => $this->_Pdf->encoding(),
-            'format' => $this->_Pdf->pageSize(),
-            'orientation' => $this->_Pdf->orientation() === 'landscape' ? 'L' : 'P',
-        ]);
-        $mpdf->WriteHTML($this->_Pdf->html());
+        $orientation = $this->_Pdf->orientation() === 'landscape' ? 'L' : 'P';
+        $format = $this->_Pdf->pageSize();
+        if (is_string($format)
+            && $orientation === 'L'
+            && strpos($format, '-L') === false
+        ) {
+            $format .= '-' . $orientation;
+        }
 
-        return $mpdf->Output('', Destination::STRING_RETURN);
+        $options = [
+            'mode' => $this->_Pdf->encoding(),
+            'format' => $format,
+            'orientation' => $orientation,
+        ];
+
+        $Mpdf = $this->_createInstance($options);
+        $Mpdf->WriteHTML($this->_Pdf->html());
+
+        return $Mpdf->Output('', Destination::STRING_RETURN);
+    }
+
+    /**
+     * Creates the Mpdf instance.
+     *
+     * @param array $options The engine options.
+     * @return \Mpdf\Mpdf
+     */
+    protected function _createInstance($options)
+    {
+        return new Mpdf($options);
     }
 }

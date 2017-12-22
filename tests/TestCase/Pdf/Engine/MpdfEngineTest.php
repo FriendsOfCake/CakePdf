@@ -2,13 +2,43 @@
 namespace CakePdf\Test\TestCase\Pdf\Engine;
 
 use CakePdf\Pdf\CakePdf;
+use CakePdf\Pdf\Engine\MpdfEngine;
 use Cake\TestSuite\TestCase;
+use Mpdf\Mpdf;
 
 /**
  * MpdfEngineTest class
  */
 class MpdfEngineTest extends TestCase
 {
+
+    /**
+     * Tests that the engine sets the options properly.
+     */
+    public function testSetOptions()
+    {
+        $engineClass = $this->getMockClass(MpdfEngine::class, ['_createInstance']);
+
+        $Pdf = new CakePdf([
+            'engine' => [
+                'className' => '\\' . $engineClass,
+            ],
+            'pageSize' => 'A4',
+            'orientation' => 'landscape',
+        ]);
+
+        $Pdf
+            ->engine()
+            ->expects($this->once())
+            ->method('_createInstance')
+            ->will($this->returnCallback(function ($config) {
+                $Mpdf = new Mpdf($config);
+
+                $this->assertSame('L', $Mpdf->CurOrientation);
+
+                return $Mpdf;
+            }));
+    }
 
     /**
      * Tests generating actual output.
