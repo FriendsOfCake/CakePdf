@@ -188,9 +188,12 @@ to your routes file and you can access the same document at
 `http://localhost/invoices/1.pdf`.
 
 In case you don't want to use the `pdf` extension in your URLs, you can omit
-registering it in your routes configuration, and have your requests send a
-`Accept: application/pdf` header instead.
+registering it in your routes configuration. Then in your controller action
+call `RequestHandler::render()` to switch the view class and template paths.
 
+```php
+$this->RequestHandler->renderAs($this, 'pdf', ['attachment' => 'filename.pdf']);
+```
 
 ### 2: Create PDF for email attachment, file storage etc.
 
