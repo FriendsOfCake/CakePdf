@@ -40,6 +40,23 @@ class WkHtmlToPdfEngineTest extends TestCase
         $Pdf = new CakePdf([
             'engine' => [
                 'className' => 'CakePdf.WkHtmlToPdf',
+            ],
+            'margin' => [
+                'bottom' => 0,
+                'left' => 0,
+                'right' => 0,
+                'top' => 0,
+            ],
+            'title' => 'CakePdf rules',
+        ]);
+
+        $result = $method->invokeArgs($Pdf->engine(), []);
+        $expected = "/usr/bin/wkhtmltopdf --quiet --print-media-type --orientation 'portrait' --page-size 'A4' --encoding 'UTF-8' --title 'CakePdf rules' --margin-bottom '0mm' --margin-left '0mm' --margin-right '0mm' --margin-top '0mm' - -";
+        $this->assertEquals($expected, $result);
+
+        $Pdf = new CakePdf([
+            'engine' => [
+                'className' => 'CakePdf.WkHtmlToPdf',
                 'options' => [
                     'boolean' => true,
                     'string' => 'value',
