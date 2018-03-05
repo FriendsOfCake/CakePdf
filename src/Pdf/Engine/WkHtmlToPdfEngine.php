@@ -131,7 +131,7 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
         }
 
         foreach ($options as $key => $value) {
-            if (empty($value)) {
+            if (!isset($value) || $value === false) {
                 continue;
             } elseif (is_array($value)) {
                 foreach ($value as $k => $v) {
