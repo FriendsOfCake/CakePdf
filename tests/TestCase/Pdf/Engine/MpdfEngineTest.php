@@ -27,6 +27,7 @@ class MpdfEngineTest extends TestCase
             'orientation' => 'landscape',
             'tempDir' => TMP,
         ]);
+        $Pdf->html('');
 
         $Pdf
             ->engine()
@@ -40,6 +41,8 @@ class MpdfEngineTest extends TestCase
 
                 return $Mpdf;
             }));
+
+        $Pdf->engine()->output();
     }
 
     /**

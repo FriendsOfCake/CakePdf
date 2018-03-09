@@ -28,17 +28,21 @@ class DomPdfEngineTest extends TestCase
             ],
         ]);
 
+        $expected = [
+            'fontCache' => TMP,
+            'tempDir' => TMP,
+            'isJavascriptEnabled' => false,
+            'isHtml5ParserEnabled' => true,
+        ];
+
         $Pdf
             ->engine()
             ->expects($this->once())
             ->method('_createInstance')
-            ->with([
-                'fontCache' => TMP,
-                'tempDir' => TMP,
-                'isJavascriptEnabled' => false,
-                'isHtml5ParserEnabled' => true,
-            ])
-            ->will($this->returnCallback(function ($options) {
+            ->with($expected)
+            ->will($this->returnCallback(function ($options) use ($expected) {
+                $this->assertEquals($expected, $options);
+
                 return new Dompdf($options);
             }));
 
@@ -126,7 +130,7 @@ class DomPdfEngineTest extends TestCase
             ->method('_output')
             ->with($DomPDF);
 
-        $Engine->output();
+        $this->assertNull($Engine->output());
     }
 
     /**
