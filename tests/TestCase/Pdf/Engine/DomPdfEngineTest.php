@@ -2,6 +2,7 @@
 namespace CakePdf\Test\TestCase\Pdf\Engine;
 
 use CakePdf\Pdf\CakePdf;
+use CakePdf\Pdf\Engine\DomPdfEngine;
 use Cake\TestSuite\TestCase;
 use Dompdf\Dompdf;
 
@@ -16,7 +17,7 @@ class DomPdfEngineTest extends TestCase
      */
     public function testReceiveOptions()
     {
-        $engineClass = $this->getMockClass('\CakePdf\Pdf\Engine\DomPdfEngine', ['_createInstance']);
+        $engineClass = $this->getMockClass(DomPdfEngine::class, ['_createInstance']);
 
         $Pdf = new CakePdf([
             'engine' => [
@@ -54,7 +55,7 @@ class DomPdfEngineTest extends TestCase
      */
     public function testSetOptions()
     {
-        $engineClass = $this->getMockClass('\CakePdf\Pdf\Engine\DomPdfEngine', ['_output']);
+        $engineClass = $this->getMockClass(DomPdfEngine::class, ['_output']);
 
         $Pdf = new CakePdf([
             'engine' => [
@@ -103,7 +104,7 @@ class DomPdfEngineTest extends TestCase
      */
     public function testControlFlow()
     {
-        $engineClass = $this->getMockClass('\CakePdf\Pdf\Engine\DomPdfEngine', [
+        $engineClass = $this->getMockClass(DomPdfEngine::class, [
             '_createInstance',
             '_render',
             '_output',
@@ -138,7 +139,7 @@ class DomPdfEngineTest extends TestCase
      */
     public function testDompdfControlFlow()
     {
-        $engineClass = $this->getMockClass('\CakePdf\Pdf\Engine\DomPdfEngine', ['_createInstance']);
+        $engineClass = $this->getMockClass(DomPdfEngine::class, ['_createInstance']);
 
         $Pdf = new CakePdf([
             'engine' => '\\' . $engineClass,

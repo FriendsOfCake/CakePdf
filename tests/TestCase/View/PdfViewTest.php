@@ -2,6 +2,7 @@
 
 namespace CakePdf\Test\TestCase\View;
 
+use CakePdf\Pdf\CakePdf;
 use CakePdf\Pdf\Engine\AbstractPdfEngine;
 use CakePdf\View\PdfView;
 use Cake\Controller\Controller;
@@ -71,7 +72,7 @@ class PdfViewTest extends TestCase
         $this->assertEquals(['engine' => '\\' . __NAMESPACE__ . '\PdfTestEngine'], $result);
 
         $result = $this->View->renderer();
-        $this->assertInstanceOf('CakePdf\Pdf\CakePdf', $result);
+        $this->assertInstanceOf(CakePdf::class, $result);
     }
 
     /**

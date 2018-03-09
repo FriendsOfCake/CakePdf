@@ -2,6 +2,7 @@
 namespace CakePdf\Test\TestCase\Pdf\Engine;
 
 use CakePdf\Pdf\CakePdf;
+use CakePdf\Pdf\Engine\WkHtmlToPdfEngine;
 use Cake\TestSuite\TestCase;
 
 /**
@@ -28,7 +29,7 @@ class WkHtmlToPdfEngineTest extends TestCase
      */
     public function testGetCommand()
     {
-        $class = new \ReflectionClass('CakePdf\Pdf\Engine\WkHtmlToPdfEngine');
+        $class = new \ReflectionClass(WkHtmlToPdfEngine::class);
         $method = $class->getMethod('_getCommand');
         $method->setAccessible(true);
 
