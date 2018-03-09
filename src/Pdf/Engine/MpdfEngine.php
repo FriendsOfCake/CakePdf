@@ -27,6 +27,7 @@ class MpdfEngine extends AbstractPdfEngine
             'mode' => $this->_Pdf->encoding(),
             'format' => $format,
             'orientation' => $orientation,
+            'tempDir' => TMP
         ];
 
         $Mpdf = $this->_createInstance($options);
