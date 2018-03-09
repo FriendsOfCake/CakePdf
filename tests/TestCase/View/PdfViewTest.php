@@ -56,7 +56,7 @@ class PdfViewTest extends TestCase
         $request = new ServerRequest();
         $response = new Response();
         $this->View = new PdfView($request, $response);
-        $this->View->layoutPath = 'pdf';
+        $this->View->setLayoutPath('pdf');
     }
 
     /**
