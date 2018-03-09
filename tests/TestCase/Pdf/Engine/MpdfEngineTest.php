@@ -25,6 +25,7 @@ class MpdfEngineTest extends TestCase
             ],
             'pageSize' => 'A4',
             'orientation' => 'landscape',
+            'tempDir' => TMP
         ]);
 
         $Pdf
@@ -34,6 +35,7 @@ class MpdfEngineTest extends TestCase
             ->will($this->returnCallback(function ($config) {
                 $Mpdf = new Mpdf($config);
 
+                $this->assertSame(TMP, $Mpdf->tempDir);
                 $this->assertSame('L', $Mpdf->CurOrientation);
 
                 return $Mpdf;
