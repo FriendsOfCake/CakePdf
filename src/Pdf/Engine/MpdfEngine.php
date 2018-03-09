@@ -29,6 +29,10 @@ class MpdfEngine extends AbstractPdfEngine
             'orientation' => $orientation,
             'tempDir' => TMP
         ];
+        
+        if(!empty($this->_config['options'])){
+           $options = array_replace_recursive($options, $this->_config['options']);
+        }        
 
         $Mpdf = $this->_createInstance($options);
         $Mpdf->WriteHTML($this->_Pdf->html());
