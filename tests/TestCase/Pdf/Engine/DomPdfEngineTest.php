@@ -23,9 +23,9 @@ class DomPdfEngineTest extends TestCase
                 'className' => '\\' . $engineClass,
                 'options' => [
                     'isJavascriptEnabled' => false,
-                    'isHtml5ParserEnabled' => true
-                ]
-            ]
+                    'isHtml5ParserEnabled' => true,
+                ],
+            ],
         ]);
 
         $Pdf
@@ -36,7 +36,7 @@ class DomPdfEngineTest extends TestCase
                 'fontCache' => TMP,
                 'tempDir' => TMP,
                 'isJavascriptEnabled' => false,
-                'isHtml5ParserEnabled' => true
+                'isHtml5ParserEnabled' => true,
             ])
             ->will($this->returnCallback(function ($options) {
                 return new Dompdf($options);
@@ -57,9 +57,9 @@ class DomPdfEngineTest extends TestCase
                 'className' => '\\' . $engineClass,
                 'options' => [
                     'isJavascriptEnabled' => false,
-                    'isHtml5ParserEnabled' => true
-                ]
-            ]
+                    'isHtml5ParserEnabled' => true,
+                ],
+            ],
         ]);
 
         $Pdf
@@ -85,7 +85,7 @@ class DomPdfEngineTest extends TestCase
     public function testOutput()
     {
         $Pdf = new CakePdf([
-            'engine' => 'CakePdf.Dompdf'
+            'engine' => 'CakePdf.Dompdf',
         ]);
         $Pdf->html('<foo>bar</foo>');
 
@@ -102,11 +102,11 @@ class DomPdfEngineTest extends TestCase
         $engineClass = $this->getMockClass('\CakePdf\Pdf\Engine\DomPdfEngine', [
             '_createInstance',
             '_render',
-            '_output'
+            '_output',
         ]);
 
         $Pdf = new CakePdf([
-            'engine' => '\\' . $engineClass
+            'engine' => '\\' . $engineClass,
         ]);
 
         $DomPDF = new Dompdf();
@@ -137,7 +137,7 @@ class DomPdfEngineTest extends TestCase
         $engineClass = $this->getMockClass('\CakePdf\Pdf\Engine\DomPdfEngine', ['_createInstance']);
 
         $Pdf = new CakePdf([
-            'engine' => '\\' . $engineClass
+            'engine' => '\\' . $engineClass,
         ]);
 
         $Pdf

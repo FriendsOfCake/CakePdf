@@ -1,6 +1,8 @@
 <?php
 namespace CakePdf\Pdf\Engine;
 
+use TCPDF;
+
 class TcpdfEngine extends AbstractPdfEngine
 {
 
@@ -11,9 +13,7 @@ class TcpdfEngine extends AbstractPdfEngine
      */
     public function output()
     {
-        //TCPDF often produces a whole bunch of errors, although there is a pdf created when debug = 0
-        //Configure::write('debug', 0);
-        $TCPDF = new \TCPDF($this->_Pdf->orientation(), 'mm', $this->_Pdf->pageSize());
+        $TCPDF = new TCPDF($this->_Pdf->orientation(), 'mm', $this->_Pdf->pageSize());
         $TCPDF->AddPage();
         $TCPDF->writeHTML($this->_Pdf->html());
 

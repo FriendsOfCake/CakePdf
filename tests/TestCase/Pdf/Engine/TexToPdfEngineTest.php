@@ -2,13 +2,10 @@
 namespace CakePdf\Test\TestCase\Pdf\Engine;
 
 use CakePdf\Pdf\CakePdf;
-use CakePdf\Pdf\Engine\WkHtmlToPdfEngine;
 use Cake\TestSuite\TestCase;
 
 /**
  * TexToPdfEngineTest class
- *
- * @package       CakePdf.Test.Case.Pdf.Engine
  */
 class TexToPdfEngineTest extends TestCase
 {
@@ -25,7 +22,7 @@ class TexToPdfEngineTest extends TestCase
         $Pdf = new CakePdf([
             'engine' => [
                 'className' => 'CakePdf.TexToPdf',
-            ]
+            ],
         ]);
 
         $result = $method->invokeArgs($Pdf->engine(), []);

@@ -1,7 +1,6 @@
 <?php
 namespace CakePdf\Pdf\Engine;
 
-use CakePdf\Pdf\CakePdf;
 use Dompdf\Dompdf;
 
 class DomPdfEngine extends AbstractPdfEngine
@@ -16,9 +15,9 @@ class DomPdfEngine extends AbstractPdfEngine
     {
         $defaults = [
             'fontCache' => TMP,
-            'tempDir' => TMP
+            'tempDir' => TMP,
         ];
-        $options = (array)$this->config('options') + $defaults;
+        $options = (array)$this->getConfig('options') + $defaults;
 
         $DomPDF = $this->_createInstance($options);
         $DomPDF->setPaper($this->_Pdf->pageSize(), $this->_Pdf->orientation());
@@ -31,7 +30,7 @@ class DomPdfEngine extends AbstractPdfEngine
      * Creates the Dompdf instance.
      *
      * @param array $options The engine options.
-     * @return Dompdf
+     * @return \Dompdf\Dompdf
      */
     protected function _createInstance($options)
     {
@@ -41,9 +40,9 @@ class DomPdfEngine extends AbstractPdfEngine
     /**
      * Renders the Dompdf instance.
      *
-     * @param CakePdf $Pdf The CakePdf instance that supplies the content to render.
-     * @param Dompdf $DomPDF The Dompdf instance to render.
-     * @return Dompdf
+     * @param \CakePdf\Pdf\CakePdf $Pdf The CakePdf instance that supplies the content to render.
+     * @param \Dompdf\Dompdf $DomPDF The Dompdf instance to render.
+     * @return \Dompdf\Dompdf
      */
     protected function _render($Pdf, $DomPDF)
     {
@@ -56,7 +55,7 @@ class DomPdfEngine extends AbstractPdfEngine
     /**
      * Generates the PDF output.
      *
-     * @param Dompdf $DomPDF The Dompdf instance from which to generate the output from.
+     * @param \Dompdf\Dompdf $DomPDF The Dompdf instance from which to generate the output from.
      * @return string
      */
     protected function _output($DomPDF)
