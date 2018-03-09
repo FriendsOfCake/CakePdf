@@ -9,6 +9,19 @@ use Cake\TestSuite\TestCase;
  */
 class WkHtmlToPdfEngineTest extends TestCase
 {
+    /**
+     * setUp method
+     *
+     * @return void
+     */
+    public function setUp()
+    {
+        parent::setUp();
+
+        if (!is_executable('/usr/bin/wkhtmltopdf')) {
+            $this->markTestSkipped('/usr/bin/wkhtmltopdf not found');
+        }
+    }
 
     /**
      * Tests that the engine generates the right command

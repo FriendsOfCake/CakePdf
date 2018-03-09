@@ -9,6 +9,19 @@ use Cake\TestSuite\TestCase;
  */
 class TexToPdfEngineTest extends TestCase
 {
+    /**
+     * setUp method
+     *
+     * @return void
+     */
+    public function setUp()
+    {
+        parent::setUp();
+
+        if (!is_executable('/usr/bin/latexpdf')) {
+            $this->markTestSkipped('/usr/bin/latexpdf not found');
+        }
+    }
 
     /**
      * Tests that the engine generates the right command
