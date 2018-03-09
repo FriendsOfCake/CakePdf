@@ -7,18 +7,29 @@ use Cake\TestSuite\TestCase;
 
 /**
  * WkHtmlToPdfEngineTest class
- *
- * @package       CakePdf.Test.Case.Pdf.Engine
  */
 class WkHtmlToPdfEngineTest extends TestCase
 {
+    /**
+     * setUp method
+     *
+     * @return void
+     */
+    public function setUp()
+    {
+        parent::setUp();
+
+        if (!is_executable('/usr/bin/wkhtmltopdf')) {
+            $this->markTestSkipped('/usr/bin/wkhtmltopdf not found');
+        }
+    }
 
     /**
      * Tests that the engine generates the right command
      */
     public function testGetCommand()
     {
-        $class = new \ReflectionClass('CakePdf\Pdf\Engine\WkHtmlToPdfEngine');
+        $class = new \ReflectionClass(WkHtmlToPdfEngine::class);
         $method = $class->getMethod('_getCommand');
         $method->setAccessible(true);
 
@@ -27,8 +38,8 @@ class WkHtmlToPdfEngineTest extends TestCase
                 'className' => 'CakePdf.WkHtmlToPdf',
                 'options' => [
                     'quiet' => false,
-                    'encoding' => 'ISO-8859-1'
-                ]
+                    'encoding' => 'ISO-8859-1',
+                ],
             ],
             'title' => 'CakePdf rules',
         ]);
@@ -63,10 +74,10 @@ class WkHtmlToPdfEngineTest extends TestCase
                     'integer' => 42,
                     'array' => [
                         'first' => 'firstValue',
-                        'second' => 'secondValue'
-                    ]
-                ]
-            ]
+                        'second' => 'secondValue',
+                    ],
+                ],
+            ],
         ]);
         $result = $method->invokeArgs($Pdf->engine(), []);
         $expected = "/usr/bin/wkhtmltopdf --quiet --print-media-type --orientation 'portrait' --page-size 'A4' --encoding 'UTF-8' --boolean --string 'value' --integer '42' --array 'first' 'firstValue' --array 'second' 'secondValue' - -";

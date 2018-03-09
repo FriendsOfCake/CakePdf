@@ -2,6 +2,7 @@
 namespace CakePdf\Test\TestCase\Pdf\Engine;
 
 use CakePdf\Pdf\CakePdf;
+use CakePdf\Pdf\Engine\DomPdfEngine;
 use Cake\TestSuite\TestCase;
 use Dompdf\Dompdf;
 
@@ -16,29 +17,33 @@ class DomPdfEngineTest extends TestCase
      */
     public function testReceiveOptions()
     {
-        $engineClass = $this->getMockClass('\CakePdf\Pdf\Engine\DomPdfEngine', ['_createInstance']);
+        $engineClass = $this->getMockClass(DomPdfEngine::class, ['_createInstance']);
 
         $Pdf = new CakePdf([
             'engine' => [
                 'className' => '\\' . $engineClass,
                 'options' => [
                     'isJavascriptEnabled' => false,
-                    'isHtml5ParserEnabled' => true
-                ]
-            ]
+                    'isHtml5ParserEnabled' => true,
+                ],
+            ],
         ]);
+
+        $expected = [
+            'fontCache' => TMP,
+            'tempDir' => TMP,
+            'isJavascriptEnabled' => false,
+            'isHtml5ParserEnabled' => true,
+        ];
 
         $Pdf
             ->engine()
             ->expects($this->once())
             ->method('_createInstance')
-            ->with([
-                'fontCache' => TMP,
-                'tempDir' => TMP,
-                'isJavascriptEnabled' => false,
-                'isHtml5ParserEnabled' => true
-            ])
-            ->will($this->returnCallback(function ($options) {
+            ->with($expected)
+            ->will($this->returnCallback(function ($options) use ($expected) {
+                $this->assertEquals($expected, $options);
+
                 return new Dompdf($options);
             }));
 
@@ -50,16 +55,16 @@ class DomPdfEngineTest extends TestCase
      */
     public function testSetOptions()
     {
-        $engineClass = $this->getMockClass('\CakePdf\Pdf\Engine\DomPdfEngine', ['_output']);
+        $engineClass = $this->getMockClass(DomPdfEngine::class, ['_output']);
 
         $Pdf = new CakePdf([
             'engine' => [
                 'className' => '\\' . $engineClass,
                 'options' => [
                     'isJavascriptEnabled' => false,
-                    'isHtml5ParserEnabled' => true
-                ]
-            ]
+                    'isHtml5ParserEnabled' => true,
+                ],
+            ],
         ]);
 
         $Pdf
@@ -85,7 +90,7 @@ class DomPdfEngineTest extends TestCase
     public function testOutput()
     {
         $Pdf = new CakePdf([
-            'engine' => 'CakePdf.Dompdf'
+            'engine' => 'CakePdf.Dompdf',
         ]);
         $Pdf->html('<foo>bar</foo>');
 
@@ -99,14 +104,14 @@ class DomPdfEngineTest extends TestCase
      */
     public function testControlFlow()
     {
-        $engineClass = $this->getMockClass('\CakePdf\Pdf\Engine\DomPdfEngine', [
+        $engineClass = $this->getMockClass(DomPdfEngine::class, [
             '_createInstance',
             '_render',
-            '_output'
+            '_output',
         ]);
 
         $Pdf = new CakePdf([
-            'engine' => '\\' . $engineClass
+            'engine' => '\\' . $engineClass,
         ]);
 
         $DomPDF = new Dompdf();
@@ -126,7 +131,7 @@ class DomPdfEngineTest extends TestCase
             ->method('_output')
             ->with($DomPDF);
 
-        $Engine->output();
+        $this->assertNull($Engine->output());
     }
 
     /**
@@ -134,10 +139,10 @@ class DomPdfEngineTest extends TestCase
      */
     public function testDompdfControlFlow()
     {
-        $engineClass = $this->getMockClass('\CakePdf\Pdf\Engine\DomPdfEngine', ['_createInstance']);
+        $engineClass = $this->getMockClass(DomPdfEngine::class, ['_createInstance']);
 
         $Pdf = new CakePdf([
-            'engine' => '\\' . $engineClass
+            'engine' => '\\' . $engineClass,
         ]);
 
         $Pdf

@@ -25,8 +25,9 @@ class MpdfEngineTest extends TestCase
             ],
             'pageSize' => 'A4',
             'orientation' => 'landscape',
-            'tempDir' => TMP
+            'tempDir' => TMP,
         ]);
+        $Pdf->html('');
 
         $Pdf
             ->engine()
@@ -40,6 +41,8 @@ class MpdfEngineTest extends TestCase
 
                 return $Mpdf;
             }));
+
+        $Pdf->engine()->output();
     }
 
     /**
@@ -48,7 +51,7 @@ class MpdfEngineTest extends TestCase
     public function testOutput()
     {
         $Pdf = new CakePdf([
-            'engine' => 'CakePdf.Mpdf'
+            'engine' => 'CakePdf.Mpdf',
         ]);
         $Pdf->html('<foo>bar</foo>');
 

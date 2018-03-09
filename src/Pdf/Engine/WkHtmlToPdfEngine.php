@@ -24,11 +24,12 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
     /**
      * Constructor
      *
-     * @param CakePdf $Pdf CakePdf instance
+     * @param \CakePdf\Pdf\CakePdf $Pdf CakePdf instance
      */
     public function __construct(CakePdf $Pdf)
     {
         parent::__construct($Pdf);
+
         $this->_windowsEnvironment = strtoupper(substr(PHP_OS, 0, 3)) === 'WIN';
     }
 
@@ -71,7 +72,7 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
     {
         $result = ['stdout' => '', 'stderr' => '', 'return' => ''];
 
-        $cwd = $this->config('cwd');
+        $cwd = $this->getConfig('cwd');
 
         $proc = proc_open($cmd, [0 => ['pipe', 'r'], 1 => ['pipe', 'w'], 2 => ['pipe', 'w']], $pipes, $cwd);
         fwrite($pipes[0], $input);
@@ -96,7 +97,7 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
      */
     protected function _getCommand()
     {
-        $binary = $this->config('binary');
+        $binary = $this->getConfig('binary');
 
         if ($binary) {
             $this->_binary = $binary;
@@ -113,7 +114,7 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
             'encoding' => $this->_Pdf->encoding(),
             'title' => $this->_Pdf->title(),
             'javascript-delay' => $this->_Pdf->delay(),
-            'window-status' => $this->_Pdf->windowStatus()
+            'window-status' => $this->_Pdf->windowStatus(),
         ];
 
         $margin = $this->_Pdf->margin();
@@ -122,7 +123,7 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
                 $options['margin-' . $key] = $value . 'mm';
             }
         }
-        $options = array_merge($options, (array)$this->config('options'));
+        $options = array_merge($options, (array)$this->getConfig('options'));
 
         if ($this->_windowsEnvironment) {
             $command = '"' . $this->_binary . '"';

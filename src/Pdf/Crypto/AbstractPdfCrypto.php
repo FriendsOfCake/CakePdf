@@ -10,9 +10,9 @@ abstract class AbstractPdfCrypto
     /**
      * Instance of CakePdf class
      *
-     * @var CakePdf
+     * @var \CakePdf\Pdf\CakePdf|null
      */
-    protected $_Pdf = null;
+    protected $_Pdf;
 
     /**
      * Configurations
@@ -24,7 +24,7 @@ abstract class AbstractPdfCrypto
     /**
      * Constructor
      *
-     * @param CakePdf $Pdf CakePdf instance
+     * @param \CakePdf\Pdf\CakePdf $Pdf CakePdf instance
      */
     public function __construct(CakePdf $Pdf)
     {

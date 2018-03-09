@@ -9,7 +9,6 @@ class PdftkCrypto extends AbstractPdfCrypto
     /**
      * Path to the pdftk executable binary
      *
-     * @access protected
      * @var string
      */
     protected $_binary = '/usr/local/bin/pdftk';
@@ -17,7 +16,6 @@ class PdftkCrypto extends AbstractPdfCrypto
     /**
      * Mapping of the CakePdf permissions to the Pdftk arguments
      *
-     * @access protected
      * @var array
      */
     protected $_permissionsMap = [
@@ -28,7 +26,7 @@ class PdftkCrypto extends AbstractPdfCrypto
         'copy_contents' => 'CopyContents',
         'screen_readers' => 'ScreenReaders',
         'annotate' => 'ModifyAnnotations',
-        'fill_in' => 'FillIn'
+        'fill_in' => 'FillIn',
     ];
 
     /**

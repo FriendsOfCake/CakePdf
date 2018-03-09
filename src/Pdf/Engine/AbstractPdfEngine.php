@@ -14,14 +14,14 @@ abstract class AbstractPdfEngine
     /**
      * Instance of CakePdf class
      *
-     * @var CakePdf
+     * @var \CakePdf\Pdf\CakePdf
      */
     protected $_Pdf = null;
 
     /**
      * Constructor
      *
-     * @param CakePdf $Pdf CakePdf instance
+     * @param \CakePdf\Pdf\CakePdf $Pdf CakePdf instance
      */
     public function __construct(CakePdf $Pdf)
     {

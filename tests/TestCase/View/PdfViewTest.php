@@ -2,14 +2,13 @@
 
 namespace CakePdf\Test\TestCase\View;
 
+use CakePdf\Pdf\CakePdf;
 use CakePdf\Pdf\Engine\AbstractPdfEngine;
 use CakePdf\View\PdfView;
 use Cake\Controller\Controller;
-use Cake\Core\App;
 use Cake\Core\Configure;
-use Cake\Core\Plugin;
-use Cake\Network\Request;
-use Cake\Network\Response;
+use Cake\Http\Response;
+use Cake\Http\ServerRequest;
 use Cake\TestSuite\TestCase;
 
 /**
@@ -37,8 +36,6 @@ class PdfTestPostsController extends Controller
 
 /**
  * PdfViewTest class
- *
- * @package       CakePdf.Test.Case.View
  */
 class PdfViewTest extends TestCase
 {
@@ -53,13 +50,13 @@ class PdfViewTest extends TestCase
         parent::setUp();
 
         Configure::write('CakePdf', [
-            'engine' => '\\' . __NAMESPACE__ . '\PdfTestEngine'
+            'engine' => '\\' . __NAMESPACE__ . '\PdfTestEngine',
         ]);
 
-        $request = new Request();
+        $request = new ServerRequest();
         $response = new Response();
         $this->View = new PdfView($request, $response);
-        $this->View->layoutPath = 'pdf';
+        $this->View->setLayoutPath('pdf');
     }
 
     /**
@@ -68,14 +65,14 @@ class PdfViewTest extends TestCase
      */
     public function testConstruct()
     {
-        $result = $this->View->response->type();
+        $result = $this->View->response->getType();
         $this->assertEquals('application/pdf', $result);
 
         $result = $this->View->pdfConfig;
         $this->assertEquals(['engine' => '\\' . __NAMESPACE__ . '\PdfTestEngine'], $result);
 
         $result = $this->View->renderer();
-        $this->assertInstanceOf('CakePdf\Pdf\CakePdf', $result);
+        $this->assertInstanceOf(CakePdf::class, $result);
     }
 
     /**
@@ -84,7 +81,7 @@ class PdfViewTest extends TestCase
      */
     public function testRender()
     {
-        $this->View->viewPath = 'Posts';
+        $this->View->setTemplatePath('Posts');
         $this->View->set('post', 'This is the post');
         $result = $this->View->render('view', 'default');
 
@@ -98,7 +95,7 @@ class PdfViewTest extends TestCase
      */
     public function testRenderTemplateWithNoOutput()
     {
-        $this->View->viewPath = 'Posts';
+        $this->View->setTemplatePath('Posts');
         $result = $this->View->render('empty', 'empty');
         $this->assertSame('', $result);
     }
@@ -109,14 +106,14 @@ class PdfViewTest extends TestCase
      */
     public function testRenderErrorTemplate()
     {
-        $request = new Request();
+        $request = new ServerRequest();
         $response = new Response();
         $this->View = new PdfView($request, $response, null, [ 'templatePath' => 'Error' ]);
 
         $this->assertNull($this->View->subDir);
         $this->assertNull($this->View->layoutPath);
 
-        $result = $this->View->response->type();
+        $result = $this->View->response->getType();
         $this->assertEquals('text/html', $result);
     }
 }

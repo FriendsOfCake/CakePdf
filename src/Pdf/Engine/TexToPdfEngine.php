@@ -2,9 +2,7 @@
 namespace CakePdf\Pdf\Engine;
 
 use CakePdf\Pdf\CakePdf;
-use CakePdf\Pdf\Engine\AbstractPdfEngine;
 use Cake\Core\Exception\Exception;
-use Cake\Utility\Text;
 
 class TexToPdfEngine extends AbstractPdfEngine
 {
@@ -24,6 +22,7 @@ class TexToPdfEngine extends AbstractPdfEngine
     public function __construct(CakePdf $Pdf)
     {
         parent::__construct($Pdf);
+
         $this->_defaultConfig['options']['output-directory'] = TMP . 'pdf';
     }
 
@@ -36,7 +35,7 @@ class TexToPdfEngine extends AbstractPdfEngine
     {
         $output = $this->_Pdf->html();
         $file = sha1($output);
-        $texFile = $this->config('options.output-directory') . DS . $file;
+        $texFile = $this->getConfig('options.output-directory') . DS . $file;
         file_put_contents($texFile, $output);
 
         return $texFile;
@@ -124,7 +123,7 @@ class TexToPdfEngine extends AbstractPdfEngine
     protected function _buildCommand()
     {
         $command = $this->_binary;
-        $options = (array)$this->config('options');
+        $options = (array)$this->getConfig('options');
         foreach ($options as $key => $value) {
             if (empty($value)) {
                 continue;
@@ -146,7 +145,7 @@ class TexToPdfEngine extends AbstractPdfEngine
      */
     protected function _getCommand()
     {
-        $binary = $this->config('binary');
+        $binary = $this->getConfig('binary');
 
         if ($binary) {
             $this->_binary = $binary;
@@ -155,7 +154,7 @@ class TexToPdfEngine extends AbstractPdfEngine
             throw new Exception(sprintf('TeX compiler binary is not found or not executable: %s', $this->_binary));
         }
 
-        $options = (array)$this->config('options');
+        $options = (array)$this->getConfig('options');
 
         if (!is_dir($options['output-directory'])) {
             mkdir($options['output-directory']);
