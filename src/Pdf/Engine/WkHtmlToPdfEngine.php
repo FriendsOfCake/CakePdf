@@ -72,7 +72,7 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
     {
         $result = ['stdout' => '', 'stderr' => '', 'return' => ''];
 
-        $cwd = $this->config('cwd');
+        $cwd = $this->getConfig('cwd');
 
         $proc = proc_open($cmd, [0 => ['pipe', 'r'], 1 => ['pipe', 'w'], 2 => ['pipe', 'w']], $pipes, $cwd);
         fwrite($pipes[0], $input);
