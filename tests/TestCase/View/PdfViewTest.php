@@ -56,7 +56,7 @@ class PdfViewTest extends TestCase
         $request = new ServerRequest();
         $response = new Response();
         $this->View = new PdfView($request, $response);
-        $this->View->setLayoutPath('pdf');
+        $this->View->layoutPath('pdf');
     }
 
     /**
@@ -65,7 +65,7 @@ class PdfViewTest extends TestCase
      */
     public function testConstruct()
     {
-        $result = $this->View->response->getType();
+        $result = $this->View->response->type();
         $this->assertEquals('application/pdf', $result);
 
         $result = $this->View->pdfConfig;
@@ -81,7 +81,7 @@ class PdfViewTest extends TestCase
      */
     public function testRender()
     {
-        $this->View->setTemplatePath('Posts');
+        $this->View->templatePath('Posts');
         $this->View->set('post', 'This is the post');
         $result = $this->View->render('view', 'default');
 
@@ -95,7 +95,7 @@ class PdfViewTest extends TestCase
      */
     public function testRenderTemplateWithNoOutput()
     {
-        $this->View->setTemplatePath('Posts');
+        $this->View->templatePath('Posts');
         $result = $this->View->render('empty', 'empty');
         $this->assertSame('', $result);
     }
@@ -113,7 +113,7 @@ class PdfViewTest extends TestCase
         $this->assertNull($this->View->subDir);
         $this->assertNull($this->View->layoutPath);
 
-        $result = $this->View->response->getType();
+        $result = $this->View->response->type();
         $this->assertEquals('text/html', $result);
     }
 }
