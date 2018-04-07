@@ -106,6 +106,10 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine {
 				continue;
 			} elseif ($value === true) {
 				$command .= ' --' . $key;
+			} elseif (is_array($value)) {
+				foreach ($value as $k => $v) {
+					$command .= sprintf(' --%s %s %s', $key, escapeshellarg($k), escapeshellarg($v));
+				}
 			} else {
 				$command .= sprintf(' --%s %s', $key, escapeshellarg($value));
 			}
