@@ -36,10 +36,10 @@ class WkHtmlToPdfEngineTest extends CakeTestCase {
 				'boolean' => true,
 				'string'  => 'value',
 				'integer' => 42,
-                'array' => array(
-                    'first' => 'firstValue',
-                    'second' => 'secondValue'
-                )
+				'array' => array(
+					'first' => 'firstValue',
+					'second' => 'secondValue'
+                		)
 			)
 		));
 		$result = $method->invokeArgs($Pdf->engine(), array());
