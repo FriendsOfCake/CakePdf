@@ -1,5 +1,5 @@
 <?php
-namespace CakePdf\Pdf;
+namespace CakePdf;
 
 use Cake\Core\BasePlugin;
 
