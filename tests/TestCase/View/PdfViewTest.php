@@ -65,7 +65,11 @@ class PdfViewTest extends TestCase
      */
     public function testConstruct()
     {
-        $result = $this->View->response->getType();
+        if (version_compare(Configure::version(), '3.6.0', '<')) {
+            $result = $this->View->response->type();
+        } else {
+            $result = $this->View->response->getType();
+        }
         $this->assertEquals('application/pdf', $result);
 
         $result = $this->View->pdfConfig;
@@ -113,7 +117,11 @@ class PdfViewTest extends TestCase
         $this->assertNull($this->View->subDir);
         $this->assertNull($this->View->layoutPath);
 
-        $result = $this->View->response->getType();
+        if (version_compare(Configure::version(), '3.6.0', '<')) {
+            $result = $this->View->response->type();
+        } else {
+            $result = $this->View->response->getType();
+        }
         $this->assertEquals('text/html', $result);
     }
 }
