@@ -106,7 +106,13 @@ class PdfView extends View
     {
         $content = parent::render($view, $layout);
 
-        if ($this->response->getType() === 'text/html') {
+        if (version_compare(Configure::version(), '3.6.0', '<')) {
+            $type = $this->response->type();
+        } else {
+            $type = $this->response->getType();
+        }
+
+        if ($type === 'text/html') {
             return $content;
         }
         if ($this->renderer() === null) {

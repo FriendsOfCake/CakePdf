@@ -5,9 +5,10 @@
     "homepage": "http://github.com/friendsofcake/CakePdf",
     "license": "MIT",
     "require": {
-        "cakephp/cakephp": "^3.6"
+        "cakephp/cakephp": "^3.5"
     },
     "require-dev": {
+        "cakephp/chronos": "^1.1",
         "phpunit/phpunit": "^5.7.14|^6.0",
         "dompdf/dompdf": "^0.8",
         "mpdf/mpdf": "^7.0",
