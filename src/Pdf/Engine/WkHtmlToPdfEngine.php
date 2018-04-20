@@ -33,7 +33,7 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
         $this->_windowsEnvironment = strtoupper(substr(PHP_OS, 0, 3)) === 'WIN';
         
         if ( $this->_windowsEnvironment ){
-            $this->$_binary = 'C:/Progra~1/wkhtmltopdf/bin/wkhtmltopdf.exe';
+            $this->_binary = 'C:/Progra~1/wkhtmltopdf/bin/wkhtmltopdf.exe';
         }
     }
 
