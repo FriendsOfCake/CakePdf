@@ -259,6 +259,8 @@ class CakePdf
             'cache',
             'delay',
             'windowStatus',
+            'header',
+            'footer'
         ];
         foreach ($options as $option) {
             if (isset($config[$option])) {
