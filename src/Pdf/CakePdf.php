@@ -469,6 +469,7 @@ class CakePdf
         }
 
         if (is_array($left)) {
+            $left = $left + ['left' => null];
             extract($left, EXTR_IF_EXISTS);
         }
 
@@ -492,6 +493,7 @@ class CakePdf
         }
 
         if (is_array($left)) {
+            $left = $left + ['left' => null];
             extract($left, EXTR_IF_EXISTS);
         }
 
@@ -541,6 +543,7 @@ class CakePdf
         }
 
         if (is_array($bottom)) {
+            $bottom = $bottom + ['bottom' => null];
             extract($bottom, EXTR_IF_EXISTS);
         }
 
