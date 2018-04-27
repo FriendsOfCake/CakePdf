@@ -263,18 +263,27 @@ Set 'permissions' to an array with a combination of the following available perm
 * annotate,
 * fill_in
 
+## How to
 
-## Note about static assets
+## Ensure css, images etc. are loaded in PDF
 
 Use absolute URLs for static assets in your view templates for PDFs.
-If you use `HtmlHelper::image()`, `HtmlHelper::script()` or `HtmlHelper::css()`
-make sure you have `$options['_full'] = true`.
+If you use `HtmlHelper::image()`, or `HtmlHelper::css()`
+make sure you have set `fullBase` option to `true`.
 
 For example
 ```
-echo $this->Html->script('jquery/jquery.js', ['fullBase' => true]);
-echo $this->Html->css('bootstrap/bootstrap.css', ['fullBase' => true]);
+echo $this->Html->image('logo.png', ['fullBase' => true]);
+echo $this->Html->css('bootstrap.css', ['fullBase' => true]);
 ```
+
+## Get header and footer on all pages
+
+Here are a couple of CSS based solutions you can refer to for easily 
+getting header footer on all PDF pages.
+
+https://ourcodeworld.com/articles/read/687/how-to-configure-a-header-and-footer-in-dompdf
+http://www.jessicaschillinger.us/2017/blog/print-repeating-header-browser/
 
 ## Thanks
 
