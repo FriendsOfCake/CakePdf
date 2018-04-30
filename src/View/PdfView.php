@@ -143,6 +143,6 @@ class PdfView extends View
 
         $id = current($this->request->getParam('pass'));
 
-        return strtolower($this->viewPath) . $id . '.pdf';
+        return strtolower($this->getTemplatePath()) . $id . '.pdf';
     }
 }
