@@ -191,10 +191,23 @@ to your routes file and you can access the same document at
 
 In case you don't want to use the `pdf` extension in your URLs, you can omit
 registering it in your routes configuration. Then in your controller action
-call `RequestHandler::render()` to switch the view class and template paths.
+specify the view class to be used:
 
 ```php
-$this->RequestHandler->renderAs($this, 'pdf', ['attachment' => 'filename.pdf']);
+$this->viewBuilder()->setClassName('CakePdf.Pdf');
+```
+
+Instead of having the pdf rendered in browser itself you can force it to be
+downloaded by using `download` option. Additionally you can specify custom filename
+using `filename` options.
+
+```php
+$this->viewBuilder()->options([
+    'pdfConfig' => [
+        'download' => true, // This can be omitted if "filename" is specified.
+        'filename' => 'Invoice_' . $id // This can be omitted if you want file name based on URL.
+    ]
+]);
 ```
 
 ### 2: Create PDF for email attachment, file storage etc.
@@ -279,7 +292,7 @@ echo $this->Html->css('bootstrap.css', ['fullBase' => true]);
 
 ## Get header and footer on all pages
 
-Here are a couple of CSS based solutions you can refer to for easily 
+Here are a couple of CSS based solutions you can refer to for easily
 getting header footer on all PDF pages.
 
 * https://ourcodeworld.com/articles/read/687/how-to-configure-a-header-and-footer-in-dompdf

@@ -24,17 +24,6 @@ class PdfTestEngine extends AbstractPdfEngine
 }
 
 /**
- * Dummy controller
- */
-class PdfTestPostsController extends Controller
-{
-
-    public $name = 'Posts';
-
-    public $pdfConfig = ['engine' => 'PdfTest'];
-}
-
-/**
  * PdfViewTest class
  */
 class PdfViewTest extends TestCase
@@ -91,6 +80,44 @@ class PdfViewTest extends TestCase
 
         $this->assertContains('<h2>Rendered with default layout</h2>', $result);
         $this->assertContains('Post data: This is the post', $result);
+    }
+
+    /**
+     * testRenderWithDownload
+     *
+     * @return void
+     */
+    public function testRenderWithDownload()
+    {
+        $this->View->setTemplatePath('Posts');
+        $this->View->set('post', 'This is the post');
+
+        $this->View->pdfConfig['download'] = true;
+
+        $result = $this->View->render('view', 'default');
+        $this->assertContains('<h2>Rendered with default layout</h2>', $result);
+        $this->assertContains('Post data: This is the post', $result);
+
+        $this->assertContains('filename="posts.pdf"', $this->View->response->getHeaderLine('Content-Disposition'));
+    }
+
+    /**
+     * testRenderWithFilename
+     *
+     * @return void
+     */
+    public function testRenderWithFilename()
+    {
+        $this->View->setTemplatePath('Posts');
+        $this->View->set('post', 'This is the post');
+
+        $this->View->pdfConfig['filename'] = 'booyah.pdf';
+
+        $result = $this->View->render('view', 'default');
+        $this->assertContains('<h2>Rendered with default layout</h2>', $result);
+        $this->assertContains('Post data: This is the post', $result);
+
+        $this->assertContains('filename="booyah.pdf"', $this->View->response->getHeaderLine('Content-Disposition'));
     }
 
     /**
