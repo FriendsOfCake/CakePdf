@@ -121,7 +121,7 @@ class PdfView extends View
             return $content;
         }
 
-        if (isset($this->pdfConfig['download']) && $this->pdfConfig['download'] === true) {
+        if (!empty($this->pdfConfig['filename']) || !empty($this->pdfConfig['download'])) {
             $this->response = $this->response->withDownload($this->getFilename());
         }
 
