@@ -100,7 +100,7 @@ Configuration options:
   * className: Crypto class to use
   * binary: Binary file to use
 * pageSize: Change the default size, defaults to A4
-* orientation: Change the default orientation, defaults to potrait
+* orientation: Change the default orientation, defaults to portrait
 * margin: Array or margins with the keys: bottom, left, right, top and their values
 * title: Title of the document
 * delay: A delay in milliseconds to wait before rendering the pdf
