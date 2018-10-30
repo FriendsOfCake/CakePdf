@@ -7,6 +7,7 @@ use Cake\Core\Configure;
 use Cake\Core\Exception\Exception;
 use Cake\Filesystem\File;
 use Cake\Http\ServerRequestFactory;
+use Cake\Routing\Router;
 
 class CakePdf
 {
@@ -953,8 +954,13 @@ class CakePdf
             $viewOptions[$var] = $this->{$prop};
         }
 
+        $request = Router::getRequest(true);
+        if (!$request) {
+            $request = ServerRequestFactory::fromGlobals();
+        }
+
         $View = new $viewClass(
-            ServerRequestFactory::fromGlobals(),
+            $request,
             null,
             null,
             $viewOptions
