@@ -36,7 +36,7 @@ by default CakePdf expects the wkhtmltopdf binary to be located in /usr/bin/wkht
 If you are using wkhtmltopdf in Windows, remove any spaces in the path name. For example
 use `C:/Progra~1/wkhtmltopdf/bin/wkhtmltopdf.exe`
 
-DomPdf, Mpdf and Tcpdf can be installed via composer using on of the following commands:
+DomPdf, Mpdf and Tcpdf can be installed via composer using one of the following commands:
 
 ```
 composer require dompdf/dompdf
