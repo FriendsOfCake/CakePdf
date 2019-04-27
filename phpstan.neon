@@ -1,0 +1,8 @@
+parameters:
+    level: 6
+    autoload_files:
+        - tests/bootstrap.php
+    ignoreErrors:
+        - '#Parameter \#1 $process of function proc_close expects resource, resource|false given#'
+        - '#Parameter \#1 $margin of method CakePdf\\Pdf\\CakePdf::marginBottom\(\) expects string|null, array|string given#'
+        - '#Parameter \#1 $margin of method CakePdf\\Pdf\\CakePdf::marginLeft\(\) expects string|null, \(array\)|string|null given#'

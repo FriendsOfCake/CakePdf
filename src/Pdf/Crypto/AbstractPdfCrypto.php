@@ -50,7 +50,7 @@ abstract class AbstractPdfCrypto
      * Set the config
      *
      * @param null|string|array $config Null, string or array. Pass array of configs to set.
-     * @return null|string|array Returns Returns config value if $config is string, else returns config array.
+     * @return null|string|array Returns config value if $config is string, else returns config array.
      */
     public function config($config = null)
     {
@@ -61,7 +61,7 @@ abstract class AbstractPdfCrypto
                 return $this->_config[$config];
             }
 
-            return false;
+            return null;
         }
 
         return $this->_config;

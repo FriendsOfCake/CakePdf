@@ -81,7 +81,7 @@ class TexToPdfEngine extends AbstractPdfEngine
             throw new Exception("Shell error, return code: " . (int)$content['return']);
         }
 
-        $result = file_get_contents($texFile . '.pdf');
+        $result = (string)file_get_contents($texFile . '.pdf');
         $this->_cleanUpTexFiles($texFile);
 
         return $result;

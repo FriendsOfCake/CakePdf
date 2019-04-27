@@ -86,9 +86,9 @@ class PdfView extends View
      * Return CakePdf instance, optionally set engine to be used
      *
      * @param array $config Array of pdf configs. When empty CakePdf instance will be returned.
-     * @return \CakePdf\Pdf\CakePdf
+     * @return \CakePdf\Pdf\CakePdf|null
      */
-    public function renderer($config = null)
+    public function renderer($config = null): ?CakePdf
     {
         if ($config !== null) {
             $this->_renderer = new CakePdf($config);
@@ -108,12 +108,7 @@ class PdfView extends View
     {
         $content = parent::render($view, $layout);
 
-        if (version_compare(Configure::version(), '3.6.0', '<')) {
-            $type = $this->response->type();
-        } else {
-            $type = $this->response->getType();
-        }
-
+        $type = $this->response->getType();
         if ($type === 'text/html') {
             return $content;
         }

@@ -71,23 +71,23 @@ class CakePdf
     /**
      * Instance of PdfEngine class
      *
-     * @var \CakePdf\Pdf\Engine\AbstractPdfEngine
+     * @var \CakePdf\Pdf\Engine\AbstractPdfEngine|null
      */
-    protected $_engineClass = null;
+    protected $_engineClass;
 
     /**
      * Instance of PdfCrypto class
      *
-     * @var \CakePdf\Pdf\Crypto\AbstractPdfCrypto
+     * @var \CakePdf\Pdf\Crypto\AbstractPdfCrypto|null
      */
-    protected $_cryptoClass = null;
+    protected $_cryptoClass;
 
     /**
      * Html to be rendered
      *
      * @var string
      */
-    protected $_html = null;
+    protected $_html;
 
     /**
      * Page size of the pdf
@@ -127,28 +127,28 @@ class CakePdf
     /**
      * Bottom margin in mm
      *
-     * @var \CakePdf\Pdf\number
+     * @var string|int|null
      */
     protected $_marginBottom = null;
 
     /**
      * Left margin in mm
      *
-     * @var \CakePdf\Pdf\number
+     * @var string|int|null
      */
     protected $_marginLeft = null;
 
     /**
      * Right margin in mm
      *
-     * @var \CakePdf\Pdf\number
+     * @var string|int|null
      */
     protected $_marginRight = null;
 
     /**
      * Top margin in mm
      *
-     * @var \CakePdf\Pdf\number
+     * @var string|int|null
      */
     protected $_marginTop = null;
 
@@ -278,7 +278,7 @@ class CakePdf
     public function output($html = null)
     {
         $Engine = $this->engine();
-        if (!$Engine) {
+        if ($Engine === null) {
             throw new Exception(__d('cake_pdf', 'Engine is not loaded'));
         }
 
@@ -345,13 +345,13 @@ class CakePdf
     /**
      * Load PdfEngine
      *
-     * @param string $name Classname of pdf engine without `Engine` suffix. For example `CakePdf.DomPdf`
+     * @param string|array $name Classname of pdf engine without `Engine` suffix. For example `CakePdf.DomPdf`
      * @throws \Cake\Core\Exception\Exception
-     * @return \CakePdf\Pdf\Engine\AbstractPdfEngine
+     * @return \CakePdf\Pdf\Engine\AbstractPdfEngine|null
      */
     public function engine($name = null)
     {
-        if (!$name) {
+        if ($name === null) {
             return $this->_engineClass;
         }
         $config = [];
@@ -376,14 +376,14 @@ class CakePdf
     /**
      * Load PdfCrypto
      *
-     * @param string $name Classname of crypto engine without `Crypto` suffix. For example `CakePdf.Pdftk`
+     * @param string|array $name Classname of crypto engine without `Crypto` suffix. For example `CakePdf.Pdftk`
      * @throws \Cake\Core\Exception\Exception
      * @return \CakePdf\Pdf\Crypto\AbstractPdfCrypto
      */
     public function crypto($name = null)
     {
         if ($name === null) {
-            if ($this->_cryptoClass) {
+            if ($this->_cryptoClass !== null) {
                 return $this->_cryptoClass;
             }
             throw new Exception(__d('cake_pdf', 'Crypto is not loaded'));
@@ -458,7 +458,7 @@ class CakePdf
     /**
      * Get/Set footer HTML.
      *
-     * @param null|string $left left side footer
+     * @param null|string|array $left left side footer
      * @param null|string $center center footer
      * @param null|string $right right side footer
      * @return mixed
@@ -481,7 +481,7 @@ class CakePdf
     /**
      * Get/Set header HTML.
      *
-     * @param null|string $left left side header
+     * @param null|string|array $left left side header
      * @param null|string $center center header
      * @param null|string $right right side header
      * @return mixed
@@ -737,7 +737,7 @@ class CakePdf
      * none: allow no permissions
      * array: list of permissions that are allowed
      *
-     * @param null|bool|array $permissions Permissions to set
+     * @param null|bool|array|string $permissions Permissions to set
      * @throws \Cake\Core\Exception\Exception
      * @return mixed
      */
@@ -751,11 +751,11 @@ class CakePdf
             return $this->_allow;
         }
 
-        if (is_string($permissions) && $permissions == 'all') {
+        if (is_string($permissions) && $permissions === 'all') {
             $permissions = true;
         }
 
-        if (is_string($permissions) && $permissions == 'none') {
+        if (is_string($permissions) && $permissions === 'none') {
             $permissions = false;
         }
 
@@ -932,12 +932,12 @@ class CakePdf
     /**
      * Build and set all the view properties needed to render the layout and template.
      *
-     * @return array The rendered template wrapped in layout.
+     * @return string The rendered template wrapped in layout.
      */
     protected function _render()
     {
         $viewClass = $this->viewRender();
-        $viewClass = App::className($viewClass, 'View', $viewClass == 'View' ? '' : 'View');
+        $viewClass = App::className($viewClass, 'View', $viewClass === 'View' ? '' : 'View');
 
         $viewVars = [
             'theme',
