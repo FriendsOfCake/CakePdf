@@ -5,18 +5,7 @@ namespace CakePdf\Test\TestCase\Pdf;
 use Cake\Core\Configure;
 use Cake\TestSuite\TestCase;
 use CakePdf\Pdf\CakePdf;
-use CakePdf\Pdf\Engine\AbstractPdfEngine;
-
-/**
- * Dummy engine
- */
-class PdfTest2Engine extends AbstractPdfEngine
-{
-    public function output()
-    {
-        return $this->_Pdf->html();
-    }
-}
+use TestApp\Pdf\Engine\PdfTestEngine;
 
 class CakePdfTest extends TestCase
 {
@@ -31,7 +20,7 @@ class CakePdfTest extends TestCase
         return [
             [
                 [
-                    'engine' => '\\' . __NAMESPACE__ . '\PdfTest2Engine',
+                    'engine' => PdfTestEngine::class,
                     'margin' => [
                         'bottom' => 15,
                         'left' => 50,
@@ -148,7 +137,7 @@ class CakePdfTest extends TestCase
     {
         $pdf = new CakePdf($config);
         $engine = $pdf->engine();
-        $this->assertEquals(__NAMESPACE__ . '\PdfTest2Engine', get_class($engine));
+        $this->assertEquals(PdfTestEngine::class, get_class($engine));
     }
 
     /**

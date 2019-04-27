@@ -7,19 +7,8 @@ use Cake\Http\Response;
 use Cake\Http\ServerRequest;
 use Cake\TestSuite\TestCase;
 use CakePdf\Pdf\CakePdf;
-use CakePdf\Pdf\Engine\AbstractPdfEngine;
 use CakePdf\View\PdfView;
-
-/**
- * Dummy engine
- */
-class PdfTestEngine extends AbstractPdfEngine
-{
-    public function output()
-    {
-        return $this->_Pdf->html();
-    }
-}
+use TestApp\Pdf\Engine\PdfTestEngine;
 
 /**
  * PdfViewTest class
@@ -36,7 +25,7 @@ class PdfViewTest extends TestCase
         parent::setUp();
 
         Configure::write('CakePdf', [
-            'engine' => '\\' . __NAMESPACE__ . '\PdfTestEngine',
+            'engine' => PdfTestEngine::class,
         ]);
 
         $request = new ServerRequest();
@@ -59,7 +48,7 @@ class PdfViewTest extends TestCase
         $this->assertEquals('application/pdf', $result);
 
         $result = $this->View->pdfConfig;
-        $this->assertEquals(['engine' => '\\' . __NAMESPACE__ . '\PdfTestEngine'], $result);
+        $this->assertEquals(['engine' => PdfTestEngine::class], $result);
 
         $result = $this->View->renderer();
         $this->assertInstanceOf(CakePdf::class, $result);
