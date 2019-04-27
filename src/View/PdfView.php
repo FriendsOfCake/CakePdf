@@ -1,17 +1,17 @@
 <?php
+declare(strict_types=1);
 namespace CakePdf\View;
 
-use CakePdf\Pdf\CakePdf;
 use Cake\Core\Configure;
 use Cake\Core\Exception\Exception;
 use Cake\Event\EventManager;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
 use Cake\View\View;
+use CakePdf\Pdf\CakePdf;
 
 class PdfView extends View
 {
-
     /**
      * The subdirectory.  PDF views are always in pdf.
      *
@@ -52,9 +52,9 @@ class PdfView extends View
      * @throws \Cake\Core\Exception\Exception
      */
     public function __construct(
-        ServerRequest $request = null,
-        Response $response = null,
-        EventManager $eventManager = null,
+        ?ServerRequest $request = null,
+        ?Response $response = null,
+        ?EventManager $eventManager = null,
         array $viewOptions = []
     ) {
         $this->_passedVars[] = 'pdfConfig';

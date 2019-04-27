@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace CakePdf\Pdf;
 
 use Cake\Cache\Cache;
@@ -11,7 +12,6 @@ use Cake\Routing\Router;
 
 class CakePdf
 {
-
     /**
      * Layout for the View
      *
@@ -127,28 +127,28 @@ class CakePdf
     /**
      * Bottom margin in mm
      *
-     * @var number
+     * @var \CakePdf\Pdf\number
      */
     protected $_marginBottom = null;
 
     /**
      * Left margin in mm
      *
-     * @var number
+     * @var \CakePdf\Pdf\number
      */
     protected $_marginLeft = null;
 
     /**
      * Right margin in mm
      *
-     * @var number
+     * @var \CakePdf\Pdf\number
      */
     protected $_marginRight = null;
 
     /**
      * Top margin in mm
      *
-     * @var number
+     * @var \CakePdf\Pdf\number
      */
     protected $_marginTop = null;
 
@@ -361,7 +361,7 @@ class CakePdf
         }
 
         $engineClassName = App::className($name, 'Pdf/Engine', 'Engine');
-        if (!class_exists($engineClassName)) {
+        if ($engineClassName === null) {
             throw new Exception(__d('cake_pdf', sprintf('Pdf engine "%s" not found', $name)));
         }
         if (!is_subclass_of($engineClassName, 'CakePdf\Pdf\Engine\AbstractPdfEngine')) {

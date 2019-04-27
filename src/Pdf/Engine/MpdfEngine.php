@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace CakePdf\Pdf\Engine;
 
 use Mpdf\Mpdf;
@@ -6,7 +7,6 @@ use Mpdf\Output\Destination;
 
 class MpdfEngine extends AbstractPdfEngine
 {
-
     /**
      * Generates Pdf from html
      *

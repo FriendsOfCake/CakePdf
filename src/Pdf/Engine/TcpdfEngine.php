@@ -1,11 +1,11 @@
 <?php
+declare(strict_types=1);
 namespace CakePdf\Pdf\Engine;
 
 use TCPDF;
 
 class TcpdfEngine extends AbstractPdfEngine
 {
-
     /**
      * Generates Pdf from html
      *

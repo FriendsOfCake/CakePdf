@@ -1,11 +1,11 @@
 <?php
+declare(strict_types=1);
 namespace CakePdf\Pdf\Crypto;
 
 use Cake\Core\Exception\Exception;
 
 class PdftkCrypto extends AbstractPdfCrypto
 {
-
     /**
      * Path to the pdftk executable binary
      *

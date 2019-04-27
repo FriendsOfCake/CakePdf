@@ -1,22 +1,20 @@
 <?php
-
+declare(strict_types=1);
 namespace CakePdf\Test\TestCase\View;
 
-use CakePdf\Pdf\CakePdf;
-use CakePdf\Pdf\Engine\AbstractPdfEngine;
-use CakePdf\View\PdfView;
-use Cake\Controller\Controller;
 use Cake\Core\Configure;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
 use Cake\TestSuite\TestCase;
+use CakePdf\Pdf\CakePdf;
+use CakePdf\Pdf\Engine\AbstractPdfEngine;
+use CakePdf\View\PdfView;
 
 /**
  * Dummy engine
  */
 class PdfTestEngine extends AbstractPdfEngine
 {
-
     public function output()
     {
         return $this->_Pdf->html();
@@ -28,7 +26,6 @@ class PdfTestEngine extends AbstractPdfEngine
  */
 class PdfViewTest extends TestCase
 {
-
     /**
      * setup callback
      *

@@ -1,12 +1,12 @@
 <?php
+declare(strict_types=1);
 namespace CakePdf\Pdf\Engine;
 
-use CakePdf\Pdf\CakePdf;
 use Cake\Core\InstanceConfigTrait;
+use CakePdf\Pdf\CakePdf;
 
 abstract class AbstractPdfEngine
 {
-
     use InstanceConfigTrait;
 
     protected $_defaultConfig = [];

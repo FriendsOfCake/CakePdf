@@ -1,12 +1,12 @@
 <?php
+declare(strict_types=1);
 namespace CakePdf\Pdf\Engine;
 
-use CakePdf\Pdf\CakePdf;
 use Cake\Core\Exception\Exception;
+use CakePdf\Pdf\CakePdf;
 
 class TexToPdfEngine extends AbstractPdfEngine
 {
-
     /**
      * Path to the tex binary of your choice.
      *

@@ -1,11 +1,11 @@
 <?php
+declare(strict_types=1);
 namespace CakePdf\Pdf\Engine;
 
 use Dompdf\Dompdf;
 
 class DomPdfEngine extends AbstractPdfEngine
 {
-
     /**
      * Generates Pdf from html
      *

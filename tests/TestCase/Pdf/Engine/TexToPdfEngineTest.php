@@ -1,9 +1,10 @@
 <?php
+declare(strict_types=1);
 namespace CakePdf\Test\TestCase\Pdf\Engine;
 
+use Cake\TestSuite\TestCase;
 use CakePdf\Pdf\CakePdf;
 use CakePdf\Pdf\Engine\TexToPdfEngine;
-use Cake\TestSuite\TestCase;
 
 /**
  * TexToPdfEngineTest class

@@ -1,12 +1,11 @@
 <?php
-
+declare(strict_types=1);
 namespace CakePdf\Pdf\Crypto;
 
 use CakePdf\Pdf\CakePdf;
 
 abstract class AbstractPdfCrypto
 {
-
     /**
      * Instance of CakePdf class
      *

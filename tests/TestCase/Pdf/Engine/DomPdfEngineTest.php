@@ -1,9 +1,10 @@
 <?php
+declare(strict_types=1);
 namespace CakePdf\Test\TestCase\Pdf\Engine;
 
+use Cake\TestSuite\TestCase;
 use CakePdf\Pdf\CakePdf;
 use CakePdf\Pdf\Engine\DomPdfEngine;
-use Cake\TestSuite\TestCase;
 use Dompdf\Dompdf;
 
 /**
@@ -11,7 +12,6 @@ use Dompdf\Dompdf;
  */
 class DomPdfEngineTest extends TestCase
 {
-
     /**
      * Tests that the engine receives the expected options.
      */

@@ -1,9 +1,10 @@
 <?php
+declare(strict_types=1);
 namespace CakePdf\Test\TestCase\Pdf\Engine;
 
+use Cake\TestSuite\TestCase;
 use CakePdf\Pdf\CakePdf;
 use CakePdf\Pdf\Engine\MpdfEngine;
-use Cake\TestSuite\TestCase;
 use Mpdf\Mpdf;
 
 /**
@@ -11,7 +12,6 @@ use Mpdf\Mpdf;
  */
 class MpdfEngineTest extends TestCase
 {
-
     /**
      * Tests that the engine sets the options properly.
      */

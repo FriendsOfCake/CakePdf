@@ -1,19 +1,17 @@
 <?php
-
+declare(strict_types=1);
 namespace CakePdf\Test\TestCase\Pdf;
 
+use Cake\Core\Configure;
+use Cake\TestSuite\TestCase;
 use CakePdf\Pdf\CakePdf;
 use CakePdf\Pdf\Engine\AbstractPdfEngine;
-use Cake\Core\Configure;
-use Cake\Core\Plugin;
-use Cake\TestSuite\TestCase;
 
 /**
  * Dummy engine
  */
 class PdfTest2Engine extends AbstractPdfEngine
 {
-
     public function output()
     {
         return $this->_Pdf->html();
@@ -22,16 +20,12 @@ class PdfTest2Engine extends AbstractPdfEngine
 
 class CakePdfTest extends TestCase
 {
-
     public function setUp()
     {
         parent::setUp();
         Configure::delete('Pdf');
     }
 
-    /**
-     *
-     */
     public static function provider()
     {
         return [

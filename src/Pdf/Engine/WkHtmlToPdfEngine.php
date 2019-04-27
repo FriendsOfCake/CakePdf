@@ -1,12 +1,12 @@
 <?php
+declare(strict_types=1);
 namespace CakePdf\Pdf\Engine;
 
-use CakePdf\Pdf\CakePdf;
 use Cake\Core\Exception\Exception;
+use CakePdf\Pdf\CakePdf;
 
 class WkHtmlToPdfEngine extends AbstractPdfEngine
 {
-
     /**
      * Path to the wkhtmltopdf executable binary
      *
@@ -140,12 +140,12 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
                 continue;
             } elseif (is_array($value)) {
                 foreach ($value as $k => $v) {
-                    $command .= sprintf(' --%s %s %s', $key, escapeshellarg($k), escapeshellarg($v));
+                    $command .= sprintf(' --%s %s %s', $key, escapeshellarg($k), escapeshellarg((string)$v));
                 }
             } elseif ($value === true) {
                 $command .= ' --' . $key;
             } else {
-                $command .= sprintf(' --%s %s', $key, escapeshellarg($value));
+                $command .= sprintf(' --%s %s', $key, escapeshellarg((string)$value));
             }
         }
         $footer = $this->_Pdf->footer();
