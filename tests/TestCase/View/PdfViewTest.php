@@ -55,9 +55,9 @@ class PdfViewTest extends TestCase
     public function testConstruct()
     {
         if (version_compare(Configure::version(), '3.6.0', '<')) {
-            $result = $this->View->response->type();
+            $result = $this->View->getResponse()->type();
         } else {
-            $result = $this->View->response->getType();
+            $result = $this->View->getResponse()->getType();
         }
         $this->assertEquals('application/pdf', $result);
 
@@ -98,7 +98,7 @@ class PdfViewTest extends TestCase
         $this->assertContains('<h2>Rendered with default layout</h2>', $result);
         $this->assertContains('Post data: This is the post', $result);
 
-        $this->assertContains('filename="posts.pdf"', $this->View->response->getHeaderLine('Content-Disposition'));
+        $this->assertContains('filename="posts.pdf"', $this->View->getResponse()->getHeaderLine('Content-Disposition'));
     }
 
     /**
@@ -117,7 +117,10 @@ class PdfViewTest extends TestCase
         $this->assertContains('<h2>Rendered with default layout</h2>', $result);
         $this->assertContains('Post data: This is the post', $result);
 
-        $this->assertContains('filename="booyah.pdf"', $this->View->response->getHeaderLine('Content-Disposition'));
+        $this->assertContains(
+            'filename="booyah.pdf"',
+            $this->View->getResponse()->getHeaderLine('Content-Disposition')
+        );
     }
 
     /**
@@ -139,16 +142,12 @@ class PdfViewTest extends TestCase
     {
         $request = new ServerRequest();
         $response = new Response();
-        $this->View = new PdfView($request, $response, null, [ 'templatePath' => 'Error' ]);
+        $this->View = new PdfView($request, $response, null, ['templatePath' => 'Error']);
 
-        $this->assertNull($this->View->subDir);
-        $this->assertNull($this->View->layoutPath);
+        $this->assertSame('', $this->View->getSubDir());
+        $this->assertSame('', $this->View->getLayoutPath());
 
-        if (version_compare(Configure::version(), '3.6.0', '<')) {
-            $result = $this->View->response->type();
-        } else {
-            $result = $this->View->response->getType();
-        }
+        $result = $this->View->getResponse()->getType();
         $this->assertEquals('text/html', $result);
     }
 }

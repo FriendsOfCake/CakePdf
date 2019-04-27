@@ -29,8 +29,8 @@ Configure::write('App.paths', [
     'templates' => [$root . '/tests/test_app/Template/'],
 ]);
 
-Plugin::load('CakePdf', [
-    'path' => dirname(dirname(__FILE__)) . DS,
-    'routes' => true,
-    'bootstrap' => true,
-]);
+// Plugin::load('CakePdf', [
+//     'path' => dirname(dirname(__FILE__)) . DS,
+//     'routes' => true,
+//     'bootstrap' => true,
+// ]);

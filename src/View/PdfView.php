@@ -17,21 +17,21 @@ class PdfView extends View
      *
      * @var string|null
      */
-    public $subDir = 'pdf';
+    protected $subDir = 'pdf';
 
     /**
      * The name of the layouts subfolder containing layouts for this View.
      *
      * @var string|null
      */
-    public $layoutPath = 'pdf';
+    protected $layoutPath = 'pdf';
 
     /**
      * CakePdf Instance
      *
      * @var \CakePdf\Pdf\CakePdf|null
      */
-    protected $_renderer = null;
+    protected $_renderer;
 
     /**
      * List of pdf configs collected from the associated controller.
@@ -67,13 +67,15 @@ class PdfView extends View
         );
 
         $this->response = $this->response->withType('pdf');
-        if (isset($viewOptions['templatePath']) && $viewOptions['templatePath'] == 'Error') {
-            $this->subDir = null;
-            $this->layoutPath = null;
+
+        if (isset($viewOptions['templatePath']) && $viewOptions['templatePath'] === 'Error') {
+            $this->subDir = '';
+            $this->layoutPath = '';
             $this->response = $this->response->withType('html');
 
             return;
         }
+
         if (!$this->pdfConfig) {
             throw new Exception(__d('cakepdf', 'Controller attribute $pdfConfig is not correct or missing'));
         }
@@ -102,7 +104,7 @@ class PdfView extends View
      * @param string $layout The layout being rendered.
      * @return string The rendered view.
      */
-    public function render($view = null, $layout = null)
+    public function render(?string $view = null, $layout = null): string
     {
         $content = parent::render($view, $layout);
 

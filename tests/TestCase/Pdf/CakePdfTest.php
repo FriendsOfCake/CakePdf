@@ -125,7 +125,7 @@ class CakePdfTest extends TestCase
     public function testPluginOutput($config)
     {
         $pdf = new CakePdf($config);
-        Plugin::load('MyPlugin', ['autoload' => true]);
+        $this->loadPlugins(['MyPlugin']);
         $pdf->viewVars(['data' => 'testing']);
         $pdf->template('MyPlugin.testing', 'MyPlugin.pdf');
         $pdf->helpers('MyPlugin.MyTest');
