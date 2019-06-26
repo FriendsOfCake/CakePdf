@@ -37,7 +37,7 @@ class PdfView extends View
     /**
      * Default config options.
      *
-     * @var array{pdfConfig:array}
+     * @var array
      */
     protected $_defaultConfig = [
         'pdfConfig' => [],
