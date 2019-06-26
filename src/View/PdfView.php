@@ -35,11 +35,13 @@ class PdfView extends View
     protected $_renderer;
 
     /**
-     * List of pdf configs collected from the associated controller.
+     * Default config options.
      *
-     * @var array
+     * @var array{pdfConfig:array}
      */
-    public $pdfConfig = [];
+    protected $_defaultConfig = [
+        'pdfConfig' => [],
+    ];
 
     /**
      * Constructor
@@ -58,29 +60,25 @@ class PdfView extends View
         ?EventManager $eventManager = null,
         array $viewOptions = []
     ) {
-        $this->_passedVars[] = 'pdfConfig';
+        $this->setConfig('pdfConfig', (array)Configure::read('CakePdf'));
 
         parent::__construct($request, $response, $eventManager, $viewOptions);
-
-        $this->pdfConfig = array_merge(
-            (array)Configure::read('CakePdf'),
-            (array)$this->pdfConfig
-        );
-
-        $this->response = $this->response->withType('pdf');
 
         if (isset($viewOptions['templatePath']) && $viewOptions['templatePath'] === 'Error') {
             $this->subDir = '';
             $this->layoutPath = '';
-            $this->response = $this->response->withType('html');
 
             return;
         }
 
-        if (!$this->pdfConfig) {
-            throw new Exception(__d('cakepdf', 'Controller attribute $pdfConfig is not correct or missing'));
+        $this->response = $this->response->withType('pdf');
+
+        $pdfConfig = $this->getConfig('pdfConfig');
+        if (empty($pdfConfig)) {
+            throw new Exception('No PDF config set. Use ViewBuilder::setOption(\'pdfConfig\', $config) to do so.');
         }
-        $this->renderer($this->pdfConfig);
+
+        $this->renderer($pdfConfig);
     }
 
     /**
@@ -113,13 +111,14 @@ class PdfView extends View
         if ($type === 'text/html') {
             return $content;
         }
+
         if ($this->renderer() === null) {
             $this->response = $this->response->withType('html');
 
             return $content;
         }
 
-        if (!empty($this->pdfConfig['filename']) || !empty($this->pdfConfig['download'])) {
+        if ($this->getConfig('pdfConfig.filename') || $this->getConfig('pdfConfig.download')) {
             $this->response = $this->response->withDownload($this->getFilename());
         }
 
@@ -135,8 +134,9 @@ class PdfView extends View
      */
     public function getFilename()
     {
-        if (isset($this->pdfConfig['filename'])) {
-            return $this->pdfConfig['filename'];
+        $filename = $this->getConfig('pdfConfig.filename');
+        if ($filename) {
+            return $filename;
         }
 
         $id = current($this->request->getParam('pass'));

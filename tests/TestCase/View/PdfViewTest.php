@@ -48,7 +48,7 @@ class PdfViewTest extends TestCase
         }
         $this->assertEquals('application/pdf', $result);
 
-        $result = $this->View->pdfConfig;
+        $result = $this->View->getConfig('pdfConfig');
         $this->assertEquals(['engine' => PdfTestEngine::class], $result);
 
         $result = $this->View->renderer();
@@ -79,7 +79,7 @@ class PdfViewTest extends TestCase
         $this->View->setTemplatePath('Posts');
         $this->View->set('post', 'This is the post');
 
-        $this->View->pdfConfig['download'] = true;
+        $this->View->setConfig('pdfConfig.download', true);
 
         $result = $this->View->render('view', 'default');
         $this->assertContains('<h2>Rendered with default layout</h2>', $result);
@@ -98,7 +98,7 @@ class PdfViewTest extends TestCase
         $this->View->setTemplatePath('Posts');
         $this->View->set('post', 'This is the post');
 
-        $this->View->pdfConfig['filename'] = 'booyah.pdf';
+        $this->View->setConfig('pdfConfig.filename', 'booyah.pdf');
 
         $result = $this->View->render('view', 'default');
         $this->assertContains('<h2>Rendered with default layout</h2>', $result);
