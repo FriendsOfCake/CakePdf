@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+
 namespace CakePdf\Test\TestCase\Pdf;
 
 use Cake\Core\Configure;
@@ -9,7 +10,7 @@ use TestApp\Pdf\Engine\PdfTestEngine;
 
 class CakePdfTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         Configure::delete('Pdf');

@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+
 namespace CakePdf\Pdf\Crypto;
 
 use Cake\Core\Exception\Exception;

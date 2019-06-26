@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+
 namespace CakePdf\Test\TestCase\Pdf\Engine;
 
 use Cake\TestSuite\TestCase;
@@ -16,7 +17,7 @@ class WkHtmlToPdfEngineTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

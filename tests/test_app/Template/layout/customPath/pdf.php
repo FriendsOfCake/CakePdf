@@ -1,1 +1,1 @@
-CustomLayoutData: <?php echo $data; ?>
+CustomLayoutData: <?= $data ?>

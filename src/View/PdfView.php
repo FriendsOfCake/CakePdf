@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+
 namespace CakePdf\View;
 
 use Cake\Core\Configure;

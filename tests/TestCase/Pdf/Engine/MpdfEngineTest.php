@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+
 namespace CakePdf\Test\TestCase\Pdf\Engine;
 
 use Cake\TestSuite\TestCase;

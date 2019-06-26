@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+
 namespace CakePdf\Test\TestCase\View;
 
 use Cake\Core\Configure;
@@ -20,7 +21,7 @@ class PdfViewTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
