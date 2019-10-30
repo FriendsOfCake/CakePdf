@@ -16,7 +16,7 @@ class PdfReactorEngineTest extends TestCase {
 	 * 
 	 * @var \PHPUnit\Framework\MockObject\MockObject
 	 */
-	private $pdfReactorMock;
+	private $pdfReactorClient;
 	
 	/**
 	 * 
@@ -26,14 +26,10 @@ class PdfReactorEngineTest extends TestCase {
 	public function setUp() {
 		parent::setUp();
 		
-		$this->pdfReactorMock = $this->getMockBuilder('PDFreactor')
+		// Create pdf reactor client mock
+		$this->pdfReactorClient = $this->getMockBuilder('PDFreactor')
 			->setMethods(['convertAsBinary'])
 			->getMock();
-		$this->pdfReactorMock->expects($this->once())
-			->method('convertAsBinary')
-			->will($this->returnCallback(function() {
-				return "%PDF-1.4 MOCK ... %%EOF\n";
-			}));
 	}
 	
 	/**
@@ -43,17 +39,24 @@ class PdfReactorEngineTest extends TestCase {
 	 */
 	public function tearDown() {
 		parent::tearDown();
-		unset($this->pdfReactorMock);
+		unset($this->pdfReactorClient);
 	}
 	
 	/**
 	 * Test output of client gets called.
 	 */
 	public function testOutput() {
+		// Configure mock
+		$this->pdfReactorClient->expects($this->once())
+			->method('convertAsBinary')
+			->will($this->returnCallback(function() {
+				return "%PDF-1.4 MOCK ... %%EOF\n";
+			}));
+		
 		$Pdf = new CakePdf([
 			'engine' => [
 				'className' => 'CakePdf.PdfReactor',
-				'client' => $this->pdfReactorMock
+				'client' => $this->pdfReactorClient
 			]
 		]);
 		$Pdf->html('<foo>bar</foo>');
@@ -66,6 +69,13 @@ class PdfReactorEngineTest extends TestCase {
 	 * Test createInstance gets passed the client config.
 	 */
 	public function testCreateInstance() {
+		// Configure mock
+		$this->pdfReactorClient->expects($this->once())
+			->method('convertAsBinary')
+			->will($this->returnCallback(function() {
+				return "%PDF-1.4 MOCK ... %%EOF\n";
+			}));
+			
 		// Mock PdfReactorEngine
 		$engineClass = $this->getMockClass(PdfReactorEngine::class, ['createInstance']);
 		
@@ -88,9 +98,62 @@ class PdfReactorEngineTest extends TestCase {
 			->method('createInstance')
 			->will($this->returnCallback(function ($options) use ($client_config) {
 				$this->assertEquals($options, $client_config);
-				return $this->pdfReactorMock;
+				return $this->pdfReactorClient;
 			}));
 		$mock_engine->output();
+	}
+	
+	/**
+	 * Test output of client gets called.
+	 */
+	public function testException() {
+		// Configure mock
+		$this->pdfReactorClient->expects($this->once())
+			->method('convertAsBinary')
+			->will($this->returnCallback(function() {
+				throw new \Exception("Foo Bar");
+			}));
+			
+		$Pdf = new CakePdf([
+			'engine' => [
+				'className' => 'CakePdf.PdfReactor',
+				'client' => $this->pdfReactorClient
+			]
+		]);
+		
+		$this->expectException(\Cake\Core\Exception\Exception::class);
+		$Pdf->engine()->output();
+	}
+	
+	/**
+	 * Test Exception client not found
+	 */
+	public function testExceptionClientNotFound() {
+		$Pdf = new CakePdf([
+			'engine' => [
+				'className' => 'CakePdf.PdfReactor',
+				'client' => [
+					'className' => 'FooBar',
+					'serviceUrl' => 'http://localhost'
+				]
+			]
+		]);
+		$this->expectException(\Cake\Core\Exception\Exception::class);
+		$Pdf->engine()->output();
+	}
+	
+	/**
+	 * Test Exception "missing convertAsBinary"
+	 */
+	public function testExceptionMissinMethod() {
+		$Pdf = new CakePdf([
+			'engine' => [
+				'className' => 'CakePdf.PdfReactor',
+				'client' => new \stdClass()
+			]
+		]);
+		$this->expectException(\Cake\Core\Exception\Exception::class);
+		$Pdf->engine()->output();
 	}
 }
 
