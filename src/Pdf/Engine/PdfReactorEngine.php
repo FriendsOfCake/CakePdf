@@ -29,7 +29,7 @@ class PdfReactorEngine extends AbstractPdfEngine {
 		$client = $this->getConfig('client',
 				'\com\realobjects\pdfreactor\webservice\client\PDFreactor');
 		
-		// Get pdf reactor
+		// Create pdf reactor instance
 		$pdf_reactor = $this->createInstance($client);
 		
 		// Get engine options
@@ -45,42 +45,39 @@ class PdfReactorEngine extends AbstractPdfEngine {
 	/**
 	 * Creates the pdf reactor instance.
 	 * 
-	 * @param $options
+	 * @param mixed $client	The client configuration, class name or instance
 	 * @throws Exception
 	 * @return object
 	 */
-	protected function createInstance($options) {
-		// Extract service url and client class name from client config if array
-		$service_url = null;
-		if (is_array($options)) {
-			if (isset($options['serviceUrl'])) {
-				$service_url = $options['serviceUrl'];
+	protected function createInstance($client) {
+		// Get client instance from client config
+		if (!is_object($client)) {
+			$service_url = null;
+			if (is_array($client)) {
+				if (isset($client['serviceUrl'])) {
+					$service_url = $client['serviceUrl'];
+				}
+				$client = $client['className'];
 			}
-			$client = $options['className'];
-		} else {
-			$client = $options;
-		}
-		
-		// Check client is an object, otherwise try create instance it
-		if (is_object($client)) {
-			$pdf_reactor = $client;
-		} else {
-			// Get client class name
+			
+			// Get class and create instance
 			$client_class_name = App::className($client);
 			if (!class_exists($client_class_name)) {
 				throw new Exception(__d('cake_pdf',
 						'PDFreactor: Client "{0}" not found', $client));
 			}
-			
-			// Initialize pdf reactor client instance
-			$pdf_reactor = new $client_class_name($service_url);
+			$client = new $client_class_name($service_url);
 		}
-		if (!method_exists($pdf_reactor, 'convertAsBinary')) {
+		
+		// Check client methode "convertAsBinary" exists
+		if (!method_exists($client, 'convertAsBinary')) {
 			throw new Exception(__d('cake_pdf',
 					'PDFreactor: Missing method "convertAsBinary" for client "{0}"', 
-					get_class($pdf_reactor)));
+					get_class($client)));
 		}
-		return $pdf_reactor;
+		
+		// Retur instance
+		return $client;
 	}
 	
 	/**
