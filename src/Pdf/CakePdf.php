@@ -955,7 +955,7 @@ class CakePdf
             $viewOptions[$var] = $this->{$prop};
         }
 
-        $request = Router::getRequest(true);
+        $request = Router::getRequest();
         if (!$request) {
             $request = ServerRequestFactory::fromGlobals();
         }
