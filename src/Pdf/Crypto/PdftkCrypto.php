@@ -37,7 +37,7 @@ class PdftkCrypto extends AbstractPdfCrypto
      * @throws \Cake\Core\Exception\Exception
      * @return string raw pdf data
      */
-    public function encrypt($data)
+    public function encrypt(string $data): string
     {
         /** @var string $binary */
         $binary = $this->config('binary');
@@ -108,7 +108,7 @@ class PdftkCrypto extends AbstractPdfCrypto
      * @param string $permission permission name
      * @return bool
      */
-    public function permissionImplemented($permission)
+    public function permissionImplemented(string $permission): bool
     {
         return array_key_exists($permission, $this->_permissionsMap);
     }
@@ -119,7 +119,7 @@ class PdftkCrypto extends AbstractPdfCrypto
      * @param array $arguments arguments to pass to pdftk
      * @return string list of arguments
      */
-    protected function _buildArguments($arguments)
+    protected function _buildArguments(array $arguments): string
     {
         $output = [];
 

@@ -37,7 +37,7 @@ abstract class AbstractPdfCrypto
      * @param string $data raw pdf file
      * @return string
      */
-    abstract public function encrypt($data);
+    abstract public function encrypt(string $data): string;
 
     /**
      * Implement in subclass.
@@ -45,7 +45,7 @@ abstract class AbstractPdfCrypto
      * @param string $permission permission to check
      * @return bool
      */
-    abstract public function permissionImplemented($permission);
+    abstract public function permissionImplemented(string $permission): bool;
 
     /**
      * Set the config

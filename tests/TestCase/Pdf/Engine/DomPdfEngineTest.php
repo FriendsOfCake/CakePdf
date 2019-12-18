@@ -132,7 +132,7 @@ class DomPdfEngineTest extends TestCase
             ->method('_output')
             ->with($DomPDF);
 
-        $this->assertNull($Engine->output());
+        $this->assertSame('', $Engine->output());
     }
 
     /**

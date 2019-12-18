@@ -10,7 +10,7 @@ use CakePdf\Pdf\Engine\AbstractPdfEngine;
  */
 class PdfTestEngine extends AbstractPdfEngine
 {
-    public function output()
+    public function output(): string
     {
         return $this->_Pdf->html();
     }

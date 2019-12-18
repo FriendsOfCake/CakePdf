@@ -12,7 +12,7 @@ class TcpdfEngine extends AbstractPdfEngine
      *
      * @return string raw pdf data
      */
-    public function output()
+    public function output(): string
     {
         $TCPDF = new TCPDF($this->_Pdf->orientation(), 'mm', $this->_Pdf->pageSize());
         $TCPDF->AddPage();

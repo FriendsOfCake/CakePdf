@@ -112,7 +112,7 @@ class CakePdfTest extends TestCase
         $this->loadPlugins(['MyPlugin']);
         $pdf->viewVars(['data' => 'testing']);
         $pdf->template('MyPlugin.testing', 'MyPlugin.pdf');
-        $pdf->helpers('MyPlugin.MyTest');
+        $pdf->helpers(['MyPlugin.MyTest']);
         $result = $pdf->output();
         $expected = 'MyPlugin Layout Data: testing';
         $this->assertEquals($expected, $result);

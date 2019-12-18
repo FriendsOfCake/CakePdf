@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace CakePdf\Pdf\Engine;
 
+use CakePdf\Pdf\CakePdf;
 use Dompdf\Dompdf;
 
 class DomPdfEngine extends AbstractPdfEngine
@@ -12,7 +13,7 @@ class DomPdfEngine extends AbstractPdfEngine
      *
      * @return string raw pdf data
      */
-    public function output()
+    public function output(): string
     {
         $defaults = [
             'fontCache' => TMP,
@@ -33,7 +34,7 @@ class DomPdfEngine extends AbstractPdfEngine
      * @param array $options The engine options.
      * @return \Dompdf\Dompdf
      */
-    protected function _createInstance($options)
+    protected function _createInstance(array $options): Dompdf
     {
         return new Dompdf($options);
     }
@@ -45,7 +46,7 @@ class DomPdfEngine extends AbstractPdfEngine
      * @param \Dompdf\Dompdf $DomPDF The Dompdf instance to render.
      * @return \Dompdf\Dompdf
      */
-    protected function _render($Pdf, $DomPDF)
+    protected function _render(CakePdf $Pdf, Dompdf $DomPDF): Dompdf
     {
         $DomPDF->loadHtml($Pdf->html());
         $DomPDF->render();
@@ -59,7 +60,7 @@ class DomPdfEngine extends AbstractPdfEngine
      * @param \Dompdf\Dompdf $DomPDF The Dompdf instance from which to generate the output from.
      * @return string
      */
-    protected function _output($DomPDF)
+    protected function _output(Dompdf $DomPDF): string
     {
         return (string)$DomPDF->output();
     }

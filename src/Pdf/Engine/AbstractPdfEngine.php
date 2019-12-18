@@ -34,5 +34,5 @@ abstract class AbstractPdfEngine
      *
      * @return string
      */
-    abstract public function output();
+    abstract public function output(): string;
 }

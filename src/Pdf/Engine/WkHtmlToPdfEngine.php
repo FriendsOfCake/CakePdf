@@ -45,7 +45,7 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
      * @return string Raw PDF data
      * @throws \Exception If no output is generated to stdout by wkhtmltopdf.
      */
-    public function output()
+    public function output(): string
     {
         $command = $this->_getCommand();
         $content = $this->_exec($command, $this->_Pdf->html());
@@ -73,7 +73,7 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
      * @param string $input Html to pass to wkhtmltopdf
      * @return array the result of running the command to generate the pdf
      */
-    protected function _exec($cmd, $input)
+    protected function _exec(string $cmd, string $input): array
     {
         $result = ['stdout' => '', 'stderr' => '', 'return' => ''];
 
@@ -100,7 +100,7 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
      * @return string the command for generating the pdf
      * @throws \Cake\Core\Exception\Exception
      */
-    protected function _getCommand()
+    protected function _getCommand(): string
     {
         $binary = $this->getConfig('binary');
 

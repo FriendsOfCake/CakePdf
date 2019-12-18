@@ -13,7 +13,7 @@ class MpdfEngine extends AbstractPdfEngine
      *
      * @return string raw pdf data
      */
-    public function output()
+    public function output(): string
     {
         $orientation = $this->_Pdf->orientation() === 'landscape' ? 'L' : 'P';
         $format = $this->_Pdf->pageSize();
@@ -45,7 +45,7 @@ class MpdfEngine extends AbstractPdfEngine
      * @param array $options The engine options.
      * @return \Mpdf\Mpdf
      */
-    protected function _createInstance($options)
+    protected function _createInstance($options): Mpdf
     {
         return new Mpdf($options);
     }

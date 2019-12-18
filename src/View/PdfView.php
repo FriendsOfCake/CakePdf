@@ -87,7 +87,7 @@ class PdfView extends View
      * @param array $config Array of pdf configs. When empty CakePdf instance will be returned.
      * @return \CakePdf\Pdf\CakePdf|null
      */
-    public function renderer($config = null): ?CakePdf
+    public function renderer(?array $config = null): ?CakePdf
     {
         if ($config !== null) {
             $this->_renderer = new CakePdf($config);
@@ -134,7 +134,7 @@ class PdfView extends View
      *
      * @return string The filename
      */
-    public function getFilename()
+    public function getFilename(): string
     {
         $filename = $this->getConfig('pdfConfig.filename');
         if ($filename) {

@@ -32,7 +32,7 @@ class TexToPdfEngine extends AbstractPdfEngine
      *
      * @return string Returns the file name of the written tex file.
      */
-    protected function _writeTexFile()
+    protected function _writeTexFile(): string
     {
         $output = $this->_Pdf->html();
         $file = sha1($output);
@@ -48,7 +48,7 @@ class TexToPdfEngine extends AbstractPdfEngine
      * @param string $texFile Tex file name.
      * @return void
      */
-    protected function _cleanUpTexFiles($texFile)
+    protected function _cleanUpTexFiles(string $texFile): void
     {
         $extensions = ['aux', 'log', 'pdf'];
         foreach ($extensions as $extension) {
@@ -65,7 +65,7 @@ class TexToPdfEngine extends AbstractPdfEngine
      * @throws \Cake\Core\Exception\Exception
      * @return string raw pdf data
      */
-    public function output()
+    public function output(): string
     {
         $texFile = $this->_writeTexFile();
         $content = $this->_exec($this->_getCommand(), $texFile);
@@ -95,7 +95,7 @@ class TexToPdfEngine extends AbstractPdfEngine
      * @param string $input Html to pass to wkhtmltopdf
      * @return array the result of running the command to generate the pdf
      */
-    protected function _exec($cmd, $input)
+    protected function _exec(string $cmd, string $input): array
     {
         $cmd .= ' ' . $input;
 
@@ -121,7 +121,7 @@ class TexToPdfEngine extends AbstractPdfEngine
      *
      * @return string The command with params and options.
      */
-    protected function _buildCommand()
+    protected function _buildCommand(): string
     {
         $command = $this->_binary;
         $options = (array)$this->getConfig('options');
@@ -144,7 +144,7 @@ class TexToPdfEngine extends AbstractPdfEngine
      * @return string the command for generating the pdf
      * @throws \Cake\Core\Exception\Exception
      */
-    protected function _getCommand()
+    protected function _getCommand(): string
     {
         $binary = $this->getConfig('binary');
 
