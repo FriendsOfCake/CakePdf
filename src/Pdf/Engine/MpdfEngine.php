@@ -17,7 +17,8 @@ class MpdfEngine extends AbstractPdfEngine
     {
         $orientation = $this->_Pdf->orientation() === 'landscape' ? 'L' : 'P';
         $format = $this->_Pdf->pageSize();
-        if (is_string($format)
+        if (
+            is_string($format)
             && $orientation === 'L'
             && strpos($format, '-L') === false
         ) {

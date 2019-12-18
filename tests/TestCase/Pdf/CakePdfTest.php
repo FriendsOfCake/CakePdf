@@ -98,7 +98,7 @@ class CakePdfTest extends TestCase
         $pdf->templatePath('Posts/pdf');
         $result = $pdf->output();
         $expected = '<h2>Rendered with default layout</h2>' . "\n" . 'Post data: testing';
-        $this->assertEquals($expected, $result);
+        $this->assertTextEquals($expected, $result);
     }
 
     /**
