@@ -7,7 +7,6 @@ use Cake\Cache\Cache;
 use Cake\Core\App;
 use Cake\Core\Configure;
 use Cake\Core\Exception\Exception;
-use Cake\Filesystem\File;
 use Cake\Http\ServerRequestFactory;
 use Cake\Routing\Router;
 use SplFileInfo;
