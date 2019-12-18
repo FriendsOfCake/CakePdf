@@ -36,7 +36,7 @@ class TexToPdfEngine extends AbstractPdfEngine
     {
         $output = $this->_Pdf->html();
         $file = sha1($output);
-        $texFile = $this->getConfig('options.output-directory') . DS . $file;
+        $texFile = $this->getConfig('options.output-directory') . DIRECTORY_SEPARATOR . $file;
         file_put_contents($texFile, $output);
 
         return $texFile;

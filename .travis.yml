@@ -29,7 +29,7 @@ before_script:
 
   - if [[ $PHPCS = 1 ]]; then composer require --dev cakephp/cakephp-codesniffer:^4.0; fi
 
-  - if [[ $STATIC_ANALYSIS = 1 ]]; then composer require --dev phpstan/phpstan:^0.11; fi
+  - if [[ $STATIC_ANALYSIS = 1 ]]; then composer require --dev phpstan/phpstan:^0.11 psalm/phar:^3.7; fi
 
 script:
   - |
@@ -41,7 +41,7 @@ script:
 
   - if [[ $PHPCS = 1 ]]; then vendor/bin/phpcs -p --extensions=php --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./src ./tests/TestCase ./config; fi
 
-  - if [[ $STATIC_ANALYSIS = 1 ]]; then vendor/bin/phpstan analyze src/; fi
+  - if [[ $STATIC_ANALYSIS = 1 ]]; then vendor/bin/phpstan analyze src/ && vendor/bin/psalm.phar; fi
 
 after_success:
   - |

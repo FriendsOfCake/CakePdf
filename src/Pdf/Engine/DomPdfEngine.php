@@ -61,6 +61,6 @@ class DomPdfEngine extends AbstractPdfEngine
      */
     protected function _output($DomPDF)
     {
-        return $DomPDF->output();
+        return (string)$DomPDF->output();
     }
 }

@@ -10,6 +10,7 @@ use Cake\Core\Exception\Exception;
 use Cake\Filesystem\File;
 use Cake\Http\ServerRequestFactory;
 use Cake\Routing\Router;
+use SplFileInfo;
 
 class CakePdf
 {
@@ -30,9 +31,9 @@ class CakePdf
     /**
      * Template for the view
      *
-     * @var string
+     * @var string|null
      */
-    protected $_template = null;
+    protected $_template;
 
     /**
      * Path to the template - defaults to 'Pdf'
@@ -58,7 +59,7 @@ class CakePdf
     /**
      * Theme for the View
      *
-     * @var string
+     * @var string|null
      */
     protected $_theme = null;
 
@@ -72,7 +73,7 @@ class CakePdf
     /**
      * Instance of PdfEngine class
      *
-     * @var \CakePdf\Pdf\Engine\AbstractPdfEngine|null
+     * @var \CakePdf\Pdf\Engine\AbstractPdfEngine
      */
     protected $_engineClass;
 
@@ -156,23 +157,23 @@ class CakePdf
     /**
      * Title of the document
      *
-     * @var string
+     * @var string|null
      */
-    protected $_title = null;
+    protected $_title;
 
     /**
      * Javascript delay before rendering document in milliseconds
      *
-     * @var int
+     * @var int|null
      */
-    protected $_delay = null;
+    protected $_delay;
 
     /**
      * Window status required before rendering document
      *
-     * @var string
+     * @var string|null
      */
-    protected $_windowStatus = null;
+    protected $_windowStatus;
 
     /**
      * Flag that tells if we need to pass it through crypto
@@ -184,21 +185,21 @@ class CakePdf
     /**
      * User password, used with crypto
      *
-     * @var string
+     * @var string|null
      */
-    protected $_userPassword = null;
+    protected $_userPassword;
 
     /**
      * Owner password, used with crypto
      *
-     * @var string
+     * @var string|null
      */
-    protected $_ownerPassword = null;
+    protected $_ownerPassword;
 
     /**
      * Cache config name, if set to false cache is disabled
      *
-     * @var string|bool
+     * @var string|false
      */
     protected $_cache = false;
 
@@ -288,7 +289,7 @@ class CakePdf
         }
         $this->html($html);
 
-        $cacheKey = null;
+        $cacheKey = '';
         $cache = $this->cache();
         if ($cache) {
             $cacheKey = md5(serialize($this));
@@ -338,9 +339,18 @@ class CakePdf
     public function write($destination, $create = true, $html = null)
     {
         $output = $this->output($html);
-        $File = new File($destination, $create);
 
-        return $File->write($output) && $File->close();
+        $fileInfo = new SplFileInfo($destination);
+
+        if (!$create || $fileInfo->isFile()) {
+            return (bool)file_put_contents($destination, $output);
+        }
+
+        if (!$fileInfo->isFile()) {
+            mkdir($fileInfo->getPath(), 0777, true);
+        }
+
+        return (bool)file_put_contents($destination, $output);
     }
 
     /**
@@ -396,7 +406,7 @@ class CakePdf
         }
 
         $engineClassName = App::className($name, 'Pdf/Crypto', 'Crypto');
-        if (!class_exists($engineClassName)) {
+        if ($engineClassName === null || !class_exists($engineClassName)) {
             throw new Exception(__d('cake_pdf', 'Pdf crypto "%s" not found', $name));
         }
         if (!is_subclass_of($engineClassName, 'CakePdf\Pdf\Crypto\AbstractPdfCrypto')) {
@@ -938,6 +948,7 @@ class CakePdf
     protected function _render()
     {
         $viewClass = $this->viewRender();
+        /** @psalm-var class-string<\Cake\View\View> */
         $viewClass = App::className($viewClass, 'View', $viewClass === 'View' ? '' : 'View');
 
         $viewVars = [

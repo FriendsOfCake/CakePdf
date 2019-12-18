@@ -10,7 +10,7 @@ abstract class AbstractPdfCrypto
     /**
      * Instance of CakePdf class
      *
-     * @var \CakePdf\Pdf\CakePdf|null
+     * @var \CakePdf\Pdf\CakePdf
      */
     protected $_Pdf;
 

@@ -17,7 +17,7 @@ abstract class AbstractPdfEngine
      *
      * @var \CakePdf\Pdf\CakePdf
      */
-    protected $_Pdf = null;
+    protected $_Pdf;
 
     /**
      * Constructor

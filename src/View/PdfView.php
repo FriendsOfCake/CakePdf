@@ -100,7 +100,7 @@ class PdfView extends View
      * Render a Pdf view.
      *
      * @param string $view The view being rendered.
-     * @param string $layout The layout being rendered.
+     * @param false|null|string $layout The layout being rendered.
      * @return string The rendered view.
      */
     public function render(?string $view = null, $layout = null): string
@@ -112,7 +112,9 @@ class PdfView extends View
             return $content;
         }
 
-        if ($this->renderer() === null) {
+        $renderer = $this->renderer();
+
+        if ($renderer === null) {
             $this->response = $this->response->withType('html');
 
             return $content;
@@ -122,7 +124,7 @@ class PdfView extends View
             $this->response = $this->response->withDownload($this->getFilename());
         }
 
-        $this->Blocks->set('content', $this->renderer()->output($content));
+        $this->Blocks->set('content', $renderer->output($content));
 
         return $this->Blocks->get('content');
     }
