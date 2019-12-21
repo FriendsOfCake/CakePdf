@@ -102,7 +102,7 @@ class PdfView extends View
      * @param string $layout The layout being rendered.
      * @return string The rendered view.
      */
-    public function render($view = null, $layout = null)
+    public function render($view = null, $layout = null): string
     {
         $content = parent::render($view, $layout);
 
