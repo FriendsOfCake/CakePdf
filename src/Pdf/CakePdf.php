@@ -360,7 +360,7 @@ class CakePdf
             $name = $name['className'];
         }
 
-        $engineClassName = App::className($name, 'Pdf/Engine', '');
+        $engineClassName = App::className($name, 'Pdf/Engine', 'Engine');
         if (!class_exists($engineClassName)) {
             throw new Exception(__d('cake_pdf', sprintf('Pdf engine "%s" not found', $name)));
         }
