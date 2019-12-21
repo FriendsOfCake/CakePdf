@@ -5,14 +5,14 @@
     "homepage": "http://github.com/friendsofcake/CakePdf",
     "license": "MIT",
     "require": {
-        "cakephp/cakephp": "^3.5"
+        "cakephp/cakephp": "^4.0"
     },
     "require-dev": {
-        "cakephp/chronos": "^1.1",
-        "phpunit/phpunit": "^5.7.14|^6.0",
+        "cakephp/chronos": "^2.0",
+        "phpunit/phpunit": "^8.0",
         "dompdf/dompdf": "^0.8",
         "mpdf/mpdf": "^7.0",
-        "tecnickcom/tcpdf": "^6.2"
+        "tecnickcom/tcpdf": "^6.3"
     },
     "suggest": {
         "dompdf/dompdf": "If you wish to use the DomPdf engine",
