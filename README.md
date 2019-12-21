@@ -10,7 +10,7 @@ Plugin containing CakePdf lib which will use a PDF engine to convert HTML to PDF
 Engines included in the plugin:
 * DomPdf (^0.8)
 * Mpdf (^7.0)
-* Tcpdf (^6.2)
+* Tcpdf (^6.3)
 * WkHtmlToPdf **RECOMMENDED ENGINE**
 
 Community maintained engines:
@@ -19,7 +19,7 @@ Community maintained engines:
 
 ## Requirements
 
-* CakePHP 3.4+
+* CakePHP 4
 * One of the following render engines: DomPdf, Mpdf, Tcpdf or wkhtmltopdf
 * pdftk (optional) See: http://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/
 
@@ -49,10 +49,20 @@ composer require mpdf/mpdf
 
 ## Setup
 
-In `config/bootstrap.php` add:
+In `src/Application.php` add:
 
 ```php
-Plugin::load('CakePdf', ['bootstrap' => true]);
+public function bootstrap(): void
+{
+    /*....
+    ....
+    ....*/
+    $this->addPlugin('CakePdf');
+    /*....
+    ....
+    ....*/
+
+}
 ```
 
 or using CakePHP's console:
@@ -66,14 +76,9 @@ that automatically renders and returns the PDF for sending it to the browser,
 you should also register the `pdf` extension in your `config/routes.php` file,
 either globally before the routes that should be affected:
 
-```php
-Router::extensions(['pdf']);
-```
-
-or for a specific route scope:
 
 ```php
-Router::scope('/', function (\Cake\Routing\RouteBuilder $routes) {
+$routes->scope('/', function (RouteBuilder $builder) {
     $routes->addExtensions(['pdf']);
     // ...
 });
@@ -113,8 +118,9 @@ Configuration options:
 * filename: Filename for the document when using forced download
 
 Example:
+In `config/bootstrap.php` add:
 ```php
-<?php
+
     Configure::write('CakePdf', [
         'engine' => 'CakePdf.WkHtmlToPdf',
         'margin' => [
@@ -126,8 +132,17 @@ Example:
         'orientation' => 'landscape',
         'download' => true
     ]);
-?>
+```
 
+In `templates/layout/pdf/default.php` add:
+```php
+<?php 
+echo $this->fetch('content'); 
+?>
+```
+
+In Controller `src/Controller/InvoicesController.php` add:
+```php
 <?php
     class InvoicesController extends AppController
     {
@@ -147,6 +162,8 @@ Example:
     }
 ?>
 ```
+
+
 
 The `engine` and `crypto` config options can also be arrays with configuration
 options for the relevant class. For example:
@@ -181,8 +198,8 @@ Many people mix both ways and don't get the expected results.
 
 You can create PDF view and layout files for your controller actions and have
 them automatically rendered. Place the view templates in a 'pdf' subdir, for
-instance `src/Template/Invoices/pdf/view.ctp`, layouts will be in
-`src/Template/Layout/pdf/default.ctp`.
+instance `templates/Invoices/pdf/view.ctp`, layouts will be in
+`templates/layout/pdf/default.ctp`.
 
 Make sure your `InvoicesController` class
 [loads the `RequestHandler` component](http://book.cakephp.org/3.0/en/controllers/components/request-handling.html)
