@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace CakePdf\Test\TestCase\Pdf;
 
 use Cake\Core\Configure;
+use Cake\Core\Exception\Exception;
 use Cake\TestSuite\TestCase;
 use CakePdf\Pdf\CakePdf;
 use TestApp\Pdf\Engine\PdfTestEngine;
@@ -36,14 +37,13 @@ class CakePdfTest extends TestCase
 
     /**
      * Tests exception to be thrown for a non existing engine
-     *
-     * @expectedException Cake\Core\Exception\Exception
      */
     public function testNonExistingEngineException()
     {
-        $config = ['engine' => 'NonExistingEngine'];
+        $this->expectException(Exception::class);
 
-        $pdf = new CakePdf($config);
+        $config = ['engine' => 'NonExistingEngine'];
+        new CakePdf($config);
     }
 
     /**
@@ -125,7 +125,7 @@ class CakePdfTest extends TestCase
             'MyPlugin Helper Test: successful',
         ];
         foreach ($lines as $line) {
-            $this->assertContains($line, $result);
+            $this->assertStringContainsString($line, $result);
         }
     }
 

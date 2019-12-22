@@ -65,8 +65,8 @@ class PdfViewTest extends TestCase
         $this->View->set('post', 'This is the post');
         $result = $this->View->render('view', 'default');
 
-        $this->assertContains('<h2>Rendered with default layout</h2>', $result);
-        $this->assertContains('Post data: This is the post', $result);
+        $this->assertStringContainsString('<h2>Rendered with default layout</h2>', $result);
+        $this->assertStringContainsString('Post data: This is the post', $result);
     }
 
     /**
@@ -82,10 +82,10 @@ class PdfViewTest extends TestCase
         $this->View->setConfig('pdfConfig.download', true);
 
         $result = $this->View->render('view', 'default');
-        $this->assertContains('<h2>Rendered with default layout</h2>', $result);
-        $this->assertContains('Post data: This is the post', $result);
+        $this->assertStringContainsString('<h2>Rendered with default layout</h2>', $result);
+        $this->assertStringContainsString('Post data: This is the post', $result);
 
-        $this->assertContains('filename="posts.pdf"', $this->View->getResponse()->getHeaderLine('Content-Disposition'));
+        $this->assertStringContainsString('filename="posts.pdf"', $this->View->getResponse()->getHeaderLine('Content-Disposition'));
     }
 
     /**
@@ -101,10 +101,10 @@ class PdfViewTest extends TestCase
         $this->View->setConfig('pdfConfig.filename', 'booyah.pdf');
 
         $result = $this->View->render('view', 'default');
-        $this->assertContains('<h2>Rendered with default layout</h2>', $result);
-        $this->assertContains('Post data: This is the post', $result);
+        $this->assertStringContainsString('<h2>Rendered with default layout</h2>', $result);
+        $this->assertStringContainsString('Post data: This is the post', $result);
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             'filename="booyah.pdf"',
             $this->View->getResponse()->getHeaderLine('Content-Disposition')
         );
