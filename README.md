@@ -151,7 +151,8 @@ In Controller `src/Controller/InvoicesController.php` add:
         public function view($id = null)
         {
             $invoice = $this->Invoice->get($id);
-            $this->viewBuilder()->options([
+            $this->viewBuilder()->setClassName('CakePdf.Pdf');
+            $this->viewBuilder()->setOptions([
                 'pdfConfig' => [
                     'orientation' => 'portrait',
                     'filename' => 'Invoice_' . $id
