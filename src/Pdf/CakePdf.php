@@ -347,7 +347,7 @@ class CakePdf
             return (bool)file_put_contents($destination, $output);
         }
 
-        if (!$fileInfo->isFile()) {
+        if (!$fileInfo->isFile() && !$fileInfo->getPathInfo()->getRealPath()) {
             mkdir($fileInfo->getPath(), 0777, true);
         }
 
