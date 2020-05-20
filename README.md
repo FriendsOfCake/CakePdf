@@ -293,6 +293,13 @@ echo $this->Html->image('logo.png', ['fullBase' => true]);
 echo $this->Html->css('bootstrap.css', ['fullBase' => true]);
 ```
 
+If you are enable to get URLs for assets working properly, you can
+try using file system paths instead for the assets.
+
+```
+<img src="<?= WWW_ROOT ?>img/logo.png" />
+```
+
 ## Get header and footer on all pages
 
 Here are a couple of CSS based solutions you can refer to for easily
