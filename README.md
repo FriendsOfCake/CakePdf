@@ -33,11 +33,8 @@ composer require friendsofcake/cakepdf
 
 CakePdf does not include any of the supported PDF engines, you need to install
 the ones you intend to use yourself.
-The recommend wkhtmltopdf engine can be downloaded from http://wkhtmltopdf.org/,
-by default CakePdf expects the wkhtmltopdf binary to be located in /usr/bin/wkhtmltopdf.
-If you are using wkhtmltopdf in Windows, remove any spaces in the path name. For example
-use `C:/Progra~1/wkhtmltopdf/bin/wkhtmltopdf.exe`
 
+Packages for the recommend wkhtmltopdf engine can be downloaded from https://wkhtmltopdf.org/downloads.html.
 DomPdf, Mpdf and Tcpdf can be installed via composer using one of the following commands:
 
 ```
@@ -108,39 +105,37 @@ Configuration options:
 
 Example:
 ```php
-<?php
-    Configure::write('CakePdf', [
-        'engine' => 'CakePdf.WkHtmlToPdf',
-        'margin' => [
-            'bottom' => 15,
-            'left' => 50,
-            'right' => 30,
-            'top' => 45
-        ],
-        'orientation' => 'landscape',
-        'download' => true
-    ]);
-?>
+Configure::write('CakePdf', [
+    'engine' => 'CakePdf.WkHtmlToPdf',
+    'margin' => [
+        'bottom' => 15,
+        'left' => 50,
+        'right' => 30,
+        'top' => 45
+    ],
+    'orientation' => 'landscape',
+    'download' => true
+]);
+```
 
-<?php
-    class InvoicesController extends AppController
+```php
+class InvoicesController extends AppController
+{
+    // In your Invoices controller you could set additional configs,
+    // or override the global ones:
+    public function view($id = null)
     {
-        // In your Invoices controller you could set additional configs,
-        // or override the global ones:
-        public function view($id = null)
-        {
-            $invoice = $this->Invoice->get($id);
-            $this->viewBuilder()->setOption(
-                'pdfConfig',
-                [
-                    'orientation' => 'portrait',
-                    'filename' => 'Invoice_' . $id
-                ]
-            );
-            $this->set('invoice', $invoice);
-        }
+        $invoice = $this->Invoice->get($id);
+        $this->viewBuilder()->setOption(
+            'pdfConfig',
+            [
+                'orientation' => 'portrait',
+                'filename' => 'Invoice_' . $id
+            ]
+        );
+        $this->set('invoice', $invoice);
     }
-?>
+}
 ```
 
 The `engine` and `crypto` config options can also be arrays with configuration
@@ -150,18 +145,25 @@ options for the relevant class. For example:
     Configure::write('CakePdf', [
         'engine' => [
             'className' => 'CakePdf.WkHtmlToPdf',
-            // Mac OS X / Linux is usually like:
-            'binary' => '/usr/local/bin/wkhtmltopdf',
-            // On Windows environmnent you NEED to use the path like
-            // old fashioned MS-DOS Paths, otherwise you will keep getting:
-            // WKHTMLTOPDF didn't return any data
-            // 'binary' => 'C:\\Progra~1\\wkhtmltopdf\\bin\\wkhtmltopdf.exe',
-            // 'cwd' => 'C:\\Progra~1\\wkhtmltopdf\\bin',
             'options' => [
                 'print-media-type' => false,
                 'outline' => true,
                 'dpi' => 96
             ],
+
+            /**
+             * For Mac OS X / Linux by default the `wkhtmltopdf` binary should
+             * be available through environment path or you can specify location as:
+             */
+            // 'binary' => '/usr/local/bin/wkhtmltopdf',
+
+            /**
+             * On Windows the engine uses the path shown below as default.
+             * You NEED to use the path like old fashioned MS-DOS Paths,
+             * otherwise you will get error like:
+             * "WKHTMLTOPDF didn't return any data"
+             */
+            // 'binary' => 'C:\\Progra~1\\wkhtmltopdf\\bin\\wkhtmltopdf.exe',
         ],
     ]);
 ```
