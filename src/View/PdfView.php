@@ -51,7 +51,6 @@ class PdfView extends View
      * @param \Cake\Event\EventManager $eventManager Event manager instance.
      * @param array $viewOptions View options. See View::$_passedVars for list of
      *   options which get set as class properties.
-     *
      * @throws \Cake\Core\Exception\Exception
      */
     public function __construct(

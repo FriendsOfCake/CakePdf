@@ -152,17 +152,17 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
         $footer = $this->_Pdf->footer();
         foreach ($footer as $location => $text) {
             if ($text !== null) {
-                $command .= " --footer-$location \"" . addslashes($text) . "\"";
+                $command .= " --footer-$location \"" . addslashes($text) . '"';
             }
         }
 
         $header = $this->_Pdf->header();
         foreach ($header as $location => $text) {
             if ($text !== null) {
-                $command .= " --header-$location \"" . addslashes($text) . "\"";
+                $command .= " --header-$location \"" . addslashes($text) . '"';
             }
         }
-        $command .= " - -";
+        $command .= ' - -';
 
         if ($this->_windowsEnvironment) {
             $command = '"' . $command . '"';

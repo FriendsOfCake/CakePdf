@@ -71,7 +71,7 @@ class TexToPdfEngine extends AbstractPdfEngine
         $content = $this->_exec($this->_getCommand(), $texFile);
 
         if (strpos(mb_strtolower($content['stderr']), 'error')) {
-            throw new Exception("System error <pre>" . $content['stderr'] . "</pre>");
+            throw new Exception('System error <pre>' . $content['stderr'] . '</pre>');
         }
 
         if (mb_strlen($content['stdout'], $this->_Pdf->encoding()) === 0) {
@@ -79,7 +79,7 @@ class TexToPdfEngine extends AbstractPdfEngine
         }
 
         if ((int)$content['return'] !== 0 && !empty($content['stderr'])) {
-            throw new Exception("Shell error, return code: " . (int)$content['return']);
+            throw new Exception('Shell error, return code: ' . (int)$content['return']);
         }
 
         $result = (string)file_get_contents($texFile . '.pdf');

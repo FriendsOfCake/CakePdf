@@ -142,7 +142,6 @@ class CakePdfTest extends TestCase
     }
 
     /**
-     *
      * @dataProvider provider
      */
     public function testMargin($config)
@@ -198,7 +197,6 @@ class CakePdfTest extends TestCase
     }
 
     /**
-     *
      * @dataProvider provider
      */
     public function testConfigRead($config)

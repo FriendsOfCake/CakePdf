@@ -37,7 +37,6 @@ class PdfViewTest extends TestCase
 
     /**
      * testRender
-     *
      */
     public function testConstruct()
     {
@@ -57,7 +56,6 @@ class PdfViewTest extends TestCase
 
     /**
      * testRender
-     *
      */
     public function testRender()
     {
@@ -112,7 +110,6 @@ class PdfViewTest extends TestCase
 
     /**
      * Test rendering a template that does not generate any output
-     *
      */
     public function testRenderTemplateWithNoOutput()
     {
@@ -123,7 +120,6 @@ class PdfViewTest extends TestCase
 
     /**
      * Test rendering an Error template, which should  default to standard layout
-     *
      */
     public function testRenderErrorTemplate()
     {
