@@ -282,7 +282,7 @@ class CakePdf
     {
         $Engine = $this->engine();
         if ($Engine === null) {
-            throw new Exception(__d('cake_pdf', 'Engine is not loaded'));
+            throw new Exception('Engine is not loaded');
         }
 
         if ($html === null) {
@@ -374,10 +374,10 @@ class CakePdf
 
         $engineClassName = App::className($name, 'Pdf/Engine', 'Engine');
         if ($engineClassName === null) {
-            throw new Exception(__d('cake_pdf', sprintf('Pdf engine "%s" not found', $name)));
+            throw new Exception(sprintf('Pdf engine "%s" not found', $name));
         }
         if (!is_subclass_of($engineClassName, 'CakePdf\Pdf\Engine\AbstractPdfEngine')) {
-            throw new Exception(__d('cake_pdf', 'Pdf engines must extend "AbstractPdfEngine"'));
+            throw new Exception('Pdf engines must extend "AbstractPdfEngine"');
         }
         $this->_engineClass = new $engineClassName($this);
         $this->_engineClass->setConfig($config);
@@ -398,7 +398,7 @@ class CakePdf
             if ($this->_cryptoClass !== null) {
                 return $this->_cryptoClass;
             }
-            throw new Exception(__d('cake_pdf', 'Crypto is not loaded'));
+            throw new Exception('Crypto is not loaded');
         }
         $config = [];
         if (is_array($name)) {
@@ -408,10 +408,10 @@ class CakePdf
 
         $engineClassName = App::className($name, 'Pdf/Crypto', 'Crypto');
         if ($engineClassName === null || !class_exists($engineClassName)) {
-            throw new Exception(__d('cake_pdf', 'Pdf crypto "%s" not found', $name));
+            throw new Exception('Pdf crypto "%s" not found', $name);
         }
         if (!is_subclass_of($engineClassName, 'CakePdf\Pdf\Crypto\AbstractPdfCrypto')) {
-            throw new Exception(__d('cake_pdf', 'Crypto engine must extend "AbstractPdfCrypto"'));
+            throw new Exception('Crypto engine must extend "AbstractPdfCrypto"');
         }
         $this->_cryptoClass = new $engineClassName($this);
         $this->_cryptoClass->config($config);
