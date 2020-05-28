@@ -13,7 +13,7 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
      *
      * @var string
      */
-    protected $_binary = '/usr/bin/wkhtmltopdf';
+    protected $_binary = 'wkhtmltopdf';
 
     /**
      * Flag to indicate if the environment is windows
@@ -57,7 +57,7 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
         if (!empty($content['stderr'])) {
             throw new Exception(sprintf(
                 'System error "%s" when executing command "%s". ' .
-                'Try using the binary provided on http://wkhtmltopdf.org/downloads.html',
+                'Try using the binary/package provided on http://wkhtmltopdf.org/downloads.html',
                 $content['stderr'],
                 $command
             ));
@@ -102,14 +102,7 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
      */
     protected function _getCommand(): string
     {
-        $binary = $this->getConfig('binary');
-
-        if ($binary) {
-            $this->_binary = $binary;
-        }
-        if (!is_executable($this->_binary)) {
-            throw new Exception(sprintf('wkhtmltopdf binary is not found or not executable: %s', $this->_binary));
-        }
+        $binary = $this->getBinaryPath();
 
         $options = [
             'quiet' => true,
@@ -131,9 +124,9 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
         $options = array_merge($options, (array)$this->getConfig('options'));
 
         if ($this->_windowsEnvironment) {
-            $command = '"' . $this->_binary . '"';
+            $command = '"' . $binary . '"';
         } else {
-            $command = $this->_binary;
+            $command = $binary;
         }
 
         foreach ($options as $key => $value) {
@@ -169,5 +162,25 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
         }
 
         return $command;
+    }
+
+    /**
+     * Get path to wkhtmltopdf binary.
+     *
+     * @return string
+     */
+    public function getBinaryPath(): string
+    {
+        $binary = $this->getConfig('binary', $this->_binary);
+
+        /** @psalm-suppress ForbiddenCode */
+        if (
+            ($this->_windowsEnvironment && !is_executable($binary)) ||
+            !shell_exec('which ' . escapeshellarg($binary))
+        ) {
+            throw new Exception(sprintf('wkhtmltopdf binary is not found or not executable: %s', $binary));
+        }
+
+        return $binary;
     }
 }
