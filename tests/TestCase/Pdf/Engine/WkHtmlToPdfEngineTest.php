@@ -14,24 +14,14 @@ use CakePdf\Pdf\Engine\WkHtmlToPdfEngine;
 class WkHtmlToPdfEngineTest extends TestCase
 {
     /**
-     * setUp method
-     *
-     * @return void
-     */
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        if (!shell_exec('which wkhtmltopdf')) {
-            $this->markTestSkipped('wkhtmltopdf not found');
-        }
-    }
-
-    /**
      * Tests that the engine generates the right command
      */
     public function testGetCommand()
     {
+        if (!shell_exec('which wkhtmltopdf')) {
+            $this->markTestSkipped('wkhtmltopdf not found');
+        }
+
         $class = new \ReflectionClass(WkHtmlToPdfEngine::class);
         $method = $class->getMethod('_getCommand');
         $method->setAccessible(true);
