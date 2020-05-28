@@ -408,10 +408,10 @@ class CakePdf
 
         $engineClassName = App::className($name, 'Pdf/Crypto', 'Crypto');
         if ($engineClassName === null || !class_exists($engineClassName)) {
-            throw new Exception('Pdf crypto "%s" not found', $name);
+            throw new Exception(sprintf('Pdf crypto `%s` not found', $name));
         }
-        if (!is_subclass_of($engineClassName, 'CakePdf\Pdf\Crypto\AbstractPdfCrypto')) {
-            throw new Exception('Crypto engine must extend "AbstractPdfCrypto"');
+        if (!is_subclass_of($engineClassName, AbstractPdfCrypto::class)) {
+            throw new Exception('Crypto engine must extend `AbstractPdfCrypto`');
         }
         $this->_cryptoClass = new $engineClassName($this);
         $this->_cryptoClass->config($config);
