@@ -37,11 +37,11 @@ class CakePdf
     protected $_template;
 
     /**
-     * Path to the template - defaults to 'Pdf'
+     * Path to the template - defaults to 'pdf'
      *
      * @var string
      */
-    protected $_templatePath = 'Pdf';
+    protected $_templatePath = 'pdf';
 
     /**
      * View for render

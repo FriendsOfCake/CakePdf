@@ -29,5 +29,5 @@ require $root . '/vendor/cakephp/cakephp/tests/bootstrap.php';
 
 Configure::write('App.paths', [
     'plugins' => [$root . '/tests/test_app/Plugin/'],
-    'templates' => [$root . '/tests/test_app/Template/'],
+    'templates' => [$root . '/tests/test_app/templates/'],
 ]);
