@@ -41,7 +41,7 @@ script:
 
   - if [[ $PHPCS = 1 ]]; then vendor/bin/phpcs -p --extensions=php --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./src ./tests/TestCase ./config; fi
 
-  - if [[ $STATIC_ANALYSIS = 1 ]]; then vendor/bin/phpstan.phar analyze src/ && vendor/bin/psalm.phar; fi
+  - if [[ $STATIC_ANALYSIS = 1 ]]; then vendor/bin/phpstan.phar analyze && vendor/bin/psalm.phar; fi
 
 after_success:
   - |
