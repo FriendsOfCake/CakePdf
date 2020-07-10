@@ -5,14 +5,13 @@
     "homepage": "http://github.com/friendsofcake/CakePdf",
     "license": "MIT",
     "require": {
-        "cakephp/cakephp": "^3.5"
+        "cakephp/cakephp": "^4.0"
     },
     "require-dev": {
-        "cakephp/chronos": "^1.1",
-        "phpunit/phpunit": "^5.7.14|^6.0",
+        "phpunit/phpunit": "~8.5.0",
         "dompdf/dompdf": "^0.8",
-        "mpdf/mpdf": "^7.0",
-        "tecnickcom/tcpdf": "^6.2"
+        "mpdf/mpdf": "^8.0.4",
+        "tecnickcom/tcpdf": "^6.3"
     },
     "suggest": {
         "dompdf/dompdf": "If you wish to use the DomPdf engine",
@@ -27,7 +26,9 @@
     "autoload-dev": {
         "psr-4": {
             "Cake\\Test\\": "vendor/cakephp/cakephp/tests",
-            "CakePdf\\Test\\": "tests"
+            "CakePdf\\Test\\": "tests",
+            "MyPlugin\\": "tests/test_app/plugins/MyPlugin/src",
+            "TestApp\\": "tests/test_app/src"
         }
     },
     "replace": {

@@ -1,9 +1,12 @@
 <?php
+declare(strict_types=1);
+
 namespace CakePdf\Test\TestCase\Pdf\Engine;
 
+use Cake\Core\Exception\Exception;
+use Cake\TestSuite\TestCase;
 use CakePdf\Pdf\CakePdf;
 use CakePdf\Pdf\Engine\WkHtmlToPdfEngine;
-use Cake\TestSuite\TestCase;
 
 /**
  * WkHtmlToPdfEngineTest class
@@ -11,24 +14,14 @@ use Cake\TestSuite\TestCase;
 class WkHtmlToPdfEngineTest extends TestCase
 {
     /**
-     * setUp method
-     *
-     * @return void
-     */
-    public function setUp()
-    {
-        parent::setUp();
-
-        if (!is_executable('/usr/bin/wkhtmltopdf')) {
-            $this->markTestSkipped('/usr/bin/wkhtmltopdf not found');
-        }
-    }
-
-    /**
      * Tests that the engine generates the right command
      */
     public function testGetCommand()
     {
+        if (!shell_exec('which wkhtmltopdf')) {
+            $this->markTestSkipped('wkhtmltopdf not found');
+        }
+
         $class = new \ReflectionClass(WkHtmlToPdfEngine::class);
         $method = $class->getMethod('_getCommand');
         $method->setAccessible(true);
@@ -45,7 +38,7 @@ class WkHtmlToPdfEngineTest extends TestCase
         ]);
 
         $result = $method->invokeArgs($Pdf->engine(), []);
-        $expected = "/usr/bin/wkhtmltopdf --print-media-type --orientation 'portrait' --page-size 'A4' --encoding 'ISO-8859-1' --title 'CakePdf rules' - -";
+        $expected = "wkhtmltopdf --print-media-type --orientation 'portrait' --page-size 'A4' --encoding 'ISO-8859-1' --title 'CakePdf rules' - -";
         $this->assertEquals($expected, $result);
 
         $Pdf = new CakePdf([
@@ -62,7 +55,7 @@ class WkHtmlToPdfEngineTest extends TestCase
         ]);
 
         $result = $method->invokeArgs($Pdf->engine(), []);
-        $expected = "/usr/bin/wkhtmltopdf --quiet --print-media-type --orientation 'portrait' --page-size 'A4' --encoding 'UTF-8' --title 'CakePdf rules' --margin-bottom '0mm' --margin-left '0mm' --margin-right '0mm' --margin-top '0mm' - -";
+        $expected = "wkhtmltopdf --quiet --print-media-type --orientation 'portrait' --page-size 'A4' --encoding 'UTF-8' --title 'CakePdf rules' --margin-bottom '0mm' --margin-left '0mm' --margin-right '0mm' --margin-top '0mm' - -";
         $this->assertEquals($expected, $result);
 
         $Pdf = new CakePdf([
@@ -80,7 +73,24 @@ class WkHtmlToPdfEngineTest extends TestCase
             ],
         ]);
         $result = $method->invokeArgs($Pdf->engine(), []);
-        $expected = "/usr/bin/wkhtmltopdf --quiet --print-media-type --orientation 'portrait' --page-size 'A4' --encoding 'UTF-8' --boolean --string 'value' --integer '42' --array 'first' 'firstValue' --array 'second' 'secondValue' - -";
+        $expected = "wkhtmltopdf --quiet --print-media-type --orientation 'portrait' --page-size 'A4' --encoding 'UTF-8' --boolean --string 'value' --integer '42' --array 'first' 'firstValue' --array 'second' 'secondValue' - -";
         $this->assertEquals($expected, $result);
+    }
+
+    public function testGetBinaryPath()
+    {
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('wkhtmltopdf binary is not found or not executable: /foo/bar');
+
+        $Pdf = new CakePdf([
+            'engine' => [
+                'className' => 'CakePdf.WkHtmlToPdf',
+                'binary' => '/foo/bar',
+            ],
+        ]);
+
+        /** @var \CakePDF\Pdf\Engine\WkHtmlToPdfEngine $engine */
+        $engine = $Pdf->engine();
+        $engine->getBinaryPath();
     }
 }

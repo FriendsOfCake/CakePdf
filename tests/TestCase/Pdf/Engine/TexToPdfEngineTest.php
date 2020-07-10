@@ -1,9 +1,11 @@
 <?php
+declare(strict_types=1);
+
 namespace CakePdf\Test\TestCase\Pdf\Engine;
 
+use Cake\TestSuite\TestCase;
 use CakePdf\Pdf\CakePdf;
 use CakePdf\Pdf\Engine\TexToPdfEngine;
-use Cake\TestSuite\TestCase;
 
 /**
  * TexToPdfEngineTest class
@@ -15,7 +17,7 @@ class TexToPdfEngineTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

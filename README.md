@@ -9,8 +9,8 @@ Plugin containing CakePdf lib which will use a PDF engine to convert HTML to PDF
 
 Engines included in the plugin:
 * DomPdf (^0.8)
-* Mpdf (^7.0)
-* Tcpdf (^6.2)
+* Mpdf (^8.0.4)
+* Tcpdf (^6.3)
 * WkHtmlToPdf **RECOMMENDED ENGINE**
 
 Community maintained engines:
@@ -19,7 +19,6 @@ Community maintained engines:
 
 ## Requirements
 
-* CakePHP 3.4+
 * One of the following render engines: DomPdf, Mpdf, Tcpdf or wkhtmltopdf
 * pdftk (optional) See: http://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/
 
@@ -34,11 +33,8 @@ composer require friendsofcake/cakepdf
 
 CakePdf does not include any of the supported PDF engines, you need to install
 the ones you intend to use yourself.
-The recommend wkhtmltopdf engine can be downloaded from http://wkhtmltopdf.org/,
-by default CakePdf expects the wkhtmltopdf binary to be located in /usr/bin/wkhtmltopdf.
-If you are using wkhtmltopdf in Windows, remove any spaces in the path name. For example
-use `C:/Progra~1/wkhtmltopdf/bin/wkhtmltopdf.exe`
 
+Packages for the recommend wkhtmltopdf engine can be downloaded from https://wkhtmltopdf.org/downloads.html.
 DomPdf, Mpdf and Tcpdf can be installed via composer using one of the following commands:
 
 ```
@@ -49,16 +45,10 @@ composer require mpdf/mpdf
 
 ## Setup
 
-In `config/bootstrap.php` add:
-
-```php
-Plugin::load('CakePdf', ['bootstrap' => true]);
-```
-
-or using CakePHP's console:
+Loading the plugin using CakePHP's console:
 
 ```
-./bin/cake plugin load CakePdf -b
+./bin/cake plugin load CakePdf
 ```
 
 If you plan to use [the PDF view functionality](#1-render-as-pdf-including-forced-download-in-the-browser-with-pdfview)
@@ -84,10 +74,11 @@ Further setup information can be found in the usage section.
 
 ## Configuration
 
-Use `Configure::write('CakePdf', $config);` or set Controller property `$pdfConfig`
-(only when used with PdfView). You need to define at least `$config['engine']`.
-When using CakePdf directly you can also pass the config array to constructor.
-The value for engine should have the `Plugin.ClassName` format without the Engine suffix.
+Use `Configure::write('CakePdf', $config);` or in controller use view builder to
+set view option named `pdfConfig` (only when used with PdfView). You need to
+define at least `$config['engine']`. When using CakePdf directly you can also
+pass the config array to constructor. The value for engine should have the
+`Plugin.ClassName` format without the Engine suffix.
 
 Configuration options:
 * engine: Engine to be used (required), or an array of engine config options
@@ -114,38 +105,37 @@ Configuration options:
 
 Example:
 ```php
-<?php
-    Configure::write('CakePdf', [
-        'engine' => 'CakePdf.WkHtmlToPdf',
-        'margin' => [
-            'bottom' => 15,
-            'left' => 50,
-            'right' => 30,
-            'top' => 45
-        ],
-        'orientation' => 'landscape',
-        'download' => true
-    ]);
-?>
+Configure::write('CakePdf', [
+    'engine' => 'CakePdf.WkHtmlToPdf',
+    'margin' => [
+        'bottom' => 15,
+        'left' => 50,
+        'right' => 30,
+        'top' => 45
+    ],
+    'orientation' => 'landscape',
+    'download' => true
+]);
+```
 
-<?php
-    class InvoicesController extends AppController
+```php
+class InvoicesController extends AppController
+{
+    // In your Invoices controller you could set additional configs,
+    // or override the global ones:
+    public function view($id = null)
     {
-        // In your Invoices controller you could set additional configs,
-        // or override the global ones:
-        public function view($id = null)
-        {
-            $invoice = $this->Invoice->get($id);
-            $this->viewBuilder()->options([
-                'pdfConfig' => [
-                    'orientation' => 'portrait',
-                    'filename' => 'Invoice_' . $id
-                ]
-            ]);
-            $this->set('invoice', $invoice);
-        }
+        $invoice = $this->Invoice->get($id);
+        $this->viewBuilder()->setOption(
+            'pdfConfig',
+            [
+                'orientation' => 'portrait',
+                'filename' => 'Invoice_' . $id
+            ]
+        );
+        $this->set('invoice', $invoice);
     }
-?>
+}
 ```
 
 The `engine` and `crypto` config options can also be arrays with configuration
@@ -155,18 +145,25 @@ options for the relevant class. For example:
     Configure::write('CakePdf', [
         'engine' => [
             'className' => 'CakePdf.WkHtmlToPdf',
-            // Mac OS X / Linux is usually like:
-            'binary' => '/usr/local/bin/wkhtmltopdf',
-            // On Windows environmnent you NEED to use the path like
-            // old fashioned MS-DOS Paths, otherwise you will keep getting:
-            // WKHTMLTOPDF didn't return any data
+            'options' => [
+                'print-media-type' => false,
+                'outline' => true,
+                'dpi' => 96
+            ],
+
+            /**
+             * For Mac OS X / Linux by default the `wkhtmltopdf` binary should
+             * be available through environment path or you can specify location as:
+             */
+            // 'binary' => '/usr/local/bin/wkhtmltopdf',
+
+            /**
+             * On Windows the engine uses the path shown below as default.
+             * You NEED to use the path like old fashioned MS-DOS Paths,
+             * otherwise you will get error like:
+             * "WKHTMLTOPDF didn't return any data"
+             */
             // 'binary' => 'C:\\Progra~1\\wkhtmltopdf\\bin\\wkhtmltopdf.exe',
-            // 'cwd' => 'C:\\Progra~1\\wkhtmltopdf\\bin',
-	        'options' => [
-	            'print-media-type' => false,
-	            'outline' => true,
-	            'dpi' => 96
-	        ],
         ],
     ]);
 ```
@@ -181,8 +178,8 @@ Many people mix both ways and don't get the expected results.
 
 You can create PDF view and layout files for your controller actions and have
 them automatically rendered. Place the view templates in a 'pdf' subdir, for
-instance `src/Template/Invoices/pdf/view.ctp`, layouts will be in
-`src/Template/Layout/pdf/default.ctp`.
+instance `templates/Invoices/pdf/view.php`, layouts will be in
+`templates/layout/pdf/default.php`.
 
 Make sure your `InvoicesController` class
 [loads the `RequestHandler` component](http://book.cakephp.org/3.0/en/controllers/components/request-handling.html)
@@ -205,19 +202,20 @@ downloaded by using `download` option. Additionally you can specify custom filen
 using `filename` options.
 
 ```php
-$this->viewBuilder()->options([
-    'pdfConfig' => [
+$this->viewBuilder()->setOption(
+    'pdfConfig',
+    [
         'download' => true, // This can be omitted if "filename" is specified.
         'filename' => 'Invoice_' . $id // This can be omitted if you want file name based on URL.
     ]
-]);
+);
 ```
 
 ### 2: Create PDF for email attachment, file storage etc.
 
 You can use CakePdf lib to create raw PDF data with a view template.
-The view file path would look like `src/Template/Pdf/newsletter.ctp`.
-Layout file path would be like `src/Template/Layout/pdf/default.ctp`
+The view file path would look like `templates/pdf/newsletter.php`.
+Layout file path would be like `templates/layout/pdf/default.php`
 Note that layouts for both usage types are within same directory, but the view
 templates use different file paths Optionally you can also write the raw data to
 file.
@@ -307,8 +305,3 @@ getting header footer on all PDF pages.
 
 * https://ourcodeworld.com/articles/read/687/how-to-configure-a-header-and-footer-in-dompdf
 * http://www.jessicaschillinger.us/2017/blog/print-repeating-header-browser/
-
-## Thanks
-
-Many thanks to Kim Biesbjerg and Jelle Henkens for their contributions.
-Want your name here as well? Create a pull request for improvements/other PDF engines.

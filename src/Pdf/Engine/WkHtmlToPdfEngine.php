@@ -1,18 +1,19 @@
 <?php
+declare(strict_types=1);
+
 namespace CakePdf\Pdf\Engine;
 
-use CakePdf\Pdf\CakePdf;
 use Cake\Core\Exception\Exception;
+use CakePdf\Pdf\CakePdf;
 
 class WkHtmlToPdfEngine extends AbstractPdfEngine
 {
-
     /**
      * Path to the wkhtmltopdf executable binary
      *
      * @var string
      */
-    protected $_binary = '/usr/bin/wkhtmltopdf';
+    protected $_binary = 'wkhtmltopdf';
 
     /**
      * Flag to indicate if the environment is windows
@@ -44,7 +45,7 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
      * @return string Raw PDF data
      * @throws \Exception If no output is generated to stdout by wkhtmltopdf.
      */
-    public function output()
+    public function output(): string
     {
         $command = $this->_getCommand();
         $content = $this->_exec($command, $this->_Pdf->html());
@@ -56,7 +57,7 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
         if (!empty($content['stderr'])) {
             throw new Exception(sprintf(
                 'System error "%s" when executing command "%s". ' .
-                'Try using the binary provided on http://wkhtmltopdf.org/downloads.html',
+                'Try using the binary/package provided on http://wkhtmltopdf.org/downloads.html',
                 $content['stderr'],
                 $command
             ));
@@ -72,7 +73,7 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
      * @param string $input Html to pass to wkhtmltopdf
      * @return array the result of running the command to generate the pdf
      */
-    protected function _exec($cmd, $input)
+    protected function _exec(string $cmd, string $input): array
     {
         $result = ['stdout' => '', 'stderr' => '', 'return' => ''];
 
@@ -99,16 +100,9 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
      * @return string the command for generating the pdf
      * @throws \Cake\Core\Exception\Exception
      */
-    protected function _getCommand()
+    protected function _getCommand(): string
     {
-        $binary = $this->getConfig('binary');
-
-        if ($binary) {
-            $this->_binary = $binary;
-        }
-        if (!is_executable($this->_binary)) {
-            throw new Exception(sprintf('wkhtmltopdf binary is not found or not executable: %s', $this->_binary));
-        }
+        $binary = $this->getBinaryPath();
 
         $options = [
             'quiet' => true,
@@ -130,9 +124,9 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
         $options = array_merge($options, (array)$this->getConfig('options'));
 
         if ($this->_windowsEnvironment) {
-            $command = '"' . $this->_binary . '"';
+            $command = '"' . $binary . '"';
         } else {
-            $command = $this->_binary;
+            $command = $binary;
         }
 
         foreach ($options as $key => $value) {
@@ -140,33 +134,53 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
                 continue;
             } elseif (is_array($value)) {
                 foreach ($value as $k => $v) {
-                    $command .= sprintf(' --%s %s %s', $key, escapeshellarg($k), escapeshellarg($v));
+                    $command .= sprintf(' --%s %s %s', $key, escapeshellarg($k), escapeshellarg((string)$v));
                 }
             } elseif ($value === true) {
                 $command .= ' --' . $key;
             } else {
-                $command .= sprintf(' --%s %s', $key, escapeshellarg($value));
+                $command .= sprintf(' --%s %s', $key, escapeshellarg((string)$value));
             }
         }
         $footer = $this->_Pdf->footer();
         foreach ($footer as $location => $text) {
             if ($text !== null) {
-                $command .= " --footer-$location \"" . addslashes($text) . "\"";
+                $command .= " --footer-$location \"" . addslashes($text) . '"';
             }
         }
 
         $header = $this->_Pdf->header();
         foreach ($header as $location => $text) {
             if ($text !== null) {
-                $command .= " --header-$location \"" . addslashes($text) . "\"";
+                $command .= " --header-$location \"" . addslashes($text) . '"';
             }
         }
-        $command .= " - -";
+        $command .= ' - -';
 
         if ($this->_windowsEnvironment) {
             $command = '"' . $command . '"';
         }
 
         return $command;
+    }
+
+    /**
+     * Get path to wkhtmltopdf binary.
+     *
+     * @return string
+     */
+    public function getBinaryPath(): string
+    {
+        $binary = $this->getConfig('binary', $this->_binary);
+
+        /** @psalm-suppress ForbiddenCode */
+        if (
+            ($this->_windowsEnvironment && !is_executable($binary)) ||
+            !shell_exec('which ' . escapeshellarg($binary))
+        ) {
+            throw new Exception(sprintf('wkhtmltopdf binary is not found or not executable: %s', $binary));
+        }
+
+        return $binary;
     }
 }

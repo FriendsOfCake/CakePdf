@@ -1,44 +1,47 @@
 <?php
+declare(strict_types=1);
+
 namespace CakePdf\View;
 
-use CakePdf\Pdf\CakePdf;
 use Cake\Core\Configure;
 use Cake\Core\Exception\Exception;
 use Cake\Event\EventManager;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
 use Cake\View\View;
+use CakePdf\Pdf\CakePdf;
 
 class PdfView extends View
 {
-
     /**
      * The subdirectory.  PDF views are always in pdf.
      *
      * @var string|null
      */
-    public $subDir = 'pdf';
+    protected $subDir = 'pdf';
 
     /**
      * The name of the layouts subfolder containing layouts for this View.
      *
      * @var string|null
      */
-    public $layoutPath = 'pdf';
+    protected $layoutPath = 'pdf';
 
     /**
      * CakePdf Instance
      *
      * @var \CakePdf\Pdf\CakePdf|null
      */
-    protected $_renderer = null;
+    protected $_renderer;
 
     /**
-     * List of pdf configs collected from the associated controller.
+     * Default config options.
      *
      * @var array
      */
-    public $pdfConfig = [];
+    protected $_defaultConfig = [
+        'pdfConfig' => [],
+    ];
 
     /**
      * Constructor
@@ -48,45 +51,42 @@ class PdfView extends View
      * @param \Cake\Event\EventManager $eventManager Event manager instance.
      * @param array $viewOptions View options. See View::$_passedVars for list of
      *   options which get set as class properties.
-     *
      * @throws \Cake\Core\Exception\Exception
      */
     public function __construct(
-        ServerRequest $request = null,
-        Response $response = null,
-        EventManager $eventManager = null,
+        ?ServerRequest $request = null,
+        ?Response $response = null,
+        ?EventManager $eventManager = null,
         array $viewOptions = []
     ) {
-        $this->_passedVars[] = 'pdfConfig';
+        $this->setConfig('pdfConfig', (array)Configure::read('CakePdf'));
 
         parent::__construct($request, $response, $eventManager, $viewOptions);
 
-        $this->pdfConfig = array_merge(
-            (array)Configure::read('CakePdf'),
-            (array)$this->pdfConfig
-        );
-
-        $this->response = $this->response->withType('pdf');
-        if (isset($viewOptions['templatePath']) && $viewOptions['templatePath'] == 'Error') {
-            $this->subDir = null;
-            $this->layoutPath = null;
-            $this->response = $this->response->withType('html');
+        if (isset($viewOptions['templatePath']) && $viewOptions['templatePath'] === 'Error') {
+            $this->subDir = '';
+            $this->layoutPath = '';
 
             return;
         }
-        if (!$this->pdfConfig) {
-            throw new Exception(__d('cakepdf', 'Controller attribute $pdfConfig is not correct or missing'));
+
+        $this->response = $this->response->withType('pdf');
+
+        $pdfConfig = $this->getConfig('pdfConfig');
+        if (empty($pdfConfig)) {
+            throw new Exception('No PDF config set. Use ViewBuilder::setOption(\'pdfConfig\', $config) to do so.');
         }
-        $this->renderer($this->pdfConfig);
+
+        $this->renderer($pdfConfig);
     }
 
     /**
      * Return CakePdf instance, optionally set engine to be used
      *
      * @param array $config Array of pdf configs. When empty CakePdf instance will be returned.
-     * @return \CakePdf\Pdf\CakePdf
+     * @return \CakePdf\Pdf\CakePdf|null
      */
-    public function renderer($config = null)
+    public function renderer(?array $config = null): ?CakePdf
     {
         if ($config !== null) {
             $this->_renderer = new CakePdf($config);
@@ -99,33 +99,31 @@ class PdfView extends View
      * Render a Pdf view.
      *
      * @param string $view The view being rendered.
-     * @param string $layout The layout being rendered.
+     * @param false|null|string $layout The layout being rendered.
      * @return string The rendered view.
      */
-    public function render($view = null, $layout = null)
+    public function render(?string $view = null, $layout = null): string
     {
         $content = parent::render($view, $layout);
 
-        if (version_compare(Configure::version(), '3.6.0', '<')) {
-            $type = $this->response->type();
-        } else {
-            $type = $this->response->getType();
-        }
-
+        $type = $this->response->getType();
         if ($type === 'text/html') {
             return $content;
         }
-        if ($this->renderer() === null) {
+
+        $renderer = $this->renderer();
+
+        if ($renderer === null) {
             $this->response = $this->response->withType('html');
 
             return $content;
         }
 
-        if (!empty($this->pdfConfig['filename']) || !empty($this->pdfConfig['download'])) {
+        if ($this->getConfig('pdfConfig.filename') || $this->getConfig('pdfConfig.download')) {
             $this->response = $this->response->withDownload($this->getFilename());
         }
 
-        $this->Blocks->set('content', $this->renderer()->output($content));
+        $this->Blocks->set('content', $renderer->output($content));
 
         return $this->Blocks->get('content');
     }
@@ -135,10 +133,11 @@ class PdfView extends View
      *
      * @return string The filename
      */
-    public function getFilename()
+    public function getFilename(): string
     {
-        if (isset($this->pdfConfig['filename'])) {
-            return $this->pdfConfig['filename'];
+        $filename = $this->getConfig('pdfConfig.filename');
+        if ($filename) {
+            return $filename;
         }
 
         $id = current($this->request->getParam('pass'));

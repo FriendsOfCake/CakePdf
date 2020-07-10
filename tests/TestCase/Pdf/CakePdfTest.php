@@ -1,43 +1,28 @@
 <?php
+declare(strict_types=1);
 
 namespace CakePdf\Test\TestCase\Pdf;
 
-use CakePdf\Pdf\CakePdf;
-use CakePdf\Pdf\Engine\AbstractPdfEngine;
 use Cake\Core\Configure;
-use Cake\Core\Plugin;
+use Cake\Core\Exception\Exception;
 use Cake\TestSuite\TestCase;
-
-/**
- * Dummy engine
- */
-class PdfTest2Engine extends AbstractPdfEngine
-{
-
-    public function output()
-    {
-        return $this->_Pdf->html();
-    }
-}
+use CakePdf\Pdf\CakePdf;
+use TestApp\Pdf\Engine\PdfTestEngine;
 
 class CakePdfTest extends TestCase
 {
-
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         Configure::delete('Pdf');
     }
 
-    /**
-     *
-     */
     public static function provider()
     {
         return [
             [
                 [
-                    'engine' => '\\' . __NAMESPACE__ . '\PdfTest2Engine',
+                    'engine' => PdfTestEngine::class,
                     'margin' => [
                         'bottom' => 15,
                         'left' => 50,
@@ -52,14 +37,13 @@ class CakePdfTest extends TestCase
 
     /**
      * Tests exception to be thrown for a non existing engine
-     *
-     * @expectedException Cake\Core\Exception\Exception
      */
     public function testNonExistingEngineException()
     {
-        $config = ['engine' => 'NonExistingEngine'];
+        $this->expectException(Exception::class);
 
-        $pdf = new CakePdf($config);
+        $config = ['engine' => 'NonExistingEngine'];
+        new CakePdf($config);
     }
 
     /**
@@ -114,7 +98,7 @@ class CakePdfTest extends TestCase
         $pdf->templatePath('Posts/pdf');
         $result = $pdf->output();
         $expected = '<h2>Rendered with default layout</h2>' . "\n" . 'Post data: testing';
-        $this->assertEquals($expected, $result);
+        $this->assertTextEquals($expected, $result);
     }
 
     /**
@@ -125,10 +109,10 @@ class CakePdfTest extends TestCase
     public function testPluginOutput($config)
     {
         $pdf = new CakePdf($config);
-        Plugin::load('MyPlugin', ['autoload' => true]);
+        $this->loadPlugins(['MyPlugin']);
         $pdf->viewVars(['data' => 'testing']);
         $pdf->template('MyPlugin.testing', 'MyPlugin.pdf');
-        $pdf->helpers('MyPlugin.MyTest');
+        $pdf->helpers(['MyPlugin.MyTest']);
         $result = $pdf->output();
         $expected = 'MyPlugin Layout Data: testing';
         $this->assertEquals($expected, $result);
@@ -141,7 +125,7 @@ class CakePdfTest extends TestCase
             'MyPlugin Helper Test: successful',
         ];
         foreach ($lines as $line) {
-            $this->assertContains($line, $result);
+            $this->assertStringContainsString($line, $result);
         }
     }
 
@@ -154,11 +138,10 @@ class CakePdfTest extends TestCase
     {
         $pdf = new CakePdf($config);
         $engine = $pdf->engine();
-        $this->assertEquals(__NAMESPACE__ . '\PdfTest2Engine', get_class($engine));
+        $this->assertEquals(PdfTestEngine::class, get_class($engine));
     }
 
     /**
-     *
      * @dataProvider provider
      */
     public function testMargin($config)
@@ -214,7 +197,6 @@ class CakePdfTest extends TestCase
     }
 
     /**
-     *
      * @dataProvider provider
      */
     public function testConfigRead($config)

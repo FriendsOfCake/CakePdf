@@ -1,14 +1,18 @@
 <?php
+declare(strict_types=1);
+
 namespace CakePdf\Pdf\Engine;
 
-use CakePdf\Pdf\CakePdf;
 use Cake\Core\InstanceConfigTrait;
+use CakePdf\Pdf\CakePdf;
 
 abstract class AbstractPdfEngine
 {
-
     use InstanceConfigTrait;
 
+    /**
+     * @var array
+     */
     protected $_defaultConfig = [];
 
     /**
@@ -16,7 +20,7 @@ abstract class AbstractPdfEngine
      *
      * @var \CakePdf\Pdf\CakePdf
      */
-    protected $_Pdf = null;
+    protected $_Pdf;
 
     /**
      * Constructor
@@ -33,5 +37,5 @@ abstract class AbstractPdfEngine
      *
      * @return string
      */
-    abstract public function output();
+    abstract public function output(): string;
 }

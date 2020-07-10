@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace CakePdf\Pdf\Crypto;
 
@@ -6,11 +7,10 @@ use CakePdf\Pdf\CakePdf;
 
 abstract class AbstractPdfCrypto
 {
-
     /**
      * Instance of CakePdf class
      *
-     * @var \CakePdf\Pdf\CakePdf|null
+     * @var \CakePdf\Pdf\CakePdf
      */
     protected $_Pdf;
 
@@ -37,7 +37,7 @@ abstract class AbstractPdfCrypto
      * @param string $data raw pdf file
      * @return string
      */
-    abstract public function encrypt($data);
+    abstract public function encrypt(string $data): string;
 
     /**
      * Implement in subclass.
@@ -45,13 +45,13 @@ abstract class AbstractPdfCrypto
      * @param string $permission permission to check
      * @return bool
      */
-    abstract public function permissionImplemented($permission);
+    abstract public function permissionImplemented(string $permission): bool;
 
     /**
      * Set the config
      *
      * @param null|string|array $config Null, string or array. Pass array of configs to set.
-     * @return null|string|array Returns Returns config value if $config is string, else returns config array.
+     * @return null|string|array Returns config value if $config is string, else returns config array.
      */
     public function config($config = null)
     {
@@ -62,7 +62,7 @@ abstract class AbstractPdfCrypto
                 return $this->_config[$config];
             }
 
-            return false;
+            return null;
         }
 
         return $this->_config;
