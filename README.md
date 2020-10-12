@@ -53,24 +53,16 @@ Loading the plugin using CakePHP's console:
 
 If you plan to use [the PDF view functionality](#1-render-as-pdf-including-forced-download-in-the-browser-with-pdfview)
 that automatically renders and returns the PDF for sending it to the browser,
-you should also register the `pdf` extension in your `config/routes.php` file,
-either globally before the routes that should be affected:
+you should also register the `pdf` extension in your `config/routes.php` file:
 
 ```php
-Router::extensions(['pdf']);
-```
-
-or for a specific route scope:
-
-```php
-Router::scope('/', function (\Cake\Routing\RouteBuilder $routes) {
-    $routes->addExtensions(['pdf']);
+$routes->scope('/', function (\Cake\Routing\RouteBuilder $routes) {
+    $routes->setExtensions(['pdf']);
     // ...
 });
 ```
 
 Further setup information can be found in the usage section.
-
 
 ## Configuration
 
