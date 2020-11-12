@@ -134,30 +134,30 @@ The `engine` and `crypto` config options can also be arrays with configuration
 options for the relevant class. For example:
 
 ```php
-    Configure::write('CakePdf', [
-        'engine' => [
-            'className' => 'CakePdf.WkHtmlToPdf',
-            'options' => [
-                'print-media-type' => false,
-                'outline' => true,
-                'dpi' => 96
-            ],
-
-            /**
-             * For Mac OS X / Linux by default the `wkhtmltopdf` binary should
-             * be available through environment path or you can specify location as:
-             */
-            // 'binary' => '/usr/local/bin/wkhtmltopdf',
-
-            /**
-             * On Windows the engine uses the path shown below as default.
-             * You NEED to use the path like old fashioned MS-DOS Paths,
-             * otherwise you will get error like:
-             * "WKHTMLTOPDF didn't return any data"
-             */
-            // 'binary' => 'C:\\Progra~1\\wkhtmltopdf\\bin\\wkhtmltopdf.exe',
+Configure::write('CakePdf', [
+    'engine' => [
+        'className' => 'CakePdf.WkHtmlToPdf',
+        'options' => [
+            'print-media-type' => false,
+            'outline' => true,
+            'dpi' => 96
         ],
-    ]);
+
+        /**
+         * For Mac OS X / Linux by default the `wkhtmltopdf` binary should
+         * be available through environment path or you can specify location as:
+         */
+        // 'binary' => '/usr/local/bin/wkhtmltopdf',
+
+        /**
+         * On Windows the engine uses the path shown below as default.
+         * You NEED to use the path like old fashioned MS-DOS Paths,
+         * otherwise you will get error like:
+         * "WKHTMLTOPDF didn't return any data"
+         */
+        // 'binary' => 'C:\\Progra~1\\wkhtmltopdf\\bin\\wkhtmltopdf.exe',
+    ],
+]);
 ```
 
 ## Usage
@@ -214,14 +214,13 @@ file.
 
 Example:
 ```php
-<?php
-    $CakePdf = new \CakePdf\Pdf\CakePdf();
-    $CakePdf->template('newsletter', 'default');
-    $CakePdf->viewVars($this->viewVars);
-    // Get the PDF string returned
-    $pdf = $CakePdf->output();
-    // Or write it to file directly
-    $pdf = $CakePdf->write(APP . 'files' . DS . 'newsletter.pdf');
+$CakePdf = new \CakePdf\Pdf\CakePdf();
+$CakePdf->template('newsletter', 'default');
+$CakePdf->viewVars($this->viewVars);
+// Get the PDF string returned
+$pdf = $CakePdf->output();
+// Or write it to file directly
+$pdf = $CakePdf->write(APP . 'files' . DS . 'newsletter.pdf');
 ```
 
 
@@ -278,7 +277,7 @@ If you use `HtmlHelper::image()`, or `HtmlHelper::css()`
 make sure you have set `fullBase` option to `true`.
 
 For example
-```
+```php
 echo $this->Html->image('logo.png', ['fullBase' => true]);
 echo $this->Html->css('bootstrap.css', ['fullBase' => true]);
 ```
