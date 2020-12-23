@@ -137,9 +137,17 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
                     $command .= sprintf(' --%s %s %s', $key, escapeshellarg($k), escapeshellarg((string)$v));
                 }
             } elseif ($value === true) {
-                $command .= ' --' . $key;
+                if ($key === 'toc') {
+                    $command .= ' toc';
+                } else {
+                    $command .= ' --' . $key;
+                }
             } else {
-                $command .= sprintf(' --%s %s', $key, escapeshellarg((string)$value));
+                if ($key === 'cover') {
+                    $command .= ' cover ' . escapeshellarg((string)$value);
+                } else {
+                    $command .= sprintf(' --%s %s', $key, escapeshellarg((string)$value));
+                }
             }
         }
         $footer = $this->_Pdf->footer();
