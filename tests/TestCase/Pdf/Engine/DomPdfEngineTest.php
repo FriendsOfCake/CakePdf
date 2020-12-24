@@ -13,6 +13,15 @@ use Dompdf\Dompdf;
  */
 class DomPdfEngineTest extends TestCase
 {
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        if (!class_exists(Dompdf::class)) {
+            $this->markTestSkipped('Dompdf is not loaded');
+        }
+    }
+
     /**
      * Tests that the engine receives the expected options.
      */
