@@ -96,7 +96,7 @@ class DomPdfEngineTest extends TestCase
         $Pdf->html('<foo>bar</foo>');
 
         $output = $Pdf->engine()->output();
-        $this->assertStringStartsWith('%PDF-1.3', $output);
+        $this->assertStringStartsWith('%PDF-1.7', $output);
         $this->assertStringEndsWith("%%EOF\n", $output);
     }
 
