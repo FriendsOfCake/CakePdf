@@ -36,6 +36,9 @@ jobs:
       run: |
         if ${{ matrix.prefer-lowest == 'prefer-lowest' }}; then
           composer update --prefer-lowest --prefer-stable
+        elif [[ ${{ matrix.php-version }} == '8.0' ]]; then
+          composer remove --dev mpdf/mpdf
+          composer install
         else
           composer install
         fi

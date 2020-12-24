@@ -13,6 +13,15 @@ use Mpdf\Mpdf;
  */
 class MpdfEngineTest extends TestCase
 {
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        if (!class_exists(Mpdf::class)) {
+            $this->markTestSkipped('Mpdf is not loaded');
+        }
+    }
+
     /**
      * Tests that the engine sets the options properly.
      */
