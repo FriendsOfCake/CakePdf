@@ -98,13 +98,13 @@ class PdfView extends View
     /**
      * Render a Pdf view.
      *
-     * @param string $view The view being rendered.
+     * @param string $template The view being rendered.
      * @param false|null|string $layout The layout being rendered.
      * @return string The rendered view.
      */
-    public function render(?string $view = null, $layout = null): string
+    public function render(?string $template = null, $layout = null): string
     {
-        $content = parent::render($view, $layout);
+        $content = parent::render($template, $layout);
 
         $type = $this->response->getType();
         if ($type === 'text/html') {

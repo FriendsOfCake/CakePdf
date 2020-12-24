@@ -904,7 +904,7 @@ class CakePdf
         if ($viewVars === null) {
             return $this->_viewVars;
         }
-        $this->_viewVars = array_merge($this->_viewVars, (array)$viewVars);
+        $this->_viewVars = array_merge($this->_viewVars, $viewVars);
 
         return $this;
     }
@@ -936,7 +936,7 @@ class CakePdf
         if ($helpers === null) {
             return $this->_helpers;
         }
-        $this->_helpers = (array)$helpers;
+        $this->_helpers = $helpers;
 
         return $this;
     }

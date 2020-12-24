@@ -13,6 +13,15 @@ use Dompdf\Dompdf;
  */
 class DomPdfEngineTest extends TestCase
 {
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        if (!class_exists(Dompdf::class)) {
+            $this->markTestSkipped('Dompdf is not loaded');
+        }
+    }
+
     /**
      * Tests that the engine receives the expected options.
      */
@@ -96,7 +105,7 @@ class DomPdfEngineTest extends TestCase
         $Pdf->html('<foo>bar</foo>');
 
         $output = $Pdf->engine()->output();
-        $this->assertStringStartsWith('%PDF-1.3', $output);
+        $this->assertStringStartsWith('%PDF-1.7', $output);
         $this->assertStringEndsWith("%%EOF\n", $output);
     }
 

@@ -8,10 +8,11 @@
         "cakephp/cakephp": "^4.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "~8.5.0",
-        "dompdf/dompdf": "^0.8",
+        "phpunit/phpunit": "~8.5.0 || ^9.3",
+        "dompdf/dompdf": "^0.8.6",
         "mpdf/mpdf": "^8.0.4",
-        "tecnickcom/tcpdf": "^6.3"
+        "tecnickcom/tcpdf": "^6.3",
+        "cakephp/cakephp-codesniffer": "^4.2"
     },
     "suggest": {
         "dompdf/dompdf": "If you wish to use the DomPdf engine",
