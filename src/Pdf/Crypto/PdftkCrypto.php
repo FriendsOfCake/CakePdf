@@ -96,7 +96,7 @@ class PdftkCrypto extends AbstractPdfCrypto
         $exitcode = proc_close($prochandle);
 
         if ($exitcode !== 0) {
-            throw new Exception(sprintf('Crypto: Unknown error (exit code %d)', $exitcode));
+            throw new Exception(sprintf("Crypto: (exit code %d)\n%s", $exitcode, $stderr));
         }
 
         return (string)$stdout;
