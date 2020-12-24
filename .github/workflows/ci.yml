@@ -32,6 +32,14 @@ jobs:
         extensions: mbstring, intl
         coverage: pcov
 
+    - name: Install packages
+      run: |
+        sudo apt install xfonts-base xfonts-75dpi
+        wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox_0.12.6-1.bionic_amd64.deb
+        sudo dpkg -i wkhtmltox_0.12.6-1.bionic_amd64.deb
+        sudo apt install -f
+        wkhtmltopdf --version
+
     - name: Composer install
       run: |
         if ${{ matrix.prefer-lowest == 'prefer-lowest' }}; then
@@ -49,7 +57,7 @@ jobs:
     - name: Run PHPUnit
       run: |
         if [[ ${{ matrix.php-version }} == '7.4' ]]; then
-          vendor/bin/phpunit --coverage-clover=coverage.xml
+          vendor/bin/phpunit --verbose --coverage-clover=coverage.xml
         else
           vendor/bin/phpunit
         fi
