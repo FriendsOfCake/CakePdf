@@ -75,6 +75,19 @@ class WkHtmlToPdfEngineTest extends TestCase
         $result = $method->invokeArgs($Pdf->engine(), []);
         $expected = "wkhtmltopdf --quiet --print-media-type --orientation 'portrait' --page-size 'A4' --encoding 'UTF-8' --boolean --string 'value' --integer '42' --array 'first' 'firstValue' --array 'second' 'secondValue' - -";
         $this->assertEquals($expected, $result);
+
+        $Pdf = new CakePdf([
+            'engine' => [
+                'className' => 'CakePdf.WkHtmlToPdf',
+                'options' => [
+                    'cover' => 'cover.html',
+                    'toc' => true,
+                ],
+            ],
+        ]);
+        $result = $method->invokeArgs($Pdf->engine(), []);
+        $expected = "wkhtmltopdf --quiet --print-media-type --orientation 'portrait' --page-size 'A4' --encoding 'UTF-8' cover 'cover.html' toc - -";
+        $this->assertEquals($expected, $result);
     }
 
     public function testGetBinaryPath()
