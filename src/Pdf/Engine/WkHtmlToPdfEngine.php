@@ -132,23 +132,8 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
         foreach ($options as $key => $value) {
             if (empty($value)) {
                 continue;
-            } elseif (is_array($value)) {
-                foreach ($value as $k => $v) {
-                    $command .= sprintf(' --%s %s %s', $key, escapeshellarg($k), escapeshellarg((string)$v));
-                }
-            } elseif ($value === true) {
-                if ($key === 'toc') {
-                    $command .= ' toc';
-                } else {
-                    $command .= ' --' . $key;
-                }
-            } else {
-                if ($key === 'cover') {
-                    $command .= ' cover ' . escapeshellarg((string)$value);
-                } else {
-                    $command .= sprintf(' --%s %s', $key, escapeshellarg((string)$value));
-                }
             }
+            $command .= $this->parseOptions($key, $value);
         }
         $footer = $this->_Pdf->footer();
         foreach ($footer as $location => $text) {
@@ -167,6 +152,54 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
 
         if ($this->_windowsEnvironment) {
             $command = '"' . $command . '"';
+        }
+
+        return $command;
+    }
+
+    /**
+     * Parses a value of options to create a part of the command.
+     * Created to reuse logic to parse the cover and toc options.
+     *
+     * @param string $key the option key name
+     * @param string|boolean|array $value the option value
+     * @return string part of the command
+     */
+    public function parseOptions(string $key, $value): string
+    {
+        $command = "";
+        if (is_array($value)) {
+            if ($key === 'toc') {
+                $command .= ' toc';
+                foreach ($value as $k => $v) {
+                    $command .= $this->parseOptions($k, $v);
+                }
+            } elseif ($key === 'cover') {
+                if(!isset($value['url'])) {
+                    throw new Exception('The url for the cover is missing. Use the "url" index.');
+                }
+                $command .= ' cover ' . escapeshellarg((string)$value['url']);
+                unset($value['url']);
+                foreach ($value as $k => $v) {
+                    $command .= $this->parseOptions($k, $v);
+                }
+            } else {
+                foreach ($value as $k => $v) {
+                    $command .= sprintf(' --%s %s %s', $key, escapeshellarg($k), escapeshellarg((string)$v));
+                }
+            }
+        } elseif ($value === true) {
+            if ($key === 'toc') {
+                $command .= ' toc';
+            } else {
+                $command .= ' --' . $key;
+            }
+        } else {
+            if ($key === 'cover') {
+                $command .= ' cover ' . escapeshellarg((string)$value);
+            } else {
+                $command .= sprintf(' --%s %s', $key, escapeshellarg((string)$value));
+            }
         }
 
         return $command;
