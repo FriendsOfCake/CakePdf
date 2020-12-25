@@ -162,12 +162,12 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
      * Created to reuse logic to parse the cover and toc options.
      *
      * @param string $key the option key name
-     * @param string|boolean|array $value the option value
+     * @param string|bool|array $value the option value
      * @return string part of the command
      */
     public function parseOptions(string $key, $value): string
     {
-        $command = "";
+        $command = '';
         if (is_array($value)) {
             if ($key === 'toc') {
                 $command .= ' toc';
@@ -175,7 +175,7 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
                     $command .= $this->parseOptions($k, $v);
                 }
             } elseif ($key === 'cover') {
-                if(!isset($value['url'])) {
+                if (!isset($value['url'])) {
                     throw new Exception('The url for the cover is missing. Use the "url" index.');
                 }
                 $command .= ' cover ' . escapeshellarg((string)$value['url']);
