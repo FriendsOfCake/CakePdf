@@ -216,12 +216,12 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
 
         /** @psalm-suppress ForbiddenCode */
         if (
-            ($this->_windowsEnvironment && !is_executable($binary)) ||
-            !shell_exec('which ' . escapeshellarg($binary))
+            is_executable($binary) ||
+            (!$this->_windowsEnvironment && shell_exec('which ' . escapeshellarg($binary)))
         ) {
-            throw new Exception(sprintf('wkhtmltopdf binary is not found or not executable: %s', $binary));
+            return $binary;
         }
 
-        return $binary;
+        throw new Exception(sprintf('wkhtmltopdf binary is not found or not executable: %s', $binary));
     }
 }
