@@ -136,10 +136,16 @@ options for the relevant class. For example:
 Configure::write('CakePdf', [
     'engine' => [
         'className' => 'CakePdf.WkHtmlToPdf',
+        // Options usable depend on the engine used.
         'options' => [
             'print-media-type' => false,
             'outline' => true,
-            'dpi' => 96
+            'dpi' => 96,
+            'cover' => [
+                'url' => 'cover.html',
+                'enable-smart-shrinking' => true,
+            ],
+            'toc' => true,            
         ],
 
         /**

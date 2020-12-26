@@ -75,6 +75,99 @@ class WkHtmlToPdfEngineTest extends TestCase
         $result = $method->invokeArgs($Pdf->engine(), []);
         $expected = "wkhtmltopdf --quiet --print-media-type --orientation 'portrait' --page-size 'A4' --encoding 'UTF-8' --boolean --string 'value' --integer '42' --array 'first' 'firstValue' --array 'second' 'secondValue' - -";
         $this->assertEquals($expected, $result);
+
+        $Pdf = new CakePdf([
+            'engine' => [
+                'className' => 'CakePdf.WkHtmlToPdf',
+                'options' => [
+                    'cover' => 'cover.html',
+                    'toc' => true,
+                ],
+            ],
+        ]);
+        $result = $method->invokeArgs($Pdf->engine(), []);
+        $expected = "wkhtmltopdf --quiet --print-media-type --orientation 'portrait' --page-size 'A4' --encoding 'UTF-8' cover 'cover.html' toc - -";
+        $this->assertEquals($expected, $result);
+
+        $Pdf = new CakePdf([
+            'engine' => [
+                'className' => 'CakePdf.WkHtmlToPdf',
+                'options' => [
+                    'encoding' => 'UTF-16',
+                    'title' => 'Test',
+                    'cover' => 'cover.html',
+                    'toc' => [
+                        'zoom' => 5,
+                        'encoding' => 'ISO-8859-1',
+                    ],
+                ],
+            ],
+        ]);
+        $result = $method->invokeArgs($Pdf->engine(), []);
+        $expected = "wkhtmltopdf --quiet --print-media-type --orientation 'portrait' --page-size 'A4' --encoding 'UTF-16' --title 'Test' cover 'cover.html' toc --zoom '5' --encoding 'ISO-8859-1' - -";
+        $this->assertEquals($expected, $result);
+
+        $Pdf = new CakePdf([
+            'engine' => [
+                'className' => 'CakePdf.WkHtmlToPdf',
+                'options' => [
+                    'cover' => [
+                        'url' => 'cover.html',
+                        'enable-smart-shrinking' => true,
+                        'zoom' => 10,
+                    ],
+                    'toc' => true,
+                ],
+            ],
+        ]);
+        $result = $method->invokeArgs($Pdf->engine(), []);
+        $expected = "wkhtmltopdf --quiet --print-media-type --orientation 'portrait' --page-size 'A4' --encoding 'UTF-8' cover 'cover.html' --enable-smart-shrinking --zoom '10' toc - -";
+        $this->assertEquals($expected, $result);
+
+        $Pdf = new CakePdf([
+           'engine' => [
+               'className' => 'CakePdf.WkHtmlToPdf',
+               'options' => [
+                   'zoom' => 4,
+                   'cover' => [
+                       'url' => 'cover.html',
+                       'enable-smart-shrinking' => true,
+                       'zoom' => 10,
+                   ],
+                   'toc' => [
+                       'disable-dotted-lines' => true,
+                       'xsl-style-sheet' => 'style.xsl',
+                       'zoom' => 5,
+                       'encoding' => 'ISO-8859-1',
+                   ],
+               ],
+           ],
+        ]);
+        $result = $method->invokeArgs($Pdf->engine(), []);
+        $expected = "wkhtmltopdf --quiet --print-media-type --orientation 'portrait' --page-size 'A4' --encoding 'UTF-8' --zoom '4' cover 'cover.html' --enable-smart-shrinking --zoom '10' toc --disable-dotted-lines --xsl-style-sheet 'style.xsl' --zoom '5' --encoding 'ISO-8859-1' - -";
+        $this->assertEquals($expected, $result);
+    }
+
+    public function testCoverUrlMissing()
+    {
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('The url for the cover is missing. Use the "url" index.');
+
+        $class = new \ReflectionClass(WkHtmlToPdfEngine::class);
+        $method = $class->getMethod('_getCommand');
+        $method->setAccessible(true);
+        $Pdf = new CakePdf([
+           'engine' => [
+               'className' => 'CakePdf.WkHtmlToPdf',
+               'options' => [
+                   'cover' => [
+                       'enable-smart-shrinking' => true,
+                       'zoom' => 10,
+                   ],
+               ],
+           ],
+        ]);
+        $method->invokeArgs($Pdf->engine(), []);
     }
 
     public function testGetBinaryPath()
