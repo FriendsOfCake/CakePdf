@@ -165,7 +165,7 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
      * @param string|bool|array $value the option value
      * @return string part of the command
      */
-    public function parseOptions(string $key, $value): string
+    protected function parseOptions(string $key, $value): string
     {
         $command = '';
         if (is_array($value)) {
