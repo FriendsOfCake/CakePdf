@@ -162,7 +162,7 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
      * Created to reuse logic to parse the cover and toc options.
      *
      * @param string $key the option key name
-     * @param string|bool|array $value the option value
+     * @param string|true|array $value the option value
      * @return string part of the command
      */
     protected function parseOptions(string $key, $value): string
