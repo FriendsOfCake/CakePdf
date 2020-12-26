@@ -196,9 +196,9 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
             }
         } else {
             if ($key === 'cover') {
-                $command .= ' cover ' . escapeshellarg((string)$value);
+                $command .= ' cover ' . escapeshellarg($value);
             } else {
-                $command .= sprintf(' --%s %s', $key, escapeshellarg((string)$value));
+                $command .= sprintf(' --%s %s', $key, escapeshellarg($value));
             }
         }
 
