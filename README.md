@@ -300,4 +300,4 @@ Here are a couple of CSS based solutions you can refer to for easily
 getting header footer on all PDF pages.
 
 * https://ourcodeworld.com/articles/read/687/how-to-configure-a-header-and-footer-in-dompdf
-* http://www.jessicaschillinger.us/2017/blog/print-repeating-header-browser/
+* https://jessicaschillinger.com/print-repeating-header-browser/
