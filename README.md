@@ -211,7 +211,7 @@ $this->viewBuilder()->setOption(
 ### 2: Create PDF for email attachment, file storage etc.
 
 You can use CakePdf lib to create raw PDF data with a view template.
-The view file path would look like `templates/pdf/newsletter.php`.
+The view file path would look like `templates/Pdf/newsletter.php`.
 Layout file path would be like `templates/layout/pdf/default.php`
 Note that layouts for both usage types are within same directory, but the view
 templates use different file paths Optionally you can also write the raw data to
