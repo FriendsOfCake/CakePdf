@@ -294,6 +294,10 @@ try using file system paths instead for the assets.
 <img src="<?= WWW_ROOT ?>img/logo.png" />
 ```
 
+**Note:** Since v0.12.16 wkhtmltopdf requires the option `enable-local-file-access` 
+to be able to use local filesytem paths for assets. You can enable it by setting 
+`'enable-local-file-access' => true` in the engine config array.
+
 ## Get header and footer on all pages
 
 Here are a couple of CSS based solutions you can refer to for easily
