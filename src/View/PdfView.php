@@ -16,14 +16,14 @@ class PdfView extends View
     /**
      * The subdirectory.  PDF views are always in pdf.
      *
-     * @var string|null
+     * @var string
      */
     protected $subDir = 'pdf';
 
     /**
      * The name of the layouts subfolder containing layouts for this View.
      *
-     * @var string|null
+     * @var string
      */
     protected $layoutPath = 'pdf';
 
@@ -37,7 +37,7 @@ class PdfView extends View
     /**
      * Default config options.
      *
-     * @var array
+     * @var array<string, mixed>
      */
     protected $_defaultConfig = [
         'pdfConfig' => [],
