@@ -347,7 +347,7 @@ class CakePdf
             return (bool)file_put_contents($destination, $output);
         }
 
-        if (!$fileInfo->isFile() && !$fileInfo->getPathInfo()->getRealPath()) {
+        if (!$fileInfo->getPathInfo()->getRealPath()) {
             mkdir($fileInfo->getPath(), 0777, true);
         }
 
@@ -372,11 +372,12 @@ class CakePdf
             $name = $name['className'];
         }
 
+        /** @var class-string<\CakePdf\Pdf\Engine\AbstractPdfEngine>|null $engineClassName */
         $engineClassName = App::className($name, 'Pdf/Engine', 'Engine');
         if ($engineClassName === null) {
             throw new Exception(sprintf('Pdf engine "%s" not found', $name));
         }
-        if (!is_subclass_of($engineClassName, 'CakePdf\Pdf\Engine\AbstractPdfEngine')) {
+        if (!is_subclass_of($engineClassName, AbstractPdfEngine::class)) {
             throw new Exception('Pdf engines must extend "AbstractPdfEngine"');
         }
         $this->_engineClass = new $engineClassName($this);

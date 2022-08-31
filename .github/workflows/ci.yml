@@ -10,20 +10,18 @@ on:
 
 jobs:
   testsuite:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-22.04
     strategy:
       fail-fast: false
       matrix:
-        php-version: ['7.2', '7.4', '8.0']
+        php-version: ['7.4', '8.0', '8.1']
         prefer-lowest: ['']
         include:
           - php-version: '7.2'
             prefer-lowest: 'prefer-lowest'
 
     steps:
-    - uses: actions/checkout@v1
-      with:
-        fetch-depth: 1
+    - uses: actions/checkout@v3
 
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
@@ -35,8 +33,8 @@ jobs:
     - name: Install packages
       run: |
         sudo apt install xfonts-base xfonts-75dpi
-        wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox_0.12.6-1.bionic_amd64.deb
-        sudo dpkg -i wkhtmltox_0.12.6-1.bionic_amd64.deb
+        wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6.1-2/wkhtmltox_0.12.6.1-2.jammy_amd64.deb
+        sudo dpkg -i wkhtmltox_0.12.6.1-2.jammy_amd64.deb
         sudo apt install -f
         wkhtmltopdf --version
 
@@ -44,9 +42,6 @@ jobs:
       run: |
         if ${{ matrix.prefer-lowest == 'prefer-lowest' }}; then
           composer update --prefer-lowest --prefer-stable
-        elif [[ ${{ matrix.php-version }} == '8.0' ]]; then
-          composer remove --dev mpdf/mpdf dompdf/dompdf
-          composer install
         else
           composer install
         fi
@@ -64,16 +59,14 @@ jobs:
 
     - name: Code Coverage Report
       if: matrix.php-version == '7.4'
-      uses: codecov/codecov-action@v1
+      uses: codecov/codecov-action@v3
 
   cs-stan:
     name: Coding Standard & Static Analysis
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-22.04
 
     steps:
-    - uses: actions/checkout@v1
-      with:
-        fetch-depth: 1
+    - uses: actions/checkout@v3
 
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
@@ -81,7 +74,7 @@ jobs:
         php-version: '7.4'
         extensions: mbstring, intl
         coverage: none
-        tools: cs2pr, psalm:^4.3, phpstan:^0.12
+        tools: cs2pr, vimeo/psalm:4.26, phpstan:1.8
 
     - name: Composer Install
       run: composer install

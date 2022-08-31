@@ -2,6 +2,7 @@ parameters:
     level: 6
     checkMissingIterableValueType: false
     bootstrapFiles:
+        - vendor/cakephp/cakephp/src/Core/Exception/CakeException.php
         - tests/bootstrap.php
     paths:
         - src

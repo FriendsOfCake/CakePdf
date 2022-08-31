@@ -128,16 +128,16 @@ class DomPdfEngineTest extends TestCase
 
         $Engine = $Pdf->engine();
         $Engine
-            ->expects($this->at(0))
+            ->expects($this->once())
             ->method('_createInstance')
             ->willReturn($DomPDF);
         $Engine
-            ->expects($this->at(1))
+            ->expects($this->once())
             ->method('_render')
             ->with($Pdf, $DomPDF)
             ->willReturn($DomPDF);
         $Engine
-            ->expects($this->at(2))
+            ->expects($this->once())
             ->method('_output')
             ->with($DomPDF);
 
@@ -161,22 +161,22 @@ class DomPdfEngineTest extends TestCase
             ->method('_createInstance')
             ->will($this->returnCallback(function ($options) {
                 $Dompdf = $this->getMockBuilder('\Dompdf\Dompdf')
-                    ->setMethods(['setPaper', 'loadHtml', 'render', 'output'])
+                    ->onlyMethods(['setPaper', 'loadHtml', 'render', 'output'])
                     ->setConstructorArgs([$options])
                     ->getMock();
                 $Dompdf
-                    ->expects($this->at(0))
+                    ->expects($this->once())
                     ->method('setPaper')
                     ->with('A4', 'portrait');
                 $Dompdf
-                    ->expects($this->at(1))
+                    ->expects($this->once())
                     ->method('loadHtml')
                     ->with(null);
                 $Dompdf
-                    ->expects($this->at(2))
+                    ->expects($this->once())
                     ->method('render');
                 $Dompdf
-                    ->expects($this->at(3))
+                    ->expects($this->once())
                     ->method('output');
 
                 return $Dompdf;
