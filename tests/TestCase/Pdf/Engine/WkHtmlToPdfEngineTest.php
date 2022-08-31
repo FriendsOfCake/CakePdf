@@ -150,6 +150,10 @@ class WkHtmlToPdfEngineTest extends TestCase
 
     public function testCoverUrlMissing()
     {
+        if (!shell_exec('which wkhtmltopdf')) {
+            $this->markTestSkipped('wkhtmltopdf not found');
+        }
+
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('The url for the cover is missing. Use the "url" index.');
 

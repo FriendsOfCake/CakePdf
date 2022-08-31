@@ -1,6 +1,5 @@
 <?xml version="1.0"?>
 <psalm
-    totallyTyped="false"
     resolveFromConfigFile="true"
     autoloader="tests/bootstrap.php"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -14,6 +13,10 @@
             <directory name="vendor" />
         </ignoreFiles>
     </projectFiles>
+
+    <stubs>
+        <file name="vendor/cakephp/cakephp/src/Core/Exception/CakeException.php" preloadClasses="true" />
+    </stubs>
 
     <issueHandlers>
         <LessSpecificReturnType errorLevel="info" />

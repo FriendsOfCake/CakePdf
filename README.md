@@ -7,7 +7,7 @@
 Plugin containing CakePdf lib which will use a PDF engine to convert HTML to PDF.
 
 Engines included in the plugin:
-* DomPdf (^0.8)
+* DomPdf (^0.8. Using ^2.0 is highly recommended as lower versions have various security vulnerabilities)
 * Mpdf (^8.0.4)
 * Tcpdf (^6.3)
 * WkHtmlToPdf **RECOMMENDED ENGINE**
@@ -145,7 +145,7 @@ Configure::write('CakePdf', [
                 'url' => 'cover.html',
                 'enable-smart-shrinking' => true,
             ],
-            'toc' => true,            
+            'toc' => true,
         ],
 
         /**
@@ -294,8 +294,8 @@ try using file system paths instead for the assets.
 <img src="<?= WWW_ROOT ?>img/logo.png" />
 ```
 
-**Note:** Since v0.12.16 wkhtmltopdf requires the option `enable-local-file-access` 
-to be able to use local filesytem paths for assets. You can enable it by setting 
+**Note:** Since v0.12.16 wkhtmltopdf requires the option `enable-local-file-access`
+to be able to use local filesytem paths for assets. You can enable it by setting
 `'enable-local-file-access' => true` in the engine config array.
 
 ## Get header and footer on all pages
