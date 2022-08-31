@@ -150,7 +150,7 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
         }
         $command .= ' - -';
 
-        if ($this->_windowsEnvironment) {
+        if ($this->_windowsEnvironment && PHP_MAJOR_VERSION < 8) {
             $command = '"' . $command . '"';
         }
 
