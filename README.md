@@ -161,6 +161,12 @@ Configure::write('CakePdf', [
          * "WKHTMLTOPDF didn't return any data"
          */
         // 'binary' => 'C:\\Progra~1\\wkhtmltopdf\\bin\\wkhtmltopdf.exe',
+        
+        /**
+         * Skip the binary execution checking for many Linux servers when set to `true`.
+         * Default value is `false`, which mean we need to check for security reason.
+         */
+        //'skipCheckingExecutableBinary' => false,
     ],
 ]);
 ```
