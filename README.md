@@ -1,6 +1,6 @@
 # CakePdf plugin
 
-[![Build Status](https://img.shields.io/github/workflow/status/FriendsOfCake/CakePdf/CI/master?style=flat-square)](https://github.com/FriendsOfCake/CakePdf/actions?query=workflow%3ACI+branch%3Amaster)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/FriendsOfCake/CakePdf/ci.yml?branch=master&style=flat-square)](https://github.com/FriendsOfCake/CakePdf/actions?query=workflow%3ACI+branch%3Amaster)
 [![Total Downloads](https://img.shields.io/packagist/dt/friendsofcake/CakePdf.svg?style=flat-square)](https://packagist.org/packages/friendsofcake/CakePdf)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://packagist.org/packages/friendsofcake/CakePdf)
 
