@@ -102,10 +102,10 @@ Configure::write('CakePdf', [
         'bottom' => 15,
         'left' => 50,
         'right' => 30,
-        'top' => 45
+        'top' => 45,
     ],
     'orientation' => 'landscape',
-    'download' => true
+    'download' => true,
 ]);
 ```
 
@@ -121,7 +121,7 @@ class InvoicesController extends AppController
             'pdfConfig',
             [
                 'orientation' => 'portrait',
-                'filename' => 'Invoice_' . $id
+                'filename' => 'Invoice_' . $id,
             ]
         );
         $this->set('invoice', $invoice);
@@ -194,7 +194,7 @@ specify the view class to be used:
 $this->viewBuilder()->setClassName('CakePdf.Pdf');
 ```
 
-Instead of having the pdf rendered in browser itself you can force it to be
+Instead of having the pdf rendered in the browser itself, you can force it to be
 downloaded by using `download` option. Additionally you can specify custom filename
 using `filename` options.
 
@@ -203,7 +203,7 @@ $this->viewBuilder()->setOption(
     'pdfConfig',
     [
         'download' => true, // This can be omitted if "filename" is specified.
-        'filename' => 'Invoice_' . $id // This can be omitted if you want file name based on URL.
+        'filename' => 'Invoice_' . $id, // This can be omitted if you want a file name based on URL.
     ]
 );
 ```
