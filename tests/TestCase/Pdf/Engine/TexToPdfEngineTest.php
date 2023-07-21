@@ -6,6 +6,7 @@ namespace CakePdf\Test\TestCase\Pdf\Engine;
 use Cake\TestSuite\TestCase;
 use CakePdf\Pdf\CakePdf;
 use CakePdf\Pdf\Engine\TexToPdfEngine;
+use ReflectionClass;
 
 /**
  * TexToPdfEngineTest class
@@ -31,7 +32,7 @@ class TexToPdfEngineTest extends TestCase
      */
     public function testGetCommand()
     {
-        $class = new \ReflectionClass(TexToPdfEngine::class);
+        $class = new ReflectionClass(TexToPdfEngine::class);
         $method = $class->getMethod('_getCommand');
         $method->setAccessible(true);
 

@@ -3,3 +3,4 @@
 /phpunit.xml
 /tmp
 .phpunit.result.cache
+/.idea/

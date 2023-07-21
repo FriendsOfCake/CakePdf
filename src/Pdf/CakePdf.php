@@ -6,7 +6,7 @@ namespace CakePdf\Pdf;
 use Cake\Cache\Cache;
 use Cake\Core\App;
 use Cake\Core\Configure;
-use Cake\Core\Exception\Exception;
+use Cake\Core\Exception\CakeException;
 use Cake\Http\ServerRequestFactory;
 use Cake\Routing\Router;
 use CakePdf\Pdf\Crypto\AbstractPdfCrypto;
@@ -20,189 +20,189 @@ class CakePdf
      *
      * @var string
      */
-    protected $_layout = 'default';
+    protected string $_layout = 'default';
 
     /**
      * Path to the layout - defaults to 'pdf'
      *
      * @var string
      */
-    protected $_layoutPath = 'pdf';
+    protected string $_layoutPath = 'pdf';
 
     /**
      * Template for the view
      *
      * @var string|null
      */
-    protected $_template;
+    protected ?string $_template = null;
 
     /**
      * Path to the template - defaults to 'pdf'
      *
      * @var string
      */
-    protected $_templatePath = 'pdf';
+    protected string $_templatePath = 'pdf';
 
     /**
      * View for render
      *
      * @var string
      */
-    protected $_viewRender = 'View';
+    protected string $_viewRender = 'View';
 
     /**
      * Vars to sent to render
      *
      * @var array
      */
-    protected $_viewVars = [];
+    protected array $_viewVars = [];
 
     /**
      * Theme for the View
      *
      * @var string|null
      */
-    protected $_theme = null;
+    protected ?string $_theme = null;
 
     /**
      * Helpers to be used in the render
      *
      * @var array
      */
-    protected $_helpers = ['Html'];
+    protected array $_helpers = ['Html'];
 
     /**
      * Instance of PdfEngine class
      *
      * @var \CakePdf\Pdf\Engine\AbstractPdfEngine
      */
-    protected $_engineClass;
+    protected AbstractPdfEngine $_engineClass;
 
     /**
      * Instance of PdfCrypto class
      *
      * @var \CakePdf\Pdf\Crypto\AbstractPdfCrypto|null
      */
-    protected $_cryptoClass;
+    protected ?AbstractPdfCrypto $_cryptoClass = null;
 
     /**
      * Html to be rendered
      *
      * @var string
      */
-    protected $_html;
+    protected string $_html = '';
 
     /**
      * Page size of the pdf
      *
      * @var string
      */
-    protected $_pageSize = 'A4';
+    protected string $_pageSize = 'A4';
 
     /**
      * Orientation of the pdf
      *
      * @var string
      */
-    protected $_orientation = 'portrait';
+    protected string $_orientation = 'portrait';
 
     /**
      * Encoding
      *
      * @var string
      */
-    protected $_encoding = 'UTF-8';
+    protected string $_encoding = 'UTF-8';
 
     /**
      * Footer HTML
      *
      * @var array
      */
-    protected $_footer = ['left' => null, 'center' => null, 'right' => null];
+    protected array $_footer = ['left' => null, 'center' => null, 'right' => null];
 
     /**
      * Header HTML
      *
      * @var array
      */
-    protected $_header = ['left' => null, 'center' => null, 'right' => null];
+    protected array $_header = ['left' => null, 'center' => null, 'right' => null];
 
     /**
      * Bottom margin in mm
      *
      * @var string|int|null
      */
-    protected $_marginBottom = null;
+    protected string|int|null $_marginBottom = null;
 
     /**
      * Left margin in mm
      *
      * @var string|int|null
      */
-    protected $_marginLeft = null;
+    protected string|int|null $_marginLeft = null;
 
     /**
      * Right margin in mm
      *
      * @var string|int|null
      */
-    protected $_marginRight = null;
+    protected string|int|null $_marginRight = null;
 
     /**
      * Top margin in mm
      *
      * @var string|int|null
      */
-    protected $_marginTop = null;
+    protected string|int|null $_marginTop = null;
 
     /**
      * Title of the document
      *
      * @var string|null
      */
-    protected $_title;
+    protected ?string $_title = null;
 
     /**
      * Javascript delay before rendering document in milliseconds
      *
      * @var int|null
      */
-    protected $_delay;
+    protected ?int $_delay = null;
 
     /**
      * Window status required before rendering document
      *
      * @var string|null
      */
-    protected $_windowStatus;
+    protected ?string $_windowStatus = null;
 
     /**
      * Flag that tells if we need to pass it through crypto
      *
      * @var bool
      */
-    protected $_protect = false;
+    protected bool $_protect = false;
 
     /**
      * User password, used with crypto
      *
      * @var string|null
      */
-    protected $_userPassword;
+    protected ?string $_userPassword = null;
 
     /**
      * Owner password, used with crypto
      *
      * @var string|null
      */
-    protected $_ownerPassword;
+    protected ?string $_ownerPassword = null;
 
     /**
      * Cache config name, if set to false cache is disabled
      *
      * @var string|false
      */
-    protected $_cache = false;
+    protected string|false $_cache = false;
 
     /**
      * Permissions that are allowed, used with crypto
@@ -213,14 +213,14 @@ class CakePdf
      *
      * @var mixed
      */
-    protected $_allow = false;
+    protected mixed $_allow = false;
 
     /**
      * Available permissions
      *
      * @var array
      */
-    protected $_availablePermissions = [
+    protected array $_availablePermissions = [
         'print',
         'degraded_print',
         'modify',
@@ -274,15 +274,15 @@ class CakePdf
     /**
      * Create pdf content from html. Can be used to write to file or with PdfView to display
      *
-     * @param null|string $html Html content to render. If omitted, the template will be rendered with viewVars and layout that have been set.
-     * @throws \Cake\Core\Exception\Exception
+     * @param string|null $html Html content to render. If omitted, the template will be rendered with viewVars and layout that have been set.
+     * @throws \Cake\Core\Exception\CakeException
      * @return string
      */
     public function output(?string $html = null): string
     {
         $Engine = $this->engine();
         if ($Engine === null) {
-            throw new Exception('Engine is not loaded');
+            throw new CakeException('Engine is not loaded');
         }
 
         if ($html === null) {
@@ -316,10 +316,10 @@ class CakePdf
     /**
      * Get/Set Html.
      *
-     * @param null|string $html Html to set
+     * @param string|null $html Html to set
      * @return mixed
      */
-    public function html(?string $html = null)
+    public function html(?string $html = null): mixed
     {
         if ($html === null) {
             return $this->_html;
@@ -357,11 +357,11 @@ class CakePdf
     /**
      * Load PdfEngine
      *
-     * @param string|array $name Classname of pdf engine without `Engine` suffix. For example `CakePdf.DomPdf`
-     * @throws \Cake\Core\Exception\Exception
+     * @param array|string $name Classname of pdf engine without `Engine` suffix. For example `CakePdf.DomPdf`
+     * @throws \Cake\Core\Exception\CakeException
      * @return \CakePdf\Pdf\Engine\AbstractPdfEngine|null
      */
-    public function engine($name = null): ?AbstractPdfEngine
+    public function engine(string|array|null $name = null): ?AbstractPdfEngine
     {
         if ($name === null) {
             return $this->_engineClass;
@@ -375,10 +375,10 @@ class CakePdf
         /** @var class-string<\CakePdf\Pdf\Engine\AbstractPdfEngine>|null $engineClassName */
         $engineClassName = App::className($name, 'Pdf/Engine', 'Engine');
         if ($engineClassName === null) {
-            throw new Exception(sprintf('Pdf engine "%s" not found', $name));
+            throw new CakeException(sprintf('Pdf engine "%s" not found', $name));
         }
         if (!is_subclass_of($engineClassName, AbstractPdfEngine::class)) {
-            throw new Exception('Pdf engines must extend "AbstractPdfEngine"');
+            throw new CakeException('Pdf engines must extend "AbstractPdfEngine"');
         }
         $this->_engineClass = new $engineClassName($this);
         $this->_engineClass->setConfig($config);
@@ -389,17 +389,17 @@ class CakePdf
     /**
      * Load PdfCrypto
      *
-     * @param string|array $name Classname of crypto engine without `Crypto` suffix. For example `CakePdf.Pdftk`
-     * @throws \Cake\Core\Exception\Exception
+     * @param array|string $name Classname of crypto engine without `Crypto` suffix. For example `CakePdf.Pdftk`
+     * @throws \Cake\Core\Exception\CakeException
      * @return \CakePdf\Pdf\Crypto\AbstractPdfCrypto
      */
-    public function crypto($name = null): AbstractPdfCrypto
+    public function crypto(string|array|null $name = null): AbstractPdfCrypto
     {
         if ($name === null) {
             if ($this->_cryptoClass !== null) {
                 return $this->_cryptoClass;
             }
-            throw new Exception('Crypto is not loaded');
+            throw new CakeException('Crypto is not loaded');
         }
         $config = [];
         if (is_array($name)) {
@@ -409,10 +409,10 @@ class CakePdf
 
         $engineClassName = App::className($name, 'Pdf/Crypto', 'Crypto');
         if ($engineClassName === null || !class_exists($engineClassName)) {
-            throw new Exception(sprintf('Pdf crypto `%s` not found', $name));
+            throw new CakeException(sprintf('Pdf crypto `%s` not found', $name));
         }
         if (!is_subclass_of($engineClassName, AbstractPdfCrypto::class)) {
-            throw new Exception('Crypto engine must extend `AbstractPdfCrypto`');
+            throw new CakeException('Crypto engine must extend `AbstractPdfCrypto`');
         }
         $this->_cryptoClass = new $engineClassName($this);
         $this->_cryptoClass->config($config);
@@ -423,10 +423,10 @@ class CakePdf
     /**
      * Get/Set Page size.
      *
-     * @param null|string $pageSize Page size to set
+     * @param string|null $pageSize Page size to set
      * @return mixed
      */
-    public function pageSize(?string $pageSize = null)
+    public function pageSize(?string $pageSize = null): mixed
     {
         if ($pageSize === null) {
             return $this->_pageSize;
@@ -439,10 +439,10 @@ class CakePdf
     /**
      * Get/Set Orientation.
      *
-     * @param null|string $orientation orientation to set
+     * @param string|null $orientation orientation to set
      * @return mixed
      */
-    public function orientation(?string $orientation = null)
+    public function orientation(?string $orientation = null): mixed
     {
         if ($orientation === null) {
             return $this->_orientation;
@@ -455,10 +455,10 @@ class CakePdf
     /**
      * Get/Set Encoding.
      *
-     * @param null|string $encoding encoding to set
+     * @param string|null $encoding encoding to set
      * @return mixed
      */
-    public function encoding(?string $encoding = null)
+    public function encoding(?string $encoding = null): mixed
     {
         if ($encoding === null) {
             return $this->_encoding;
@@ -471,12 +471,12 @@ class CakePdf
     /**
      * Get/Set footer HTML.
      *
-     * @param null|string|array $left left side footer
-     * @param null|string $center center footer
-     * @param null|string $right right side footer
+     * @param array|string|null $left left side footer
+     * @param string|null $center center footer
+     * @param string|null $right right side footer
      * @return mixed
      */
-    public function footer($left = null, ?string $center = null, ?string $right = null)
+    public function footer(string|array|null $left = null, ?string $center = null, ?string $right = null): mixed
     {
         if ($left === null && $center === null && $right === null) {
             return $this->_footer;
@@ -494,12 +494,12 @@ class CakePdf
     /**
      * Get/Set header HTML.
      *
-     * @param null|string|array $left left side header
-     * @param null|string $center center header
-     * @param null|string $right right side header
+     * @param array|string|null $left left side header
+     * @param string|null $center center header
+     * @param string|null $right right side header
      * @return mixed
      */
-    public function header($left = null, ?string $center = null, ?string $right = null)
+    public function header(string|array|null $left = null, ?string $center = null, ?string $right = null): mixed
     {
         if ($left === null && $center === null && $right === null) {
             return $this->_header;
@@ -537,14 +537,18 @@ class CakePdf
      * $bottom value will be set to bottom and top
      * $left value will be set to left and right
      *
-     * @param null|string|array $bottom bottom margin, or array of margins
-     * @param null|string $left left margin
-     * @param null|string $right right margin
-     * @param null|string $top top margin
+     * @param array|string|int|null $bottom bottom margin, or array of margins
+     * @param string|null $left left margin
+     * @param string|null $right right margin
+     * @param string|null $top top margin
      * @return mixed
      */
-    public function margin($bottom = null, $left = null, $right = null, $top = null)
-    {
+    public function margin(
+        string|int|array|null $bottom = null,
+        string|int|null $left = null,
+        string|int|null $right = null,
+        string|int|null $top = null
+    ): mixed {
         if ($bottom === null) {
             return [
                 'bottom' => $this->_marginBottom,
@@ -581,10 +585,10 @@ class CakePdf
     /**
      * Get/Set bottom margin.
      *
-     * @param null|string $margin margin to set
+     * @param string|int|null $margin margin to set
      * @return mixed
      */
-    public function marginBottom($margin = null)
+    public function marginBottom(string|int|null $margin = null): mixed
     {
         if ($margin === null) {
             return $this->_marginBottom;
@@ -597,10 +601,10 @@ class CakePdf
     /**
      * Get/Set left margin.
      *
-     * @param null|string $margin margin to set
+     * @param string|int|null $margin margin to set
      * @return mixed
      */
-    public function marginLeft($margin = null)
+    public function marginLeft(string|int|null $margin = null): mixed
     {
         if ($margin === null) {
             return $this->_marginLeft;
@@ -613,10 +617,10 @@ class CakePdf
     /**
      * Get/Set right margin.
      *
-     * @param null|string $margin margin to set
+     * @param string|int|null $margin margin to set
      * @return mixed
      */
-    public function marginRight($margin = null)
+    public function marginRight(string|int|null $margin = null): mixed
     {
         if ($margin === null) {
             return $this->_marginRight;
@@ -629,10 +633,10 @@ class CakePdf
     /**
      * Get/Set top margin.
      *
-     * @param null|string $margin margin to set
+     * @param string|int|null $margin margin to set
      * @return mixed
      */
-    public function marginTop($margin = null)
+    public function marginTop(string|int|null $margin = null): mixed
     {
         if ($margin === null) {
             return $this->_marginTop;
@@ -645,10 +649,10 @@ class CakePdf
     /**
      * Get/Set document title.
      *
-     * @param null|string $title title to set
+     * @param string|null $title title to set
      * @return mixed
      */
-    public function title(?string $title = null)
+    public function title(?string $title = null): mixed
     {
         if ($title === null) {
             return $this->_title;
@@ -661,10 +665,10 @@ class CakePdf
     /**
      * Get/Set javascript delay.
      *
-     * @param null|int $delay delay to set in milliseconds
+     * @param int|null $delay delay to set in milliseconds
      * @return mixed
      */
-    public function delay(?int $delay = null)
+    public function delay(?int $delay = null): mixed
     {
         if ($delay === null) {
             return $this->_delay;
@@ -678,10 +682,10 @@ class CakePdf
      * Get/Set the required window status for rendering
      * Waits until the status is equal to the string before rendering the pdf
      *
-     * @param null|string $status status to set as string
+     * @param string|null $status status to set as string
      * @return mixed
      */
-    public function windowStatus(?string $status = null)
+    public function windowStatus(?string $status = null): mixed
     {
         if ($status === null) {
             return $this->_windowStatus;
@@ -694,10 +698,10 @@ class CakePdf
     /**
      * Get/Set protection.
      *
-     * @param null|bool $protect True or false
+     * @param bool|null $protect True or false
      * @return mixed
      */
-    public function protect(?bool $protect = null)
+    public function protect(?bool $protect = null): mixed
     {
         if ($protect === null) {
             return $this->_protect;
@@ -712,10 +716,10 @@ class CakePdf
      *
      * The user password is used to control who can open the PDF document.
      *
-     * @param null|string $password password to set
+     * @param string|null $password password to set
      * @return mixed
      */
-    public function userPassword(?string $password = null)
+    public function userPassword(?string $password = null): mixed
     {
         if ($password === null) {
             return $this->_userPassword;
@@ -730,10 +734,10 @@ class CakePdf
      *
      * The owner password is used to control who can modify, print, manage the PDF document.
      *
-     * @param null|string $password password to set
+     * @param string|null $password password to set
      * @return mixed
      */
-    public function ownerPassword(?string $password = null)
+    public function ownerPassword(?string $password = null): mixed
     {
         if ($password === null) {
             return $this->_ownerPassword;
@@ -750,11 +754,11 @@ class CakePdf
      * none: allow no permissions
      * array: list of permissions that are allowed
      *
-     * @param null|bool|array|string $permissions Permissions to set
-     * @throws \Cake\Core\Exception\Exception
+     * @param array|string|bool|null $permissions Permissions to set
+     * @throws \Cake\Core\Exception\CakeException
      * @return mixed
      */
-    public function permissions($permissions = null)
+    public function permissions(bool|array|string|null $permissions = null): mixed
     {
         if (!$this->protect()) {
             return $this;
@@ -775,11 +779,11 @@ class CakePdf
         if (is_array($permissions)) {
             foreach ($permissions as $permission) {
                 if (!in_array($permission, $this->_availablePermissions)) {
-                    throw new Exception(sprintf('Invalid permission: %s', $permission));
+                    throw new CakeException(sprintf('Invalid permission: %s', $permission));
                 }
 
                 if (!$this->crypto()->permissionImplemented($permission)) {
-                    throw new Exception(sprintf('Permission not implemented in crypto engine: %s', $permission));
+                    throw new CakeException(sprintf('Permission not implemented in crypto engine: %s', $permission));
                 }
             }
         }
@@ -792,11 +796,11 @@ class CakePdf
     /**
      * Get/Set caching.
      *
-     * @param null|bool|string $cache Cache config name to use, If true is passed, 'cake_pdf' will be used.
-     * @throws \Cake\Core\Exception\Exception
+     * @param string|bool|null $cache Cache config name to use, If true is passed, 'cake_pdf' will be used.
+     * @throws \Cake\Core\Exception\CakeException
      * @return mixed
      */
-    public function cache($cache = null)
+    public function cache(bool|string|null $cache = null): mixed
     {
         if ($cache === null) {
             return $this->_cache;
@@ -813,7 +817,7 @@ class CakePdf
         }
 
         if (!in_array($cache, Cache::configured())) {
-            throw new Exception(sprintf('CakePdf cache is not configured: %s', $cache));
+            throw new CakeException(sprintf('CakePdf cache is not configured: %s', $cache));
         }
 
         $this->_cache = $cache;
@@ -828,7 +832,7 @@ class CakePdf
      * @param mixed $layout Layout name or null to not use
      * @return mixed
      */
-    public function template($template = false, $layout = null)
+    public function template(mixed $template = false, mixed $layout = null): mixed
     {
         if ($template === false) {
             return [
@@ -850,7 +854,7 @@ class CakePdf
      * @param mixed $templatePath The path of the template to use
      * @return mixed
      */
-    public function templatePath($templatePath = false)
+    public function templatePath(mixed $templatePath = false): mixed
     {
         if ($templatePath === false) {
             return $this->_templatePath;
@@ -867,7 +871,7 @@ class CakePdf
      * @param mixed $layoutPath The path of the layout file to use
      * @return mixed
      */
-    public function layoutPath($layoutPath = false)
+    public function layoutPath(mixed $layoutPath = false): mixed
     {
         if ($layoutPath === false) {
             return $this->_layoutPath;
@@ -884,7 +888,7 @@ class CakePdf
      * @param string|null $viewClass name of the view class to use
      * @return mixed
      */
-    public function viewRender(?string $viewClass = null)
+    public function viewRender(?string $viewClass = null): mixed
     {
         if ($viewClass === null) {
             return $this->_viewRender;
@@ -900,7 +904,7 @@ class CakePdf
      * @param array $viewVars view variables to set
      * @return mixed
      */
-    public function viewVars(?array $viewVars = null)
+    public function viewVars(?array $viewVars = null): mixed
     {
         if ($viewVars === null) {
             return $this->_viewVars;
@@ -916,7 +920,7 @@ class CakePdf
      * @param string $theme theme to use
      * @return mixed
      */
-    public function theme(?string $theme = null)
+    public function theme(?string $theme = null): mixed
     {
         if ($theme === null) {
             return $this->_theme;
@@ -932,7 +936,7 @@ class CakePdf
      * @param array $helpers helpers to use
      * @return mixed
      */
-    public function helpers(?array $helpers = null)
+    public function helpers(?array $helpers = null): mixed
     {
         if ($helpers === null) {
             return $this->_helpers;

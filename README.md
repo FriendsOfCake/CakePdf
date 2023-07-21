@@ -6,6 +6,8 @@
 
 Plugin containing CakePdf lib which will use a PDF engine to convert HTML to PDF.
 
+This branch is for CakePHP **5**.
+
 Engines included in the plugin:
 * DomPdf (^0.8. Using ^2.0 is highly recommended as lower versions have various security vulnerabilities)
 * Mpdf (^8.0.4)

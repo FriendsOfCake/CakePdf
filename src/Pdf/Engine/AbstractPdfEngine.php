@@ -13,14 +13,14 @@ abstract class AbstractPdfEngine
     /**
      * @var array
      */
-    protected $_defaultConfig = [];
+    protected array $_defaultConfig = [];
 
     /**
      * Instance of CakePdf class
      *
      * @var \CakePdf\Pdf\CakePdf
      */
-    protected $_Pdf;
+    protected CakePdf $_Pdf;
 
     /**
      * Constructor

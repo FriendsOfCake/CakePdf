@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace CakePdf\Test\TestCase\Pdf;
 
 use Cake\Core\Configure;
-use Cake\Core\Exception\Exception;
+use Cake\Core\Exception\CakeException;
 use Cake\TestSuite\TestCase;
 use CakePdf\Pdf\CakePdf;
 use TestApp\Pdf\Engine\PdfTestEngine;
@@ -40,7 +40,7 @@ class CakePdfTest extends TestCase
      */
     public function testNonExistingEngineException()
     {
-        $this->expectException(Exception::class);
+        $this->expectException(CakeException::class);
 
         $config = ['engine' => 'NonExistingEngine'];
         new CakePdf($config);

@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace CakePdf\View;
 
 use Cake\Core\Configure;
-use Cake\Core\Exception\Exception;
+use Cake\Core\Exception\CakeException;
 use Cake\Event\EventManager;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
@@ -18,28 +18,28 @@ class PdfView extends View
      *
      * @var string
      */
-    protected $subDir = 'pdf';
+    protected string $subDir = 'pdf';
 
     /**
      * The name of the layouts subfolder containing layouts for this View.
      *
      * @var string
      */
-    protected $layoutPath = 'pdf';
+    protected string $layoutPath = 'pdf';
 
     /**
      * CakePdf Instance
      *
      * @var \CakePdf\Pdf\CakePdf|null
      */
-    protected $_renderer;
+    protected ?CakePdf $_renderer = null;
 
     /**
      * Default config options.
      *
      * @var array<string, mixed>
      */
-    protected $_defaultConfig = [
+    protected array $_defaultConfig = [
         'pdfConfig' => [],
     ];
 
@@ -51,7 +51,7 @@ class PdfView extends View
      * @param \Cake\Event\EventManager $eventManager Event manager instance.
      * @param array $viewOptions View options. See View::$_passedVars for list of
      *   options which get set as class properties.
-     * @throws \Cake\Core\Exception\Exception
+     * @throws \Cake\Core\Exception\CakeException
      */
     public function __construct(
         ?ServerRequest $request = null,
@@ -73,8 +73,10 @@ class PdfView extends View
         $this->response = $this->response->withType('pdf');
 
         $pdfConfig = $this->getConfig('pdfConfig');
-        if (empty($pdfConfig)) {
-            throw new Exception('No PDF config set. Use ViewBuilder::setOption(\'pdfConfig\', $config) to do so.');
+        if (!$pdfConfig) {
+            throw new CakeException(
+                'No PDF config set. Use `ViewBuilder::setOption(\'pdfConfig\', $config)` to do so.'
+            );
         }
 
         $this->renderer($pdfConfig);
@@ -83,7 +85,7 @@ class PdfView extends View
     /**
      * Return CakePdf instance, optionally set engine to be used
      *
-     * @param array $config Array of pdf configs. When empty CakePdf instance will be returned.
+     * @param array|null $config Array of pdf configs. When empty CakePdf instance will be returned.
      * @return \CakePdf\Pdf\CakePdf|null
      */
     public function renderer(?array $config = null): ?CakePdf
@@ -98,11 +100,11 @@ class PdfView extends View
     /**
      * Render a Pdf view.
      *
-     * @param string $template The view being rendered.
-     * @param false|null|string $layout The layout being rendered.
+     * @param string|null $template The view being rendered.
+     * @param string|false|null $layout The layout being rendered.
      * @return string The rendered view.
      */
-    public function render(?string $template = null, $layout = null): string
+    public function render(?string $template = null, false|string|null $layout = null): string
     {
         $content = parent::render($template, $layout);
 

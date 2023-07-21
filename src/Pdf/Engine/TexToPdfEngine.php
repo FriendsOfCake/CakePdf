@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace CakePdf\Pdf\Engine;
 
-use Cake\Core\Exception\Exception;
+use Cake\Core\Exception\CakeException;
 use CakePdf\Pdf\CakePdf;
 
 class TexToPdfEngine extends AbstractPdfEngine
@@ -13,7 +13,7 @@ class TexToPdfEngine extends AbstractPdfEngine
      *
      * @var string
      */
-    protected $_binary = '/usr/bin/latexpdf';
+    protected string $_binary = '/usr/bin/latexpdf';
 
     /**
      * Constructor
@@ -62,7 +62,7 @@ class TexToPdfEngine extends AbstractPdfEngine
     /**
      * Generates Pdf from html
      *
-     * @throws \Cake\Core\Exception\Exception
+     * @throws \Cake\Core\Exception\CakeException
      * @return string raw pdf data
      */
     public function output(): string
@@ -71,15 +71,15 @@ class TexToPdfEngine extends AbstractPdfEngine
         $content = $this->_exec($this->_getCommand(), $texFile);
 
         if (strpos(mb_strtolower($content['stderr']), 'error')) {
-            throw new Exception('System error <pre>' . $content['stderr'] . '</pre>');
+            throw new CakeException('System error <pre>' . $content['stderr'] . '</pre>');
         }
 
         if (mb_strlen($content['stdout'], $this->_Pdf->encoding()) === 0) {
-            throw new Exception("TeX compiler binary didn't return any data");
+            throw new CakeException("TeX compiler binary didn't return any data");
         }
 
         if ((int)$content['return'] !== 0 && !empty($content['stderr'])) {
-            throw new Exception('Shell error, return code: ' . (int)$content['return']);
+            throw new CakeException('Shell error, return code: ' . (int)$content['return']);
         }
 
         $result = (string)file_get_contents($texFile . '.pdf');
@@ -126,9 +126,10 @@ class TexToPdfEngine extends AbstractPdfEngine
         $command = $this->_binary;
         $options = (array)$this->getConfig('options');
         foreach ($options as $key => $value) {
-            if (empty($value)) {
+            if (!$value) {
                 continue;
-            } elseif ($value === true) {
+            }
+            if ($value === true) {
                 $command .= ' --' . $key;
             } else {
                 $command .= sprintf(' --%s %s', $key, escapeshellarg($value));
@@ -142,7 +143,7 @@ class TexToPdfEngine extends AbstractPdfEngine
      * Get the command to render a pdf
      *
      * @return string the command for generating the pdf
-     * @throws \Cake\Core\Exception\Exception
+     * @throws \Cake\Core\Exception\CakeException
      */
     protected function _getCommand(): string
     {
@@ -152,7 +153,7 @@ class TexToPdfEngine extends AbstractPdfEngine
             $this->_binary = $binary;
         }
         if (!is_executable($this->_binary)) {
-            throw new Exception(sprintf('TeX compiler binary is not found or not executable: %s', $this->_binary));
+            throw new CakeException(sprintf('TeX compiler binary is not found or not executable: %s', $this->_binary));
         }
 
         $options = (array)$this->getConfig('options');
