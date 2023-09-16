@@ -319,7 +319,7 @@ class CakePdf
      * @param null|string $html Html to set
      * @return mixed
      */
-    public function html(?string $html = null)
+    public function html(?string $html = null): mixed
     {
         if ($html === null) {
             return $this->_html;
@@ -357,11 +357,11 @@ class CakePdf
     /**
      * Load PdfEngine
      *
-     * @param string|array $name Classname of pdf engine without `Engine` suffix. For example `CakePdf.DomPdf`
+     * @param ?string|array $name Classname of pdf engine without `Engine` suffix. For example `CakePdf.DomPdf`
      * @throws \Cake\Core\Exception\CakeException
      * @return \CakePdf\Pdf\Engine\AbstractPdfEngine|null
      */
-    public function engine($name = null): ?AbstractPdfEngine
+    public function engine(string|array $name = null): ?AbstractPdfEngine
     {
         if ($name === null) {
             return $this->_engineClass;

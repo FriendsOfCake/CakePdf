@@ -14,11 +14,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-version: ['7.4', '8.0', '8.1']
+        php-version: ['8.1', '8.2']
         prefer-lowest: ['']
-        include:
-          - php-version: '7.2'
-            prefer-lowest: 'prefer-lowest'
 
     steps:
     - uses: actions/checkout@v3
@@ -51,14 +48,10 @@ jobs:
 
     - name: Run PHPUnit
       run: |
-        if [[ ${{ matrix.php-version }} == '7.4' ]]; then
-          vendor/bin/phpunit --verbose --coverage-clover=coverage.xml
-        else
-          vendor/bin/phpunit
-        fi
+        vendor/bin/phpunit
 
     - name: Code Coverage Report
-      if: matrix.php-version == '7.4'
+      if: matrix.php-version == '8.1'
       uses: codecov/codecov-action@v3
 
   cs-stan:
@@ -71,7 +64,7 @@ jobs:
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: '7.4'
+        php-version: '8.1'
         extensions: mbstring, intl
         coverage: none
         tools: cs2pr, vimeo/psalm:4.26, phpstan:1.8
