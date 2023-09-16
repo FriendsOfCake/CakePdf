@@ -9,7 +9,7 @@
         "cakephp/cakephp": "^5.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^9.5",
+        "phpunit/phpunit": "^10.3",
         "dompdf/dompdf": "^2.0",
         "mpdf/mpdf": "^8.0.4",
         "tecnickcom/tcpdf": "^6.3",
