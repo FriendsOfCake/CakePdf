@@ -6,7 +6,7 @@ namespace CakePdf\Pdf;
 use Cake\Cache\Cache;
 use Cake\Core\App;
 use Cake\Core\Configure;
-use Cake\Core\Exception\Exception;
+use Cake\Core\Exception\CakeException;
 use Cake\Http\ServerRequestFactory;
 use Cake\Routing\Router;
 use CakePdf\Pdf\Crypto\AbstractPdfCrypto;
@@ -275,14 +275,14 @@ class CakePdf
      * Create pdf content from html. Can be used to write to file or with PdfView to display
      *
      * @param null|string $html Html content to render. If omitted, the template will be rendered with viewVars and layout that have been set.
-     * @throws \Cake\Core\Exception\Exception
+     * @throws \Cake\Core\Exception\CakeException
      * @return string
      */
     public function output(?string $html = null): string
     {
         $Engine = $this->engine();
         if ($Engine === null) {
-            throw new Exception('Engine is not loaded');
+            throw new CakeException('Engine is not loaded');
         }
 
         if ($html === null) {
@@ -358,7 +358,7 @@ class CakePdf
      * Load PdfEngine
      *
      * @param string|array $name Classname of pdf engine without `Engine` suffix. For example `CakePdf.DomPdf`
-     * @throws \Cake\Core\Exception\Exception
+     * @throws \Cake\Core\Exception\CakeException
      * @return \CakePdf\Pdf\Engine\AbstractPdfEngine|null
      */
     public function engine($name = null): ?AbstractPdfEngine
@@ -375,10 +375,10 @@ class CakePdf
         /** @var class-string<\CakePdf\Pdf\Engine\AbstractPdfEngine>|null $engineClassName */
         $engineClassName = App::className($name, 'Pdf/Engine', 'Engine');
         if ($engineClassName === null) {
-            throw new Exception(sprintf('Pdf engine "%s" not found', $name));
+            throw new CakeException(sprintf('Pdf engine "%s" not found', $name));
         }
         if (!is_subclass_of($engineClassName, AbstractPdfEngine::class)) {
-            throw new Exception('Pdf engines must extend "AbstractPdfEngine"');
+            throw new CakeException('Pdf engines must extend "AbstractPdfEngine"');
         }
         $this->_engineClass = new $engineClassName($this);
         $this->_engineClass->setConfig($config);
@@ -390,7 +390,7 @@ class CakePdf
      * Load PdfCrypto
      *
      * @param string|array $name Classname of crypto engine without `Crypto` suffix. For example `CakePdf.Pdftk`
-     * @throws \Cake\Core\Exception\Exception
+     * @throws \Cake\Core\Exception\CakeException
      * @return \CakePdf\Pdf\Crypto\AbstractPdfCrypto
      */
     public function crypto($name = null): AbstractPdfCrypto
@@ -399,7 +399,7 @@ class CakePdf
             if ($this->_cryptoClass !== null) {
                 return $this->_cryptoClass;
             }
-            throw new Exception('Crypto is not loaded');
+            throw new CakeException('Crypto is not loaded');
         }
         $config = [];
         if (is_array($name)) {
@@ -409,10 +409,10 @@ class CakePdf
 
         $engineClassName = App::className($name, 'Pdf/Crypto', 'Crypto');
         if ($engineClassName === null || !class_exists($engineClassName)) {
-            throw new Exception(sprintf('Pdf crypto `%s` not found', $name));
+            throw new CakeException(sprintf('Pdf crypto `%s` not found', $name));
         }
         if (!is_subclass_of($engineClassName, AbstractPdfCrypto::class)) {
-            throw new Exception('Crypto engine must extend `AbstractPdfCrypto`');
+            throw new CakeException('Crypto engine must extend `AbstractPdfCrypto`');
         }
         $this->_cryptoClass = new $engineClassName($this);
         $this->_cryptoClass->config($config);
@@ -751,7 +751,7 @@ class CakePdf
      * array: list of permissions that are allowed
      *
      * @param null|bool|array|string $permissions Permissions to set
-     * @throws \Cake\Core\Exception\Exception
+     * @throws \Cake\Core\Exception\CakeException
      * @return mixed
      */
     public function permissions($permissions = null)
@@ -775,11 +775,11 @@ class CakePdf
         if (is_array($permissions)) {
             foreach ($permissions as $permission) {
                 if (!in_array($permission, $this->_availablePermissions)) {
-                    throw new Exception(sprintf('Invalid permission: %s', $permission));
+                    throw new CakeException(sprintf('Invalid permission: %s', $permission));
                 }
 
                 if (!$this->crypto()->permissionImplemented($permission)) {
-                    throw new Exception(sprintf('Permission not implemented in crypto engine: %s', $permission));
+                    throw new CakeException(sprintf('Permission not implemented in crypto engine: %s', $permission));
                 }
             }
         }
@@ -793,7 +793,7 @@ class CakePdf
      * Get/Set caching.
      *
      * @param null|bool|string $cache Cache config name to use, If true is passed, 'cake_pdf' will be used.
-     * @throws \Cake\Core\Exception\Exception
+     * @throws \Cake\Core\Exception\CakeException
      * @return mixed
      */
     public function cache($cache = null)
@@ -813,7 +813,7 @@ class CakePdf
         }
 
         if (!in_array($cache, Cache::configured())) {
-            throw new Exception(sprintf('CakePdf cache is not configured: %s', $cache));
+            throw new CakeException(sprintf('CakePdf cache is not configured: %s', $cache));
         }
 
         $this->_cache = $cache;
