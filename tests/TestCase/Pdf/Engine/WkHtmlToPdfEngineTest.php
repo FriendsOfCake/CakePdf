@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace CakePdf\Test\TestCase\Pdf\Engine;
 
+use Cake\Core\Exception\CakeException;
 use Cake\Core\Exception\Exception;
 use Cake\TestSuite\TestCase;
 use CakePdf\Pdf\CakePdf;
@@ -154,7 +155,7 @@ class WkHtmlToPdfEngineTest extends TestCase
             $this->markTestSkipped('wkhtmltopdf not found');
         }
 
-        $this->expectException(Exception::class);
+        $this->expectException(CakeException::class);
         $this->expectExceptionMessage('The url for the cover is missing. Use the "url" index.');
 
         $class = new \ReflectionClass(WkHtmlToPdfEngine::class);
@@ -176,7 +177,7 @@ class WkHtmlToPdfEngineTest extends TestCase
 
     public function testGetBinaryPath()
     {
-        $this->expectException(Exception::class);
+        $this->expectException(CakeException::class);
         $this->expectExceptionMessage('wkhtmltopdf binary is not found or not executable: /foo/bar');
 
         $Pdf = new CakePdf([

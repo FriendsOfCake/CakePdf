@@ -124,6 +124,12 @@ class PdfView extends View
         return $this->Blocks->get('content');
     }
 
+    public function getConfig(?string $key = null, mixed $default = null): mixed
+    {
+        return parent::getConfig($key, $default);
+    }
+
+
     /**
      * Get or build a filename for forced download
      *
@@ -140,4 +146,6 @@ class PdfView extends View
 
         return strtolower($this->getTemplatePath()) . $id . '.pdf';
     }
+
+
 }
