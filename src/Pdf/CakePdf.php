@@ -357,7 +357,7 @@ class CakePdf
     /**
      * Load PdfEngine
      *
-     * @param ?string|array $name Classname of pdf engine without `Engine` suffix. For example `CakePdf.DomPdf`
+     * @param string|array|null $name Classname of pdf engine without `Engine` suffix. For example `CakePdf.DomPdf`
      * @throws \Cake\Core\Exception\CakeException
      * @return \CakePdf\Pdf\Engine\AbstractPdfEngine|null
      */
