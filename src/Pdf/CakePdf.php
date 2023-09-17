@@ -357,11 +357,11 @@ class CakePdf
     /**
      * Load PdfEngine
      *
-     * @param array|string $name Classname of pdf engine without `Engine` suffix. For example `CakePdf.DomPdf`
+     * @param array|string|null $name Classname of pdf engine without `Engine` suffix. For example `CakePdf.DomPdf`
      * @throws \Cake\Core\Exception\CakeException
      * @return \CakePdf\Pdf\Engine\AbstractPdfEngine|null
      */
-    public function engine(string|array|null $name = null): ?AbstractPdfEngine
+    public function engine(array|string|null $name = null): ?AbstractPdfEngine
     {
         if ($name === null) {
             return $this->_engineClass;
