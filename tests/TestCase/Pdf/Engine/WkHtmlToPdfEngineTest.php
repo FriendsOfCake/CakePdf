@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace CakePdf\Test\TestCase\Pdf\Engine;
 
 use Cake\Core\Exception\CakeException;
-use Cake\Core\Exception\Exception;
 use Cake\TestSuite\TestCase;
 use CakePdf\Pdf\CakePdf;
 use CakePdf\Pdf\Engine\WkHtmlToPdfEngine;

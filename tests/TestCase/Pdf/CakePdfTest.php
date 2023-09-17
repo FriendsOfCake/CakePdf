@@ -5,7 +5,6 @@ namespace CakePdf\Test\TestCase\Pdf;
 
 use Cake\Core\Configure;
 use Cake\Core\Exception\CakeException;
-use Cake\Core\Exception\Exception;
 use Cake\TestSuite\TestCase;
 use CakePdf\Pdf\CakePdf;
 use TestApp\Pdf\Engine\PdfTestEngine;

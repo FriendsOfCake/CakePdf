@@ -147,6 +147,4 @@ class PdfView extends View
 
         return strtolower($this->getTemplatePath()) . $id . '.pdf';
     }
-
-
 }
