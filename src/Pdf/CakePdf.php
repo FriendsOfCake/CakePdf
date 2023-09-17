@@ -332,6 +332,7 @@ class CakePdf
     /**
      * Writes output to file
      *
+     * @throws \Cake\Core\Exception\CakeException
      * @param string $destination Absolute file path to write to
      * @param bool $create Create file if it does not exist (if true)
      * @param string|null $html Html to write
@@ -347,7 +348,12 @@ class CakePdf
             return (bool)file_put_contents($destination, $output);
         }
 
-        if (!$fileInfo->getPathInfo()->getRealPath()) {
+        $splFileInfo = $fileInfo->getPathInfo();
+        /** @phpstan-ignore-next-line */
+        if ($splFileInfo === null) {
+            throw new CakeException('Failed to retrieve path information');
+        }
+        if (!$splFileInfo->getRealPath()) {
             mkdir($fileInfo->getPath(), 0777, true);
         }
 
