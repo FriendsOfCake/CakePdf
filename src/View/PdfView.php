@@ -122,6 +122,9 @@ class PdfView extends View
         return $this->Blocks->get('content');
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getConfig(?string $key = null, mixed $default = null): mixed
     {
         return parent::getConfig($key, $default);
