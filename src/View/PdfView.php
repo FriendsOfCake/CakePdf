@@ -123,13 +123,12 @@ class PdfView extends View
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getConfig(?string $key = null, mixed $default = null): mixed
     {
         return parent::getConfig($key, $default);
     }
-
 
     /**
      * Get or build a filename for forced download

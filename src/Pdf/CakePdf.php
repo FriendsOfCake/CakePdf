@@ -361,7 +361,7 @@ class CakePdf
      * @throws \Cake\Core\Exception\CakeException
      * @return \CakePdf\Pdf\Engine\AbstractPdfEngine|null
      */
-    public function engine(string|array $name = null): ?AbstractPdfEngine
+    public function engine(string|array|null $name = null): ?AbstractPdfEngine
     {
         if ($name === null) {
             return $this->_engineClass;
