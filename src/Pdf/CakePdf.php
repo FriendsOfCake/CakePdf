@@ -349,6 +349,7 @@ class CakePdf
         }
 
         $splFileInfo = $fileInfo->getPathInfo();
+        /** @phpstan-ignore-next-line */
         if ($splFileInfo === null) {
             throw new CakeException('Failed to retrieve path information');
         }
