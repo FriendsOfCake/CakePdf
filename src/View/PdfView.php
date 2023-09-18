@@ -46,9 +46,9 @@ class PdfView extends View
     /**
      * Constructor
      *
-     * @param \Cake\Http\ServerRequest $request Request instance.
-     * @param \Cake\Http\Response $response Response instance.
-     * @param \Cake\Event\EventManager $eventManager Event manager instance.
+     * @param ?\Cake\Http\ServerRequest $request Request instance.
+     * @param ?\Cake\Http\Response $response Response instance.
+     * @param ?\Cake\Event\EventManager $eventManager Event manager instance.
      * @param array $viewOptions View options. See View::$_passedVars for list of
      *   options which get set as class properties.
      * @throws \Cake\Core\Exception\CakeException
@@ -104,7 +104,7 @@ class PdfView extends View
      * @param string|false|null $layout The layout being rendered.
      * @return string The rendered view.
      */
-    public function render(?string $template = null, false|string|null $layout = null): string
+    public function render(?string $template = null, string|false|null $layout = null): string
     {
         $content = parent::render($template, $layout);
 
