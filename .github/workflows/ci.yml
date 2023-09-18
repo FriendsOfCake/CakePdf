@@ -74,7 +74,7 @@ jobs:
         php-version: '8.1'
         extensions: mbstring, intl
         coverage: none
-        tools: cs2pr, vimeo/psalm:5.0, phpstan:1.8
+        tools: cs2pr, vimeo/psalm:5.15, phpstan:1.8
 
     - name: Composer Install
       run: composer install
