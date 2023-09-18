@@ -33,7 +33,7 @@
             "TestApp\\": "tests/test_app/src/"
         }
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "scripts": {
         "check": [
             "@test",
