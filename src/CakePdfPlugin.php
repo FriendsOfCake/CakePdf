@@ -5,8 +5,15 @@ namespace CakePdf;
 
 use Cake\Core\BasePlugin;
 
-class Plugin extends BasePlugin
+class CakePdfPlugin extends BasePlugin
 {
+    /**
+     * Do bootstrap or not
+     *
+     * @var bool
+     */
+    protected bool $bootstrapEnabled = false;
+
     /**
      * Load routes or not
      *

@@ -46,9 +46,9 @@ class PdfView extends View
     /**
      * Constructor
      *
-     * @param ?\Cake\Http\ServerRequest $request Request instance.
-     * @param ?\Cake\Http\Response $response Response instance.
-     * @param ?\Cake\Event\EventManager $eventManager Event manager instance.
+     * @param \Cake\Http\ServerRequest|null $request Request instance.
+     * @param \Cake\Http\Response|null $response Response instance.
+     * @param \Cake\Event\EventManager|null $eventManager Event manager instance.
      * @param array $viewOptions View options. See View::$_passedVars for list of
      *   options which get set as class properties.
      * @throws \Cake\Core\Exception\CakeException
