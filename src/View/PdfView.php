@@ -83,6 +83,14 @@ class PdfView extends View
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public static function contentType(): string {
+        return 'application/pdf';
+    }
+
+
+    /**
      * Return CakePdf instance, optionally set engine to be used
      *
      * @param array|null $config Array of pdf configs. When empty CakePdf instance will be returned.
