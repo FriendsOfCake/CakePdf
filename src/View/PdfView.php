@@ -83,12 +83,11 @@ class PdfView extends View
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public static function contentType(): string {
         return 'application/pdf';
     }
-
 
     /**
      * Return CakePdf instance, optionally set engine to be used
