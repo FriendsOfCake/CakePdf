@@ -27,7 +27,10 @@ class MpdfEngineTest extends TestCase
      */
     public function testSetOptions()
     {
-        $engineClass = $this->getMockClass(MpdfEngine::class, ['_createInstance']);
+        $engineClass = $this->getMockBuilder(MpdfEngine::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['_createInstance'])
+            ->getMock()::class;
 
         $Pdf = new CakePdf([
             'engine' => [

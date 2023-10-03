@@ -46,9 +46,9 @@ class PdfView extends View
     /**
      * Constructor
      *
-     * @param \Cake\Http\ServerRequest $request Request instance.
-     * @param \Cake\Http\Response $response Response instance.
-     * @param \Cake\Event\EventManager $eventManager Event manager instance.
+     * @param \Cake\Http\ServerRequest|null $request Request instance.
+     * @param \Cake\Http\Response|null $response Response instance.
+     * @param \Cake\Event\EventManager|null $eventManager Event manager instance.
      * @param array $viewOptions View options. See View::$_passedVars for list of
      *   options which get set as class properties.
      * @throws \Cake\Core\Exception\CakeException
@@ -83,6 +83,14 @@ class PdfView extends View
     }
 
     /**
+     * @inheritDoc
+     */
+    public static function contentType(): string
+    {
+        return 'application/pdf';
+    }
+
+    /**
      * Return CakePdf instance, optionally set engine to be used
      *
      * @param array|null $config Array of pdf configs. When empty CakePdf instance will be returned.
@@ -104,7 +112,7 @@ class PdfView extends View
      * @param string|false|null $layout The layout being rendered.
      * @return string The rendered view.
      */
-    public function render(?string $template = null, false|string|null $layout = null): string
+    public function render(?string $template = null, string|false|null $layout = null): string
     {
         $content = parent::render($template, $layout);
 
