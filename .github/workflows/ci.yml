@@ -8,6 +8,9 @@ on:
     branches:
       - '*'
 
+permissions:
+  contents: read
+
 jobs:
   testsuite:
     runs-on: ubuntu-22.04
@@ -21,7 +24,7 @@ jobs:
             prefer-lowest: 'prefer-lowest'
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
@@ -62,30 +65,5 @@ jobs:
       uses: codecov/codecov-action@v3
 
   cs-stan:
-    name: Coding Standard & Static Analysis
-    runs-on: ubuntu-22.04
-
-    steps:
-    - uses: actions/checkout@v3
-
-    - name: Setup PHP
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: '8.1'
-        extensions: mbstring, intl
-        coverage: none
-        tools: cs2pr, vimeo/psalm:5.15, phpstan:1.8
-
-    - name: Composer Install
-      run: composer install
-
-    - name: Run phpcs
-      run: vendor/bin/phpcs -q --report=checkstyle --standard=vendor/cakephp/cakephp-codesniffer/CakePHP src/ tests/ | cs2pr
-
-    - name: Run psalm
-      if: success() || failure()
-      run: psalm --output-format=github
-
-    - name: Run phpstan
-      if: success() || failure()
-      run: phpstan analyse
+    uses: cakephp/.github/.github/workflows/cs-stan.yml@5.x
+    secrets: inherit
