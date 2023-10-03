@@ -12,14 +12,14 @@ abstract class AbstractPdfCrypto
      *
      * @var \CakePdf\Pdf\CakePdf
      */
-    protected $_Pdf;
+    protected CakePdf $_Pdf;
 
     /**
      * Configurations
      *
      * @var array
      */
-    protected $_config = [];
+    protected array $_config = [];
 
     /**
      * Constructor
@@ -50,10 +50,10 @@ abstract class AbstractPdfCrypto
     /**
      * Set the config
      *
-     * @param null|string|array $config Null, string or array. Pass array of configs to set.
-     * @return null|string|array Returns config value if $config is string, else returns config array.
+     * @param array|string|null $config Null, string or array. Pass array of configs to set.
+     * @return array|string|null Returns config value if $config is string, else returns config array.
      */
-    public function config($config = null)
+    public function config(string|array|null $config = null): string|array|null
     {
         if (is_array($config)) {
             $this->_config = $config;

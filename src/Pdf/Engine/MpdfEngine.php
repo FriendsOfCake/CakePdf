@@ -45,7 +45,7 @@ class MpdfEngine extends AbstractPdfEngine
      * @param array $options The engine options.
      * @return \Mpdf\Mpdf
      */
-    protected function _createInstance($options): Mpdf
+    protected function _createInstance(array $options): Mpdf
     {
         return new Mpdf($options);
     }

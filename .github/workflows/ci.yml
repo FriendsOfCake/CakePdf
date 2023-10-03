@@ -8,20 +8,23 @@ on:
     branches:
       - '*'
 
+permissions:
+  contents: read
+
 jobs:
   testsuite:
     runs-on: ubuntu-22.04
     strategy:
       fail-fast: false
       matrix:
-        php-version: ['7.4', '8.0', '8.1']
+        php-version: ['8.1', '8.2']
         prefer-lowest: ['']
         include:
-          - php-version: '7.2'
+          - php-version: '8.1'
             prefer-lowest: 'prefer-lowest'
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
@@ -51,41 +54,16 @@ jobs:
 
     - name: Run PHPUnit
       run: |
-        if [[ ${{ matrix.php-version }} == '7.4' ]]; then
-          vendor/bin/phpunit --verbose --coverage-clover=coverage.xml
+        if [[ ${{ matrix.php-version }} == '8.1' ]]; then
+          vendor/bin/phpunit --coverage-clover=coverage.xml
         else
           vendor/bin/phpunit
         fi
 
     - name: Code Coverage Report
-      if: matrix.php-version == '7.4'
+      if: matrix.php-version == '8.1'
       uses: codecov/codecov-action@v3
 
   cs-stan:
-    name: Coding Standard & Static Analysis
-    runs-on: ubuntu-22.04
-
-    steps:
-    - uses: actions/checkout@v3
-
-    - name: Setup PHP
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: '7.4'
-        extensions: mbstring, intl
-        coverage: none
-        tools: cs2pr, vimeo/psalm:4.26, phpstan:1.8
-
-    - name: Composer Install
-      run: composer install
-
-    - name: Run phpcs
-      run: vendor/bin/phpcs -q --report=checkstyle --standard=vendor/cakephp/cakephp-codesniffer/CakePHP src/ tests/ | cs2pr
-
-    - name: Run psalm
-      if: success() || failure()
-      run: psalm --output-format=github
-
-    - name: Run phpstan
-      if: success() || failure()
-      run: phpstan analyse
+    uses: cakephp/.github/.github/workflows/cs-stan.yml@5.x
+    secrets: inherit

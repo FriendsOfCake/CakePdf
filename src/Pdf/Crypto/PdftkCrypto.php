@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace CakePdf\Pdf\Crypto;
 
-use Cake\Core\Exception\Exception;
+use Cake\Core\Exception\CakeException;
 
 class PdftkCrypto extends AbstractPdfCrypto
 {
@@ -12,14 +12,14 @@ class PdftkCrypto extends AbstractPdfCrypto
      *
      * @var string
      */
-    protected $_binary = '/usr/local/bin/pdftk';
+    protected string $_binary = '/usr/local/bin/pdftk';
 
     /**
      * Mapping of the CakePdf permissions to the Pdftk arguments
      *
      * @var array
      */
-    protected $_permissionsMap = [
+    protected array $_permissionsMap = [
         'print' => 'Printing',
         'degraded_print' => 'DegradedPrinting',
         'modify' => 'ModifyContents',
@@ -34,7 +34,7 @@ class PdftkCrypto extends AbstractPdfCrypto
      * Encrypt a pdf file
      *
      * @param string $data raw pdf data
-     * @throws \Cake\Core\Exception\Exception
+     * @throws \Cake\Core\Exception\CakeException
      * @return string raw pdf data
      */
     public function encrypt(string $data): string
@@ -47,7 +47,7 @@ class PdftkCrypto extends AbstractPdfCrypto
         }
 
         if (!is_executable($this->_binary)) {
-            throw new Exception(sprintf('pdftk binary is not found or not executable: %s', $this->_binary));
+            throw new CakeException(sprintf('pdftk binary is not found or not executable: %s', $this->_binary));
         }
 
         $arguments = [];
@@ -68,11 +68,11 @@ class PdftkCrypto extends AbstractPdfCrypto
         }
 
         if (!$ownerPassword && !$userPassword) {
-            throw new Exception('Crypto: Required to configure atleast an ownerPassword or userPassword');
+            throw new CakeException('Crypto: Required to configure atleast an ownerPassword or userPassword');
         }
 
         if ($ownerPassword == $userPassword) {
-            throw new Exception('Crypto: ownerPassword and userPassword cannot be the same');
+            throw new CakeException('Crypto: ownerPassword and userPassword cannot be the same');
         }
 
         $command = sprintf('%s - output - %s', $this->_binary, $this->_buildArguments($arguments));
@@ -96,7 +96,7 @@ class PdftkCrypto extends AbstractPdfCrypto
         $exitcode = proc_close($prochandle);
 
         if ($exitcode !== 0) {
-            throw new Exception(sprintf("Crypto: (exit code %d)\n%s", $exitcode, $stderr));
+            throw new CakeException(sprintf("Crypto: (exit code %d)\n%s", $exitcode, $stderr));
         }
 
         return (string)$stdout;
@@ -135,7 +135,7 @@ class PdftkCrypto extends AbstractPdfCrypto
      *
      * @return string|false list of arguments or false if no permission set
      */
-    protected function _buildPermissionsArgument()
+    protected function _buildPermissionsArgument(): string|false
     {
         $permissions = $this->_Pdf->permissions();
 

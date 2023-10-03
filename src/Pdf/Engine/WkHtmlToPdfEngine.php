@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace CakePdf\Pdf\Engine;
 
-use Cake\Core\Exception\Exception;
+use Cake\Core\Exception\CakeException;
 use CakePdf\Pdf\CakePdf;
 
 class WkHtmlToPdfEngine extends AbstractPdfEngine
@@ -13,14 +13,14 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
      *
      * @var string
      */
-    protected $_binary = 'wkhtmltopdf';
+    protected string $_binary = 'wkhtmltopdf';
 
     /**
      * Flag to indicate if the environment is windows
      *
      * @var bool
      */
-    protected $_windowsEnvironment;
+    protected bool $_windowsEnvironment;
 
     /**
      * Constructor
@@ -41,7 +41,7 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
     /**
      * Generates Pdf from html
      *
-     * @throws \Cake\Core\Exception\Exception
+     * @throws \Cake\Core\Exception\CakeException
      * @return string Raw PDF data
      * @throws \Exception If no output is generated to stdout by wkhtmltopdf.
      */
@@ -55,7 +55,7 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
         }
 
         if (!empty($content['stderr'])) {
-            throw new Exception(sprintf(
+            throw new CakeException(sprintf(
                 'System error "%s" when executing command "%s". ' .
                 'Try using the binary/package provided on http://wkhtmltopdf.org/downloads.html',
                 $content['stderr'],
@@ -63,7 +63,7 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
             ));
         }
 
-        throw new Exception("WKHTMLTOPDF didn't return any data");
+        throw new CakeException("WKHTMLTOPDF didn't return any data");
     }
 
     /**
@@ -98,7 +98,7 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
      * Get the command to render a pdf
      *
      * @return string the command for generating the pdf
-     * @throws \Cake\Core\Exception\Exception
+     * @throws \Cake\Core\Exception\CakeException
      */
     protected function _getCommand(): string
     {
@@ -130,7 +130,7 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
         }
 
         foreach ($options as $key => $value) {
-            if (empty($value)) {
+            if (!$value) {
                 continue;
             }
             $command .= $this->parseOptions($key, $value);
@@ -162,10 +162,10 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
      * Created to reuse logic to parse the cover and toc options.
      *
      * @param string $key the option key name
-     * @param string|true|array|float $value the option value
+     * @param array|string|float|true $value the option value
      * @return string part of the command
      */
-    protected function parseOptions(string $key, $value): string
+    protected function parseOptions(string $key, string|bool|array|float $value): string
     {
         $command = '';
         if (is_array($value)) {
@@ -176,7 +176,7 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
                 }
             } elseif ($key === 'cover') {
                 if (!isset($value['url'])) {
-                    throw new Exception('The url for the cover is missing. Use the "url" index.');
+                    throw new CakeException('The url for the cover is missing. Use the "url" index.');
                 }
                 $command .= ' cover ' . escapeshellarg((string)$value['url']);
                 unset($value['url']);
@@ -222,6 +222,6 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
             return $binary;
         }
 
-        throw new Exception(sprintf('wkhtmltopdf binary is not found or not executable: %s', $binary));
+        throw new CakeException(sprintf('wkhtmltopdf binary is not found or not executable: %s', $binary));
     }
 }
