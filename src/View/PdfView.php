@@ -83,7 +83,23 @@ class PdfView extends View
     }
 
     /**
-     * @inheritDoc
+     * Set the response content-type based on the view's contentType()
+     *
+     * @return void
+     */
+    protected function setContentType(): void
+    {
+        parent::setContentType();
+
+        if ($this->templatePath === 'Error') {
+            $this->response = $this->response->withType('html');
+        }
+    }
+
+    /**
+     * Mime-type this view class renders as.
+     *
+     * @return string 'application/pdf'
      */
     public static function contentType(): string
     {

@@ -123,9 +123,7 @@ class PdfViewTest extends TestCase
      */
     public function testRenderErrorTemplate()
     {
-        $request = new ServerRequest();
-        $response = new Response();
-        $this->View = new PdfView($request, $response, null, ['templatePath' => 'Error']);
+        $this->View = new PdfView(viewOptions: ['templatePath' => 'Error']);
 
         $this->assertSame('', $this->View->getSubDir());
         $this->assertSame('', $this->View->getLayoutPath());
