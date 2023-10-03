@@ -6,10 +6,8 @@
 
 Plugin containing CakePdf lib which will use a PDF engine to convert HTML to PDF.
 
-This branch is for CakePHP **5**.
-
 Engines included in the plugin:
-* DomPdf (^0.8. Using ^2.0 is highly recommended as lower versions have various security vulnerabilities)
+* DomPdf (^2.0)
 * Mpdf (^8.0.4)
 * Tcpdf (^6.3)
 * WkHtmlToPdf **RECOMMENDED ENGINE**
@@ -35,7 +33,7 @@ composer require friendsofcake/cakepdf
 CakePdf does not include any of the supported PDF engines, you need to install
 the ones you intend to use yourself.
 
-Packages for the recommend wkhtmltopdf engine can be downloaded from https://wkhtmltopdf.org/downloads.html.
+Packages for the recommend `wkhtmltopdf` engine can be downloaded from https://wkhtmltopdf.org/downloads.html.
 DomPdf, Mpdf and Tcpdf can be installed via composer using one of the following commands:
 
 ```
@@ -189,22 +187,23 @@ Many people mix both ways and don't get the expected results.
 
 ### 1: Render as PDF (including forced download) in the browser with PdfView
 
-You can create PDF view and layout files for your controller actions and have
-them automatically rendered. Place the view templates in a 'pdf' subdir, for
+You can create PDF template and layout files for your controller actions and have
+them automatically rendered. Place the templates in a `pdf` subdir, for
 instance `templates/Invoices/pdf/view.php`, layouts will be in
 `templates/layout/pdf/default.php`.
 
-Make sure your `InvoicesController` class
-[loads the `RequestHandler` component](http://book.cakephp.org/3.0/en/controllers/components/request-handling.html)
-and browse to `http://localhost/invoices/view/1.pdf`
+Then for e.g. accessing the URL `http://localhost/invoices/view/1.pdf` would
+give you the generated PDF.
 
 Additionally you can map resources by adding `Router::mapResources(['Invoices']);`
 to your routes file and you can access the same document at
 `http://localhost/invoices/1.pdf`.
 
 In case you don't want to use the `pdf` extension in your URLs, you can omit
-registering it in your routes configuration. Then in your controller action
-specify the view class to be used:
+registering it in your routes configuration. You can then set the `Accept`
+request header to `application/pdf` to make CakePHP automatically switch to `PdfView`
+(required the `viewClasses()` method to be set as shown above), or explicity switch
+the view class in your controller action:
 
 ```php
 $this->viewBuilder()->setClassName('CakePdf.Pdf');
@@ -226,7 +225,7 @@ $this->viewBuilder()->setOption(
 
 ### 2: Create PDF for email attachment, file storage etc.
 
-You can use CakePdf lib to create raw PDF data with a view template.
+You can use CakePdf to create raw PDF data with a view template.
 The view file path would look like `templates/pdf/newsletter.php`.
 Layout file path would be like `templates/layout/pdf/default.php`
 Note that layouts for both usage types are within same directory, but the view
