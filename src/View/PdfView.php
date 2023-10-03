@@ -85,7 +85,8 @@ class PdfView extends View
     /**
      * @inheritDoc
      */
-    public static function contentType(): string {
+    public static function contentType(): string
+    {
         return 'application/pdf';
     }
 
