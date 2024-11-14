@@ -80,6 +80,10 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
         $cwd = $this->getConfig('cwd');
 
         $proc = proc_open($cmd, [0 => ['pipe', 'r'], 1 => ['pipe', 'w'], 2 => ['pipe', 'w']], $pipes, $cwd);
+        if ($proc === false) {
+            throw new CakeException('Unable to execute wkhtmltopdf, proc_open() failed');
+        }
+
         fwrite($pipes[0], $input);
         fclose($pipes[0]);
 
@@ -149,10 +153,6 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
             }
         }
         $command .= ' - -';
-
-        if ($this->_windowsEnvironment && PHP_MAJOR_VERSION < 8) {
-            $command = '"' . $command . '"';
-        }
 
         return $command;
     }

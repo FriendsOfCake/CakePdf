@@ -102,6 +102,10 @@ class TexToPdfEngine extends AbstractPdfEngine
         $result = ['stdout' => '', 'stderr' => '', 'return' => ''];
 
         $proc = proc_open($cmd, [0 => ['pipe', 'r'], 1 => ['pipe', 'w'], 2 => ['pipe', 'w']], $pipes);
+        if ($proc === false) {
+            throw new CakeException('Unable to execute latexpdf, proc_open() failed');
+        }
+
         fwrite($pipes[0], $input);
         fclose($pipes[0]);
 

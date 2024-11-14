@@ -84,6 +84,9 @@ class PdftkCrypto extends AbstractPdfCrypto
         ];
 
         $prochandle = proc_open($command, $descriptorspec, $pipes);
+        if ($prochandle === false) {
+            throw new CakeException('Unable to execute pdftk, proc_open() failed');
+        }
 
         fwrite($pipes[0], $data);
         fclose($pipes[0]);
