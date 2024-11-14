@@ -349,7 +349,6 @@ class CakePdf
         }
 
         $splFileInfo = $fileInfo->getPathInfo();
-        /** @phpstan-ignore-next-line */
         if ($splFileInfo === null) {
             throw new CakeException('Failed to retrieve path information');
         }
@@ -378,7 +377,6 @@ class CakePdf
             $name = $name['className'];
         }
 
-        /** @var class-string<\CakePdf\Pdf\Engine\AbstractPdfEngine>|null $engineClassName */
         $engineClassName = App::className($name, 'Pdf/Engine', 'Engine');
         if ($engineClassName === null) {
             throw new CakeException(sprintf('Pdf engine "%s" not found', $name));
@@ -580,10 +578,10 @@ class CakePdf
             $right = $left;
         }
 
-        $this->marginBottom($bottom);
-        $this->marginLeft($left);
-        $this->marginRight($right);
-        $this->marginTop($top);
+        $this->marginBottom($bottom); // @phpstan-ignore argument.type
+        $this->marginLeft($left); // @phpstan-ignore argument.type
+        $this->marginRight($right); // @phpstan-ignore argument.type
+        $this->marginTop($top); // @phpstan-ignore argument.type
 
         return $this;
     }

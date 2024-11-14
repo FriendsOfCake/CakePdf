@@ -16,6 +16,8 @@ use TestApp\Pdf\Engine\PdfTestEngine;
  */
 class PdfViewTest extends TestCase
 {
+    protected PdfView $View;
+
     /**
      * setup callback
      *
