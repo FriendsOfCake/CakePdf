@@ -114,6 +114,14 @@ use CakePdf\View\PdfView;
 
 class InvoicesController extends AppController
 {
+    public function initialize(): void
+    {
+        parent::initialize();
+
+        // https://book.cakephp.org/5/en/controllers.html#content-type-negotiation
+        $this->addViewClasses([PdfView::class]);
+    }
+
     // In your Invoices controller you could set additional configs,
     // or override the global ones:
     public function view($id = null)
@@ -127,18 +135,6 @@ class InvoicesController extends AppController
             ]
         );
         $this->set('invoice', $invoice);
-    }
-
-    /**
-     * Add PdfView::class to this $viewClasses property so that CakePHP automatically
-     * switches the view class for URLs ending with `.pdf` or with appropriate `Accept` header.
-     *
-     * @see https://book.cakephp.org/5/en/controllers.html#content-type-negotiation
-     * @var array<string>
-     */
-    public function viewClasses(): array
-    {
-        return $this->viewClasses[] = PdfView::class;
     }
 }
 ```
