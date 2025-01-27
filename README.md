@@ -171,6 +171,15 @@ Configure::write('CakePdf', [
          * "WKHTMLTOPDF didn't return any data"
          */
         // 'binary' => 'C:\\Progra~1\\wkhtmltopdf\\bin\\wkhtmltopdf.exe',
+        
+        /**
+         * Skip the binary execution checking for many Linux servers when set to `true`.
+         * Default value is `false`, which mean we need to check for security reason.
+         * It has been used when your Linux server cannot run directly the `/usr/bin/wkhtmltopdf`
+         * so, you need to install another package called `xvfb` to support "X server".
+         */
+        //'skipCheckingExecutableBinary' => false,
+        //'binary' => '/usr/bin/xvfb-run /usr/bin/wkhtmltopdf'
     ],
 ]);
 ```

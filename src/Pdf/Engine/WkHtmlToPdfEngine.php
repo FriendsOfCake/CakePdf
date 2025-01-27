@@ -213,6 +213,10 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
     public function getBinaryPath(): string
     {
         $binary = $this->getConfig('binary', $this->_binary);
+        
+        if ($this->getConfig('skipCheckingExecutableBinary', false)) {
+            return $binary;
+        }
 
         /** @psalm-suppress ForbiddenCode */
         if (
