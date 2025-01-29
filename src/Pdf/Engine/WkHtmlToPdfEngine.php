@@ -139,6 +139,7 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
             }
             $command .= $this->parseOptions($key, $value);
         }
+        /** @var array $footer */
         $footer = $this->_Pdf->footer();
         foreach ($footer as $location => $text) {
             if ($text !== null) {
@@ -146,6 +147,7 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
             }
         }
 
+        /** @var array $header */
         $header = $this->_Pdf->header();
         foreach ($header as $location => $text) {
             if ($text !== null) {
