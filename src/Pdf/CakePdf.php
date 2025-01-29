@@ -362,11 +362,11 @@ class CakePdf
     /**
      * Load PdfEngine
      *
-     * @param array|string|null $name Classname of pdf engine without `Engine` suffix. For example `CakePdf.DomPdf`
+     * @param \CakePdf\Pdf\Engine\AbstractPdfEngine|array|string|null $name Classname of pdf engine without `Engine` suffix. For example `CakePdf.DomPdf`
      * @throws \Cake\Core\Exception\CakeException
      * @return \CakePdf\Pdf\Engine\AbstractPdfEngine|null
      */
-    public function engine(array|string|null $name = null): ?AbstractPdfEngine
+    public function engine(AbstractPdfEngine|array|string|null $name = null): ?AbstractPdfEngine
     {
         if ($name === null) {
             return $this->_engineClass;
@@ -377,13 +377,26 @@ class CakePdf
             $name = $name['className'];
         }
 
+        if (is_object($name)) {
+            assert(
+                is_subclass_of($name, AbstractPdfEngine::class),
+                'Pdf engines must extend "AbstractPdfEngine"'
+            );
+
+            $this->_engineClass = $name;
+            $this->_engineClass->setConfig($config);
+
+            return $this->_engineClass;
+        }
+
         $engineClassName = App::className($name, 'Pdf/Engine', 'Engine');
         if ($engineClassName === null) {
             throw new CakeException(sprintf('Pdf engine "%s" not found', $name));
         }
-        if (!is_subclass_of($engineClassName, AbstractPdfEngine::class)) {
-            throw new CakeException('Pdf engines must extend "AbstractPdfEngine"');
-        }
+        assert(
+            is_subclass_of($engineClassName, AbstractPdfEngine::class, true),
+            'Pdf engines must extend "AbstractPdfEngine"'
+        );
         $this->_engineClass = new $engineClassName($this);
         $this->_engineClass->setConfig($config);
 

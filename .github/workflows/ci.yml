@@ -17,12 +17,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-version: ['8.1', '8.2', '8.3']
+        php-version: ['8.2', '8.3', '8.3']
         dependencies: ['highest']
         include:
-          - php-version: '8.4'
-            dependencies: 'highest'
-            composer-options: '--ignore-platform-req=php'
           - php-version: '8.1'
             dependencies: 'lowest'
 
@@ -37,12 +34,10 @@ jobs:
         coverage: pcov
 
     - name: Install packages
-      run: |
-        sudo apt install xfonts-base xfonts-75dpi
-        wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6.1-2/wkhtmltox_0.12.6.1-2.jammy_amd64.deb
-        sudo dpkg -i wkhtmltox_0.12.6.1-2.jammy_amd64.deb
-        sudo apt install -f
-        wkhtmltopdf --version
+      uses: awalsh128/cache-apt-pkgs-action@v1
+      with:
+        packages: xfonts-base xfonts-75dpi wkhtmltopdf
+        version: ubuntu-24.04
 
     - name: Composer install
       uses: ramsey/composer-install@v3
@@ -56,14 +51,14 @@ jobs:
     - name: Run PHPUnit
       run: |
         if [[ ${{ matrix.php-version }} == '8.3' ]]; then
-          vendor/bin/phpunit --display-warnings --display-deprecations --display-incomplete --display-skipped --coverage-clover=coverage.xml
+          vendor/bin/phpunit --display-warnings --display-deprecations --display-phpunit-deprecations --display-incomplete --display-skipped --coverage-clover=coverage.xml
         else
           vendor/bin/phpunit --display-warnings --display-deprecations
         fi
 
     - name: Code Coverage Report
       if: matrix.php-version == '8.3'
-      uses: codecov/codecov-action@v4
+      uses: codecov/codecov-action@v5
       env:
         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
