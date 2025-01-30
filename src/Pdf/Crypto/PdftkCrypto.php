@@ -99,7 +99,7 @@ class PdftkCrypto extends AbstractPdfCrypto
         $exitcode = proc_close($prochandle);
 
         if ($exitcode !== 0) {
-            throw new CakeException(sprintf("Crypto: (exit code %d)\n%s", $exitcode, $stderr));
+            throw new CakeException(sprintf("Crypto: (exit code %d)\n%s", $exitcode, (string)$stderr));
         }
 
         return (string)$stdout;

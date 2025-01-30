@@ -27,14 +27,14 @@ class MpdfEngineTest extends TestCase
      */
     public function testSetOptions()
     {
-        $engineClass = $this->getMockBuilder(MpdfEngine::class)
+        $mock = $this->getMockBuilder(MpdfEngine::class)
             ->disableOriginalConstructor()
             ->onlyMethods(['_createInstance'])
-            ->getMock()::class;
+            ->getMock();
 
         $Pdf = new CakePdf([
             'engine' => [
-                'className' => '\\' . $engineClass,
+                'className' => $mock,
             ],
             'pageSize' => 'A4',
             'orientation' => 'landscape',
@@ -42,18 +42,20 @@ class MpdfEngineTest extends TestCase
         ]);
         $Pdf->html('');
 
+        $mock->__construct($Pdf);
+
         $Pdf
             ->engine()
             ->expects($this->once())
             ->method('_createInstance')
-            ->will($this->returnCallback(function ($config) {
+            ->willReturnCallback(function ($config) {
                 $Mpdf = new Mpdf($config);
 
                 $this->assertSame(TMP, $Mpdf->tempDir);
                 $this->assertSame('L', $Mpdf->CurOrientation);
 
                 return $Mpdf;
-            }));
+            });
 
         $Pdf->engine()->output();
     }

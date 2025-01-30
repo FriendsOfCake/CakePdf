@@ -27,17 +27,22 @@ class DomPdfEngineTest extends TestCase
      */
     public function testReceiveOptions()
     {
-        $engineClass = $this->getMockBuilder(DomPdfEngine::class)->disableOriginalConstructor()->onlyMethods(['_createInstance'])->getMock()::class;
+        $mock = $this->getMockBuilder(DomPdfEngine::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['_createInstance'])
+            ->getMock();
 
         $Pdf = new CakePdf([
             'engine' => [
-                'className' => '\\' . $engineClass,
+                'className' => $mock,
                 'options' => [
                     'isJavascriptEnabled' => false,
                     'isHtml5ParserEnabled' => true,
                 ],
             ],
         ]);
+
+        $mock->__construct($Pdf);
 
         $expected = [
             'fontCache' => TMP,
@@ -51,11 +56,11 @@ class DomPdfEngineTest extends TestCase
             ->expects($this->once())
             ->method('_createInstance')
             ->with($expected)
-            ->will($this->returnCallback(function ($options) use ($expected) {
+            ->willReturnCallback(function ($options) use ($expected) {
                 $this->assertEquals($expected, $options);
 
                 return new Dompdf($options);
-            }));
+            });
 
         $Pdf->engine()->output();
     }
@@ -65,10 +70,14 @@ class DomPdfEngineTest extends TestCase
      */
     public function testSetOptions()
     {
-        $engineClass = $this->getMockBuilder(DomPdfEngine::class)->disableOriginalConstructor()->onlyMethods(['_output'])->getMock()::class;
+        $mock = $this->getMockBuilder(DomPdfEngine::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['_output'])
+            ->getMock();
+
         $Pdf = new CakePdf([
             'engine' => [
-                'className' => '\\' . $engineClass,
+                'className' => $mock,
                 'options' => [
                     'isJavascriptEnabled' => false,
                     'isHtml5ParserEnabled' => true,
@@ -76,11 +85,13 @@ class DomPdfEngineTest extends TestCase
             ],
         ]);
 
+        $mock->__construct($Pdf);
+
         $Pdf
             ->engine()
             ->expects($this->once())
             ->method('_output')
-            ->will($this->returnCallback(function ($Dompdf) {
+            ->willReturnCallback(function ($Dompdf) {
                 $Options = $Dompdf->getOptions();
                 $this->assertEquals(TMP, $Options->getFontCache());
                 $this->assertEquals(TMP, $Options->getTempDir());
@@ -88,7 +99,7 @@ class DomPdfEngineTest extends TestCase
                 $this->assertTrue($Options->getIsHtml5ParserEnabled());
 
                 return $Dompdf->output();
-            }));
+            });
 
         $Pdf->engine()->output();
     }
@@ -113,18 +124,20 @@ class DomPdfEngineTest extends TestCase
      */
     public function testControlFlow()
     {
-        $engineClass = $this->getMockBuilder(DomPdfEngine::class)
+        $mock = $this->getMockBuilder(DomPdfEngine::class)
             ->disableOriginalConstructor()
             ->onlyMethods([
                 '_createInstance',
                 '_render',
                 '_output',
             ])
-            ->getMock()::class;
+            ->getMock();
 
         $Pdf = new CakePdf([
-            'engine' => '\\' . $engineClass,
+            'engine' => $mock,
         ]);
+
+        $mock->__construct($Pdf);
 
         $DomPDF = new Dompdf();
 
@@ -151,21 +164,23 @@ class DomPdfEngineTest extends TestCase
      */
     public function testDompdfControlFlow()
     {
-        $engineClass = $this->getMockBuilder(DomPdfEngine::class)
+        $mock = $this->getMockBuilder(DomPdfEngine::class)
             ->disableOriginalConstructor()
             ->onlyMethods(['_createInstance'])
-            ->getMock()::class;
+            ->getMock();
 
         $Pdf = new CakePdf([
-            'engine' => '\\' . $engineClass,
+            'engine' => $mock,
         ]);
+
+        $mock->__construct($Pdf);
 
         $Pdf
             ->engine()
             ->expects($this->once())
             ->method('_createInstance')
-            ->will($this->returnCallback(function ($options) {
-                $Dompdf = $this->getMockBuilder('\Dompdf\Dompdf')
+            ->willReturnCallback(function ($options) {
+                $Dompdf = $this->getMockBuilder(Dompdf::class)
                     ->onlyMethods(['setPaper', 'loadHtml', 'render', 'output'])
                     ->setConstructorArgs([$options])
                     ->getMock();
@@ -185,7 +200,7 @@ class DomPdfEngineTest extends TestCase
                     ->method('output');
 
                 return $Dompdf;
-            }));
+            });
 
         $Pdf->engine()->output();
     }

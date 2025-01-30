@@ -7,6 +7,7 @@ use Cake\Core\Configure;
 use Cake\Core\Exception\CakeException;
 use Cake\TestSuite\TestCase;
 use CakePdf\Pdf\CakePdf;
+use PHPUnit\Framework\Attributes\DataProvider;
 use TestApp\Pdf\Engine\PdfTestEngine;
 
 class CakePdfTest extends TestCase
@@ -48,9 +49,8 @@ class CakePdfTest extends TestCase
 
     /**
      * testOutput
-     *
-     * @dataProvider provider
      */
+    #[DataProvider('provider')]
     public function testOutput($config)
     {
         $pdf = new CakePdf($config);
@@ -71,9 +71,8 @@ class CakePdfTest extends TestCase
 
     /**
      * Test the custom paths for Layouts
-     *
-     * @dataProvider provider
      */
+    #[DataProvider('provider')]
     public function testCustomLayoutPaths($config)
     {
         $pdf = new CakePdf($config);
@@ -87,9 +86,8 @@ class CakePdfTest extends TestCase
 
     /**
      * Test the custom paths for Templates
-     *
-     * @dataProvider provider
      */
+    #[DataProvider('provider')]
     public function testCustomTemplatePaths($config)
     {
         $pdf = new CakePdf($config);
@@ -103,9 +101,8 @@ class CakePdfTest extends TestCase
 
     /**
      * testPluginOutput
-     *
-     * @dataProvider provider
      */
+    #[DataProvider('provider')]
     public function testPluginOutput($config)
     {
         $pdf = new CakePdf($config);
@@ -131,9 +128,8 @@ class CakePdfTest extends TestCase
 
     /**
      * Tests that engine returns the proper object
-     *
-     * @dataProvider provider
      */
+    #[DataProvider('provider')]
     public function testEngine($config)
     {
         $pdf = new CakePdf($config);
@@ -141,9 +137,7 @@ class CakePdfTest extends TestCase
         $this->assertEquals(PdfTestEngine::class, get_class($engine));
     }
 
-    /**
-     * @dataProvider provider
-     */
+    #[DataProvider('provider')]
     public function testMargin($config)
     {
         $pdf = new CakePdf($config);
@@ -196,9 +190,7 @@ class CakePdfTest extends TestCase
         $this->assertEquals($expected, $pdf->margin());
     }
 
-    /**
-     * @dataProvider provider
-     */
+    #[DataProvider('provider')]
     public function testConfigRead($config)
     {
         Configure::write('CakePdf', $config);
