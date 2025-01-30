@@ -8,18 +8,18 @@ use Cake\Core\BasePlugin;
 class CakePdfPlugin extends BasePlugin
 {
     /**
-     * Do bootstrap or not
+     * Do bootstrapping or not
      *
      * @var bool
      */
     protected bool $bootstrapEnabled = false;
 
     /**
-     * Load routes or not
+     * Console middleware
      *
      * @var bool
      */
-    protected bool $routesEnabled = false;
+    protected bool $consoleEnabled = false;
 
     /**
      * Enable middleware
@@ -29,9 +29,23 @@ class CakePdfPlugin extends BasePlugin
     protected bool $middlewareEnabled = false;
 
     /**
-     * Console middleware
+     * Register container services
      *
      * @var bool
      */
-    protected bool $consoleEnabled = false;
+    protected bool $servicesEnabled = false;
+
+    /**
+     * Load routes or not
+     *
+     * @var bool
+     */
+    protected bool $routesEnabled = false;
+
+    /**
+     * Load events or not
+     *
+     * @var bool
+     */
+    protected bool $eventsEnabled = false;
 }
