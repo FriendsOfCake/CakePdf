@@ -240,7 +240,7 @@ class CakePdf
     {
         $config = array_merge(
             (array)Configure::read('CakePdf'),
-            $config
+            $config,
         );
 
         if (!empty($config['engine'])) {
@@ -378,7 +378,7 @@ class CakePdf
         if (is_object($name)) {
             assert(
                 is_subclass_of($name, AbstractPdfEngine::class),
-                'Pdf engines must extend "AbstractPdfEngine"'
+                'Pdf engines must extend "AbstractPdfEngine"',
             );
 
             $this->_engine = $name;
@@ -393,7 +393,7 @@ class CakePdf
         }
         assert(
             is_subclass_of($engineClassName, AbstractPdfEngine::class, true),
-            'Pdf engines must extend "AbstractPdfEngine"'
+            'Pdf engines must extend "AbstractPdfEngine"',
         );
         $this->_engine = new $engineClassName($this);
         $this->_engine->setConfig($config);
@@ -426,7 +426,7 @@ class CakePdf
         }
         assert(
             is_subclass_of($engineClassName, AbstractPdfCrypto::class),
-            'Crypto engine must extend `AbstractPdfCrypto`'
+            'Crypto engine must extend `AbstractPdfCrypto`',
         );
         $this->_crypto = new $engineClassName($this);
         $this->_crypto->config($config);
@@ -567,7 +567,7 @@ class CakePdf
         string|int|array|null $bottom = null,
         string|int|null $left = null,
         string|int|null $right = null,
-        string|int|null $top = null
+        string|int|null $top = null,
     ): static|array {
         if ($bottom === null) {
             return [
@@ -1020,7 +1020,7 @@ class CakePdf
             $request,
             null,
             null,
-            $viewOptions
+            $viewOptions,
         );
 
         return $View->render();
