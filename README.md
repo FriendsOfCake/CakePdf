@@ -11,6 +11,7 @@ Engines included in the plugin:
 * Mpdf (^8.0.4)
 * Tcpdf (^6.3)
 * WkHtmlToPdf **RECOMMENDED ENGINE**
+* WeasyPrint (** best: fast and high fidelity** if you have the privileges to install something on your server - [https://doc.courtbouillon.org/weasyprint/stable/first_steps.html])
 
 Community maintained engines:
 * [PDFreactor](https://github.com/jmischer/cake-pdfreactor)
@@ -18,7 +19,7 @@ Community maintained engines:
 
 ## Requirements
 
-* One of the following render engines: DomPdf, Mpdf, Tcpdf or wkhtmltopdf
+* One of the following render engines: DomPdf, Mpdf, Tcpdf, wkhtmltopdf or WeasyPrint
 * pdftk (optional) See: http://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/
 
 
@@ -78,6 +79,7 @@ Configuration options:
   * cwd: current working directory (Only for wkhtmltopdf)
   * options: Engine specific options. Currently used for following engine:
     * `WkHtmlToPdfEngine`: The options are passed as CLI arguments
+    * `WeasyprintEngine`: The options are passed as CLI arguments
     * `TexToPdfEngine`: The options are passed as CLI arguments
     * `DomPdfEngine`: The options are passed to constructor of `Dompdf` class
     * `MpdfEngine`: The options are passed to constructor of `Mpdf` class
