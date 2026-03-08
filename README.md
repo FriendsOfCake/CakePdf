@@ -11,7 +11,7 @@ Engines included in the plugin:
 * Mpdf (^8.0.4)
 * Tcpdf (^6.3)
 * WkHtmlToPdf **RECOMMENDED ENGINE**
-* WeasyPrint (** best: fast and high fidelity** if you have the privileges to install something on your server - [https://doc.courtbouillon.org/weasyprint/stable/first_steps.html])
+* WeasyPrint (**best: fast and high fidelity** if you have the privileges to install something on your server - [https://doc.courtbouillon.org/weasyprint/stable/first_steps.html])
 
 Community maintained engines:
 * [PDFreactor](https://github.com/jmischer/cake-pdfreactor)
