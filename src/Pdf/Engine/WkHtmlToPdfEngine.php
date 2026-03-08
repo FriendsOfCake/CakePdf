@@ -59,7 +59,7 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
                 'System error "%s" when executing command "%s". ' .
                 'Try using the binary/package provided on http://wkhtmltopdf.org/downloads.html',
                 $content['stderr'],
-                $command
+                $command,
             ));
         }
 

@@ -106,7 +106,7 @@ class PdfViewTest extends TestCase
 
         $this->assertStringContainsString(
             'filename="booyah.pdf"',
-            $this->View->getResponse()->getHeaderLine('Content-Disposition')
+            $this->View->getResponse()->getHeaderLine('Content-Disposition'),
         );
     }
 

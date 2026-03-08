@@ -57,7 +57,7 @@ class PdfView extends View
         ?ServerRequest $request = null,
         ?Response $response = null,
         ?EventManager $eventManager = null,
-        array $viewOptions = []
+        array $viewOptions = [],
     ) {
         $this->setConfig('pdfConfig', (array)Configure::read('CakePdf'));
 
@@ -75,7 +75,7 @@ class PdfView extends View
         $pdfConfig = $this->getConfig('pdfConfig');
         if (!$pdfConfig) {
             throw new CakeException(
-                'No PDF config set. Use `ViewBuilder::setOption(\'pdfConfig\', $config)` to do so.'
+                'No PDF config set. Use `ViewBuilder::setOption(\'pdfConfig\', $config)` to do so.',
             );
         }
 
