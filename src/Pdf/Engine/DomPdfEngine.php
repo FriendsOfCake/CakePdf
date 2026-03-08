@@ -31,7 +31,7 @@ class DomPdfEngine extends AbstractPdfEngine
     /**
      * Creates the Dompdf instance.
      *
-     * @param array $options The engine options.
+     * @param array<string, mixed> $options The engine options.
      * @return \Dompdf\Dompdf
      */
     protected function _createInstance(array $options): Dompdf

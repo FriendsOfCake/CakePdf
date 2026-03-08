@@ -13,11 +13,11 @@ permissions:
 
 jobs:
   testsuite:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       matrix:
-        php-version: ['8.2', '8.3', '8.4']
+        php-version: ['8.2', '8.3', '8.4', '8.5']
         dependencies: ['highest']
         include:
           - php-version: '8.1'
@@ -50,14 +50,14 @@ jobs:
 
     - name: Run PHPUnit
       run: |
-        if [[ ${{ matrix.php-version }} == '8.3' ]]; then
+        if [[ ${{ matrix.php-version }} == '8.5' ]]; then
           vendor/bin/phpunit --display-warnings --display-deprecations --display-phpunit-deprecations --display-incomplete --display-skipped --coverage-clover=coverage.xml
         else
           vendor/bin/phpunit --display-warnings --display-deprecations
         fi
 
     - name: Code Coverage Report
-      if: matrix.php-version == '8.3'
+      if: matrix.php-version == '8.5'
       uses: codecov/codecov-action@v5
       env:
         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
