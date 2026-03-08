@@ -11,7 +11,7 @@ abstract class AbstractPdfEngine
     use InstanceConfigTrait;
 
     /**
-     * @var array
+     * @var array<string, mixed>
      */
     protected array $_defaultConfig = [];
 

@@ -5,6 +5,3 @@ parameters:
 		- tests/bootstrap.php
 	paths:
 		- src
-	ignoreErrors:
-		-
-			identifier: missingType.iterableValue

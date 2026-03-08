@@ -53,7 +53,7 @@ class CakePdf
     /**
      * Vars to sent to render
      *
-     * @var array
+     * @var array<string, mixed>
      */
     protected array $_viewVars = [];
 
@@ -67,7 +67,7 @@ class CakePdf
     /**
      * Helpers to be used in the render
      *
-     * @var array
+     * @var array<string|array<string, mixed>>
      */
     protected array $_helpers = ['Html'];
 
@@ -116,14 +116,14 @@ class CakePdf
     /**
      * Footer HTML
      *
-     * @var array
+     * @var array{left: string|null, center: string|null, right: string|null}
      */
     protected array $_footer = ['left' => null, 'center' => null, 'right' => null];
 
     /**
      * Header HTML
      *
-     * @var array
+     * @var array{left: string|null, center: string|null, right: string|null}
      */
     protected array $_header = ['left' => null, 'center' => null, 'right' => null];
 
@@ -211,14 +211,14 @@ class CakePdf
      * true: all
      * array: List of permissions that are allowed
      *
-     * @var array|bool
+     * @var array<string>|bool
      */
     protected array|bool $_allow = false;
 
     /**
      * Available permissions
      *
-     * @var array
+     * @var list<string>
      */
     protected array $_availablePermissions = [
         'print',
@@ -234,7 +234,7 @@ class CakePdf
     /**
      * Constructor
      *
-     * @param array $config Pdf configs to use
+     * @param array<string, mixed> $config Pdf configs to use
      */
     public function __construct(array $config = [])
     {
@@ -360,7 +360,7 @@ class CakePdf
     /**
      * Load PdfEngine
      *
-     * @param \CakePdf\Pdf\Engine\AbstractPdfEngine|array|string|null $name Classname of pdf engine without `Engine` suffix. For example `CakePdf.DomPdf`
+     * @param \CakePdf\Pdf\Engine\AbstractPdfEngine|array<string, mixed>|string|null $name Classname of pdf engine without `Engine` suffix. For example `CakePdf.DomPdf`
      * @throws \Cake\Core\Exception\CakeException
      * @return \CakePdf\Pdf\Engine\AbstractPdfEngine|null
      */
@@ -404,7 +404,7 @@ class CakePdf
     /**
      * Load PdfCrypto
      *
-     * @param array|string $name Classname of crypto engine without `Crypto` suffix. For example `CakePdf.Pdftk`
+     * @param array<string, mixed>|string $name Classname of crypto engine without `Crypto` suffix. For example `CakePdf.Pdftk`
      * @throws \Cake\Core\Exception\CakeException
      * @return \CakePdf\Pdf\Crypto\AbstractPdfCrypto
      */
@@ -488,11 +488,10 @@ class CakePdf
     /**
      * Get/Set footer HTML.
      *
-     * @param array|string|null $left left side footer
+     * @param array{left?: string|null, center?: string|null, right?: string|null}|string|null $left left side footer
      * @param string|null $center center footer
      * @param string|null $right right side footer
-     * @return $this|array
-     * @psalm-return ($left is null && $center is null && $right is null ? array : $this)
+     * @return $this|array{left: string|null, center: string|null, right: string|null}
      */
     public function footer(string|array|null $left = null, ?string $center = null, ?string $right = null): static|array
     {
@@ -504,6 +503,7 @@ class CakePdf
             extract($left, EXTR_IF_EXISTS);
         }
 
+        /** @var string|null $left */
         $this->_footer = compact('left', 'center', 'right');
 
         return $this;
@@ -512,11 +512,10 @@ class CakePdf
     /**
      * Get/Set header HTML.
      *
-     * @param array|string|null $left left side header
+     * @param array{left?: string|null, center?: string|null, right?: string|null}|string|null $left left side header
      * @param string|null $center center header
      * @param string|null $right right side header
-     * @return $this|array
-     * @psalm-return ($left is null && $center is null && $right is null ? array : $this)
+     * @return $this|array{left: string|null, center: string|null, right: string|null}
      */
     public function header(string|array|null $left = null, ?string $center = null, ?string $right = null): static|array
     {
@@ -528,6 +527,7 @@ class CakePdf
             extract($left, EXTR_IF_EXISTS);
         }
 
+        /** @var string|null $left */
         $this->_header = compact('left', 'center', 'right');
 
         return $this;
@@ -556,12 +556,11 @@ class CakePdf
      * $bottom value will be set to bottom and top
      * $left value will be set to left and right
      *
-     * @param array|string|int|null $bottom bottom margin, or array of margins
+     * @param array{bottom: string|int|null, left: string|int|null, right: string|int|null, top: string|int|null}|string|int|null $bottom bottom margin, or array of margins
      * @param string|null $left left margin
      * @param string|null $right right margin
      * @param string|null $top top margin
-     * @return $this|array
-     * @psalm-return ($bottom is null ? array : $this)
+     * @return ($bottom is null ? array{bottom: string|int|null, left: string|int|null, right: string|int|null, top: string|int|null} : $this)
      */
     public function margin(
         string|int|array|null $bottom = null,
@@ -594,10 +593,10 @@ class CakePdf
             $right = $left;
         }
 
-        $this->marginBottom($bottom); // @phpstan-ignore argument.type
-        $this->marginLeft($left); // @phpstan-ignore argument.type
-        $this->marginRight($right); // @phpstan-ignore argument.type
-        $this->marginTop($top); // @phpstan-ignore argument.type
+        $this->marginBottom($bottom);
+        $this->marginLeft($left);
+        $this->marginRight($right);
+        $this->marginTop($top);
 
         return $this;
     }
@@ -784,10 +783,10 @@ class CakePdf
      * none: allow no permissions
      * array: list of permissions that are allowed
      *
-     * @param array|string|bool|null $permissions Permissions to set
+     * @param array<string>|string|bool|null $permissions Permissions to set
      * @throws \Cake\Core\Exception\CakeException
      * @return $this|array|string|bool|null
-     * @psalm-return ($permissions is null ? array|string|bool|null : $this)
+     * @psalm-return ($permissions is null ? array<string>|string|bool|null : $this)
      */
     public function permissions(bool|array|string|null $permissions = null): static|array|string|bool|null
     {
@@ -861,8 +860,7 @@ class CakePdf
      *
      * @param string|false|null $template Template name or null to not use
      * @param ?string $layout Layout name or null to not use
-     * @return $this|array
-     * @psalm-return ($template is false ? array : $this)
+     * @return ($template is false ? array{template: string|null, layout: string} : $this)
      */
     public function template(string|false|null $template = false, ?string $layout = null): static|array
     {
@@ -936,9 +934,9 @@ class CakePdf
     /**
      * Variables to be set on render
      *
-     * @param array $viewVars view variables to set
+     * @param array<string, mixed> $viewVars view variables to set
      * @return $this|array
-     * @psalm-return ($viewVars is null ? array : $this)
+     * @psalm-return ($viewVars is null ? array<string, mixed> : $this)
      */
     public function viewVars(?array $viewVars = null): static|array
     {
@@ -970,9 +968,8 @@ class CakePdf
     /**
      * Helpers to be used in render
      *
-     * @param array $helpers helpers to use
-     * @return $this|array
-     * @psalm-return ($helpers is null ? array : $this)
+     * @param array<string|array<string, mixed>> $helpers helpers to use
+     * @return ($helpers is null ? array<string|array<string, mixed>> : $this)
      */
     public function helpers(?array $helpers = null): static|array
     {

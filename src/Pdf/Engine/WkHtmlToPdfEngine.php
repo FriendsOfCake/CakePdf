@@ -71,11 +71,11 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
      *
      * @param string $cmd the command to execute
      * @param string $input Html to pass to wkhtmltopdf
-     * @return array the result of running the command to generate the pdf
+     * @return array{stdout: string, stderr: string, return: int} the result of running the command to generate the pdf
      */
     protected function _exec(string $cmd, string $input): array
     {
-        $result = ['stdout' => '', 'stderr' => '', 'return' => ''];
+        $result = ['stdout' => '', 'stderr' => '', 'return' => 0];
 
         $cwd = $this->getConfig('cwd');
 
@@ -139,7 +139,7 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
             }
             $command .= $this->parseOptions($key, $value);
         }
-        /** @var array $footer */
+        /** @var array{left: string|null, center: string|null, right: string|null} $footer */
         $footer = $this->_Pdf->footer();
         foreach ($footer as $location => $text) {
             if ($text !== null) {
@@ -147,7 +147,7 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
             }
         }
 
-        /** @var array $header */
+        /** @var array{left: string|null, center: string|null, right: string|null} $header */
         $header = $this->_Pdf->header();
         foreach ($header as $location => $text) {
             if ($text !== null) {
@@ -164,7 +164,7 @@ class WkHtmlToPdfEngine extends AbstractPdfEngine
      * Created to reuse logic to parse the cover and toc options.
      *
      * @param string $key the option key name
-     * @param array|string|float|true $value the option value
+     * @param array<string, mixed>|string|float|true $value the option value
      * @return string part of the command
      */
     protected function parseOptions(string $key, string|bool|array|float $value): string

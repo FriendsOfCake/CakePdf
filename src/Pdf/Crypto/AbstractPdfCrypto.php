@@ -17,7 +17,7 @@ abstract class AbstractPdfCrypto
     /**
      * Configurations
      *
-     * @var array
+     * @var array<string, mixed>
      */
     protected array $_config = [];
 
@@ -50,8 +50,8 @@ abstract class AbstractPdfCrypto
     /**
      * Set the config
      *
-     * @param array|string|null $config Null, string or array. Pass array of configs to set.
-     * @return array|string|null Returns config value if $config is string, else returns config array.
+     * @param array<string, mixed>|string|null $config Null, string or array. Pass array of configs to set.
+     * @return array<string, mixed>|string|null Returns config value if $config is string, else returns config array.
      */
     public function config(string|array|null $config = null): string|array|null
     {

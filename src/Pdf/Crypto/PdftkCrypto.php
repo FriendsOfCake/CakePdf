@@ -12,12 +12,12 @@ class PdftkCrypto extends AbstractPdfCrypto
      *
      * @var string
      */
-    protected string $_binary = '/usr/local/bin/pdftk';
+    protected string $_binary = 'pdftk';
 
     /**
      * Mapping of the CakePdf permissions to the Pdftk arguments
      *
-     * @var array
+     * @var array<string, string>
      */
     protected array $_permissionsMap = [
         'print' => 'Printing',
@@ -119,7 +119,7 @@ class PdftkCrypto extends AbstractPdfCrypto
     /**
      * Builds a shell safe argument list
      *
-     * @param array $arguments arguments to pass to pdftk
+     * @param array<string, mixed> $arguments arguments to pass to pdftk
      * @return string list of arguments
      */
     protected function _buildArguments(array $arguments): string
