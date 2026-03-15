@@ -51,9 +51,9 @@ jobs:
     - name: Run PHPUnit
       run: |
         if [[ ${{ matrix.php-version }} == '8.5' ]]; then
-          vendor/bin/phpunit --display-warnings --display-deprecations --display-phpunit-deprecations --display-incomplete --display-skipped --coverage-clover=coverage.xml
+        vendor/bin/phpunit --display-all-issues --fail-on-all-issues --do-not-fail-on-skipped --do-not-fail-on-incomplete  --coverage-clover=coverage.xml
         else
-          vendor/bin/phpunit --display-warnings --display-deprecations
+        vendor/bin/phpunit --display-phpunit-deprecations --display-warnings --display-deprecations
         fi
 
     - name: Code Coverage Report

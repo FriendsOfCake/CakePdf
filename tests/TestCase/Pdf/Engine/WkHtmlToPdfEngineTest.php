@@ -25,7 +25,6 @@ class WkHtmlToPdfEngineTest extends TestCase
 
         $class = new ReflectionClass(WkHtmlToPdfEngine::class);
         $method = $class->getMethod('_getCommand');
-        $method->setAccessible(true);
 
         $Pdf = new CakePdf([
             'engine' => [
@@ -160,7 +159,6 @@ class WkHtmlToPdfEngineTest extends TestCase
 
         $class = new ReflectionClass(WkHtmlToPdfEngine::class);
         $method = $class->getMethod('_getCommand');
-        $method->setAccessible(true);
         $Pdf = new CakePdf([
            'engine' => [
                'className' => 'CakePdf.WkHtmlToPdf',
