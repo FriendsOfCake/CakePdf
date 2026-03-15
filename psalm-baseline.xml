@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="6.0.0@b8e96bb617bf59382113b1b56cef751f648a7dc9">
+<files psalm-version="6.15.1@28dc127af1b5aecd52314f6f645bafc10d0e11f9">
   <file src="src/Pdf/CakePdf.php">
     <InvalidDocblock>
       <code><![CDATA[public function cache(bool|string|null $cache = null): static|string|false]]></code>
       <code><![CDATA[public function delay(?int $delay = null): static|int|null]]></code>
       <code><![CDATA[public function encoding(?string $encoding = null): static|string]]></code>
-      <code><![CDATA[public function footer(string|array|null $left = null, ?string $center = null, ?string $right = null): static|array]]></code>
-      <code><![CDATA[public function header(string|array|null $left = null, ?string $center = null, ?string $right = null): static|array]]></code>
       <code><![CDATA[public function helpers(?array $helpers = null): static|array]]></code>
       <code><![CDATA[public function html(?string $html = null): static|string]]></code>
       <code><![CDATA[public function layoutPath(?string $layoutPath = null): static|string]]></code>
@@ -29,59 +27,5 @@
       <code><![CDATA[public function viewVars(?array $viewVars = null): static|array]]></code>
       <code><![CDATA[public function windowStatus(?string $status = null): static|string|null]]></code>
     </InvalidDocblock>
-    <PossiblyInvalidArgument>
-      <code><![CDATA[$cache]]></code>
-      <code><![CDATA[$cache]]></code>
-      <code><![CDATA[$cache]]></code>
-      <code><![CDATA[$viewClass]]></code>
-    </PossiblyInvalidArgument>
-    <PossiblyInvalidPropertyAssignmentValue>
-      <code><![CDATA[$cache]]></code>
-      <code><![CDATA[$permissions]]></code>
-    </PossiblyInvalidPropertyAssignmentValue>
-  </file>
-  <file src="src/Pdf/Crypto/PdftkCrypto.php">
-    <PossiblyInvalidArgument>
-      <code><![CDATA[$ownerPassword]]></code>
-      <code><![CDATA[$userPassword]]></code>
-    </PossiblyInvalidArgument>
-  </file>
-  <file src="src/Pdf/Engine/DomPdfEngine.php">
-    <PossiblyInvalidArgument>
-      <code><![CDATA[$Pdf->html()]]></code>
-      <code><![CDATA[$this->_Pdf->orientation()]]></code>
-      <code><![CDATA[$this->_Pdf->pageSize()]]></code>
-    </PossiblyInvalidArgument>
-  </file>
-  <file src="src/Pdf/Engine/MpdfEngine.php">
-    <PossiblyInvalidArgument>
-      <code><![CDATA[$format]]></code>
-      <code><![CDATA[$this->_Pdf->html()]]></code>
-    </PossiblyInvalidArgument>
-    <PossiblyInvalidOperand>
-      <code><![CDATA[$format]]></code>
-    </PossiblyInvalidOperand>
-  </file>
-  <file src="src/Pdf/Engine/TcpdfEngine.php">
-    <PossiblyInvalidArgument>
-      <code><![CDATA[$this->_Pdf->html()]]></code>
-      <code><![CDATA[$this->_Pdf->orientation()]]></code>
-    </PossiblyInvalidArgument>
-  </file>
-  <file src="src/Pdf/Engine/TexToPdfEngine.php">
-    <PossiblyInvalidArgument>
-      <code><![CDATA[$output]]></code>
-      <code><![CDATA[$output]]></code>
-      <code><![CDATA[$this->_Pdf->encoding()]]></code>
-    </PossiblyInvalidArgument>
-  </file>
-  <file src="src/Pdf/Engine/WkHtmlToPdfEngine.php">
-    <PossibleRawObjectIteration>
-      <code><![CDATA[$margin]]></code>
-    </PossibleRawObjectIteration>
-    <PossiblyInvalidArgument>
-      <code><![CDATA[$this->_Pdf->html()]]></code>
-      <code><![CDATA[$value]]></code>
-    </PossiblyInvalidArgument>
   </file>
 </files>

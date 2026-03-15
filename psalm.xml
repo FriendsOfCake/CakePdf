@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <psalm
+    errorLevel="4"
     resolveFromConfigFile="true"
     autoloader="tests/bootstrap.php"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -16,24 +17,7 @@
         </ignoreFiles>
     </projectFiles>
 
-    <stubs>
-        <file name="vendor/cakephp/cakephp/src/Core/Exception/CakeException.php" preloadClasses="true" />
-    </stubs>
-
     <issueHandlers>
-        <LessSpecificReturnType errorLevel="info" />
-
-        <MissingClosureReturnType errorLevel="info" />
-        <MissingPropertyType errorLevel="info" />
-
-        <PropertyNotSetInConstructor errorLevel="info" />
-        <MissingConstructor errorLevel="info" />
-        <MissingClosureParamType errorLevel="info" />
-
-        <DocblockTypeContradiction errorLevel="info" />
-        <RedundantConditionGivenDocblockType errorLevel="info" />
-
-        <UnsafeInstantiation errorLevel="info" />
-        <RiskyTruthyFalsyComparison errorLevel="info" />
+        <MissingOverrideAttribute errorLevel="info" />
     </issueHandlers>
 </psalm>

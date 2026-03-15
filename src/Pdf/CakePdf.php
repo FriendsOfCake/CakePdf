@@ -314,8 +314,7 @@ class CakePdf
      * Get/Set Html.
      *
      * @param string|null $html Html to set
-     * @return $this|string
-     * @psalm-return ($html is null ? string : $this)
+     * @return ($html is null ? string : $this)
      */
     public function html(?string $html = null): static|string
     {
@@ -438,8 +437,7 @@ class CakePdf
      * Get/Set Page size.
      *
      * @param string|null $pageSize Page size to set
-     * @return $this|string
-     * @psalm-return ($pageSize is null ? string : $this)
+     * @return ($pageSize is null ? string : $this)
      */
     public function pageSize(?string $pageSize = null): static|string
     {
@@ -455,8 +453,7 @@ class CakePdf
      * Get/Set Orientation.
      *
      * @param string|null $orientation orientation to set
-     * @return $this|string
-     * @psalm-return ($orientation is null ? string : $this)
+     * @return ($orientation is null ? string : $this)
      */
     public function orientation(?string $orientation = null): static|string
     {
@@ -605,8 +602,7 @@ class CakePdf
      * Get/Set bottom margin.
      *
      * @param string|int|null $margin margin to set
-     * @return $this|string|int|null
-     * @psalm-return ($margin is null ? string|int|null : $this)
+     * @return ($margin is null ? string|int|null : $this)
      */
     public function marginBottom(string|int|null $margin = null): static|string|int|null
     {
@@ -622,8 +618,7 @@ class CakePdf
      * Get/Set left margin.
      *
      * @param string|int|null $margin margin to set
-     * @return $this|string|int|null
-     * @psalm-return ($margin is null ? string|int|null : $this)
+     * @return ($margin is null ? string|int|null : $this)
      */
     public function marginLeft(string|int|null $margin = null): static|string|int|null
     {
@@ -639,8 +634,7 @@ class CakePdf
      * Get/Set right margin.
      *
      * @param string|int|null $margin margin to set
-     * @return $this|string|int|null
-     * @psalm-return ($margin is null ? string|int|null : $this)
+     * @return ($margin is null ? string|int|null : $this)
      */
     public function marginRight(string|int|null $margin = null): static|string|int|null
     {
@@ -656,8 +650,7 @@ class CakePdf
      * Get/Set top margin.
      *
      * @param string|int|null $margin margin to set
-     * @return $this|string|int|null
-     * @psalm-return ($margin is null ? string|int|null : $this)
+     * @return ($margin is null ? string|int|null : $this)
      */
     public function marginTop(string|int|null $margin = null): static|string|int|null
     {
@@ -673,8 +666,7 @@ class CakePdf
      * Get/Set document title.
      *
      * @param string|null $title title to set
-     * @return $this|string|null
-     * @psalm-return ($title is null ? string|null : $this)
+     * @return ($title is null ? string|null : $this)
      */
     public function title(?string $title = null): static|string|null
     {
@@ -690,8 +682,7 @@ class CakePdf
      * Get/Set javascript delay.
      *
      * @param int|null $delay delay to set in milliseconds
-     * @return $this|int|null
-     * @psalm-return ($delay is null ? int|null : $this)
+     * @return ($delay is null ? int|null : $this)
      */
     public function delay(?int $delay = null): static|int|null
     {
@@ -708,8 +699,7 @@ class CakePdf
      * Waits until the status is equal to the string before rendering the pdf
      *
      * @param string|null $status status to set as string
-     * @return $this|string|null
-     * @psalm-return ($status is null ? string|null : $this)
+     * @return ($status is null ? string|null : $this)
      */
     public function windowStatus(?string $status = null): static|string|null
     {
@@ -725,8 +715,7 @@ class CakePdf
      * Get/Set protection.
      *
      * @param bool|null $protect True or false
-     * @return $this|bool
-     * @psalm-return ($protect is null ? bool : $this)
+     * @return ($protect is null ? bool : $this)
      */
     public function protect(?bool $protect = null): static|bool
     {
@@ -744,8 +733,7 @@ class CakePdf
      * The user password is used to control who can open the PDF document.
      *
      * @param string|null $password password to set
-     * @return $this|string|null
-     * @psalm-return ($password is null ? string|null : $this)
+     * @return ($password is null ? string|null : $this)
      */
     public function userPassword(?string $password = null): static|string|null
     {
@@ -763,8 +751,7 @@ class CakePdf
      * The owner password is used to control who can modify, print, manage the PDF document.
      *
      * @param string|null $password password to set
-     * @return $this|string|null
-     * @psalm-return ($password is null ? string|null : $this)
+     * @return ($password is null ? string|null : $this)
      */
     public function ownerPassword(?string $password = null): static|string|null
     {
@@ -785,8 +772,7 @@ class CakePdf
      *
      * @param array<string>|string|bool|null $permissions Permissions to set
      * @throws \Cake\Core\Exception\CakeException
-     * @return $this|array|string|bool|null
-     * @psalm-return ($permissions is null ? array<string>|string|bool|null : $this)
+     * @return ($permissions is null ? array<string>|string|bool|null : $this)
      */
     public function permissions(bool|array|string|null $permissions = null): static|array|string|bool|null
     {
@@ -827,8 +813,7 @@ class CakePdf
      *
      * @param string|bool|null $cache Cache config name to use, If true is passed, 'cake_pdf' will be used.
      * @throws \Cake\Core\Exception\CakeException
-     * @return $this|string|false
-     * @psalm-return ($cache is null ? string|false : $this)
+     * @return ($cache is null ? string|false : $this)
      */
     public function cache(bool|string|null $cache = null): static|string|false
     {
@@ -882,8 +867,7 @@ class CakePdf
      * Template path
      *
      * @param ?string $templatePath The path of the template to use
-     * @return $this|string
-     * @psalm-return ($templatePath is null ? string : $this)
+     * @return ($templatePath is null ? string : $this)
      */
     public function templatePath(?string $templatePath = null): static|string
     {
@@ -900,8 +884,7 @@ class CakePdf
      * Layout path
      *
      * @param ?string $layoutPath The path of the layout file to use
-     * @return $this|string
-     * @psalm-return ($layoutPath is null ? string : $this)
+     * @return ($layoutPath is null ? string : $this)
      */
     public function layoutPath(?string $layoutPath = null): static|string
     {
@@ -918,8 +901,7 @@ class CakePdf
      * View class for render
      *
      * @param string|null $viewClass name of the view class to use
-     * @return $this|string
-     * @psalm-return ($viewClass is null ? string : $this)
+     * @return ($viewClass is null ? string : $this)
      */
     public function viewRender(?string $viewClass = null): static|string
     {
@@ -935,8 +917,7 @@ class CakePdf
      * Variables to be set on render
      *
      * @param array<string, mixed> $viewVars view variables to set
-     * @return $this|array
-     * @psalm-return ($viewVars is null ? array<string, mixed> : $this)
+     * @return ($viewVars is null ? array<string, mixed> : $this)
      */
     public function viewVars(?array $viewVars = null): static|array
     {
@@ -952,8 +933,7 @@ class CakePdf
      * Theme to use when rendering
      *
      * @param string $theme theme to use
-     * @return $this|string|null
-     * @psalm-return ($theme is null ? string|null : $this)
+     * @return ($theme is null ? string|null : $this)
      */
     public function theme(?string $theme = null): static|string|null
     {
