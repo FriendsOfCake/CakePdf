@@ -10,17 +10,16 @@ Engines included in the plugin:
 * DomPdf (^3.0)
 * Mpdf (^8.0.4)
 * Tcpdf (^6.3)
-* WkHtmlToPdf **RECOMMENDED ENGINE**
+* WeasyPrint (**Recommended** if you have the privileges to install something on your server)
+* WkHtmlToPdf (project no longer maintained but binaries still available for various environments)
 
 Community maintained engines:
 * [PDFreactor](https://github.com/jmischer/cake-pdfreactor)
 
-
 ## Requirements
 
-* One of the following render engines: DomPdf, Mpdf, Tcpdf or wkhtmltopdf
+* One of the following render engines: DomPdf, Mpdf, Tcpdf, WeasyPrint or wkhtmltopdf
 * pdftk (optional) See: http://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/
-
 
 ## Installation
 
@@ -33,7 +32,7 @@ composer require friendsofcake/cakepdf
 CakePdf does not include any of the supported PDF engines, you need to install
 the ones you intend to use yourself.
 
-Packages for the recommend `wkhtmltopdf` engine can be downloaded from https://wkhtmltopdf.org/downloads.html.
+Check [WeasyPrint's](https://doc.courtbouillon.org/weasyprint/stable/first_steps.html#installation) installation guide to install it on your system.
 DomPdf, Mpdf and Tcpdf can be installed via composer using one of the following commands:
 
 ```
@@ -74,22 +73,23 @@ pass the config array to constructor. The value for engine should have the
 Configuration options:
 * engine: Engine to be used (required), or an array of engine config options
   * className: Engine class to use
-  * binary: Binary file to use (Only for wkhtmltopdf)
-  * cwd: current working directory (Only for wkhtmltopdf)
+  * binary: Binary file to use (Only for weasyprint/wkhtmltopdf)
+  * cwd: current working directory (Only for weasyprint/wkhtmltopdf)
   * options: Engine specific options. Currently used for following engine:
     * `WkHtmlToPdfEngine`: The options are passed as CLI arguments
+    * `WeasyPrintEngine`: The options are passed as CLI arguments
     * `TexToPdfEngine`: The options are passed as CLI arguments
     * `DomPdfEngine`: The options are passed to constructor of `Dompdf` class
     * `MpdfEngine`: The options are passed to constructor of `Mpdf` class
 * crypto: Crypto engine to be used, or an array of crypto config options
   * className: Crypto class to use
   * binary: Binary file to use
-* pageSize: Change the default size, defaults to A4
-* orientation: Change the default orientation, defaults to portrait
-* margin: Array or margins with the keys: bottom, left, right, top and their values
-* title: Title of the document
-* delay: A delay in milliseconds to wait before rendering the pdf
-* windowStatus: The required window status before rendering the pdf
+* pageSize: Change the default size, defaults to A4 (Needs to be set via CSS for WeasyPrint)
+* orientation: Change the default orientation, defaults to portrait (Needs to be set via CSS for WeasyPrint)
+* margin: Array or margins with the keys: bottom, left, right, top and their values (Needs to be set via CSS for WeasyPrint)
+* title: Title of the document (Needs to be set via CSS for WeasyPrint)
+* delay: A delay in milliseconds to wait before rendering the pdf (wkhtmltopdf only)
+* windowStatus: The required window status before rendering the pdf (wkhtmltopdf only)
 * encoding: Change the encoding, defaults to UTF-8
 * download: Set to true to force a download, only when using PdfView
 * filename: Filename for the document when using forced download
@@ -97,14 +97,7 @@ Configuration options:
 Example:
 ```php
 Configure::write('CakePdf', [
-    'engine' => 'CakePdf.WkHtmlToPdf',
-    'margin' => [
-        'bottom' => 15,
-        'left' => 50,
-        'right' => 30,
-        'top' => 45,
-    ],
-    'orientation' => 'landscape',
+    'engine' => 'CakePdf.WeasyPrint',
     'download' => true,
 ]);
 ```
@@ -118,13 +111,13 @@ class InvoicesController extends AppController
     {
         parent::initialize();
 
-        // https://book.cakephp.org/5/en/controllers.html#content-type-negotiation
+        // https://book.cakephp.org/5.x/controllers.html#content-type-negotiation
         $this->addViewClasses([PdfView::class]);
     }
 
     // In your Invoices controller you could set additional configs,
     // or override the global ones:
-    public function view($id = null)
+    public function view($id = null): void
     {
         $invoice = $this->Invoice->get($id);
         $this->viewBuilder()->setOption(
@@ -145,11 +138,9 @@ options for the relevant class. For example:
 ```php
 Configure::write('CakePdf', [
     'engine' => [
-        'className' => 'CakePdf.WkHtmlToPdf',
+        'className' => 'CakePdf.WeasyPrint',
         // Options usable depend on the engine used.
         'options' => [
-            'print-media-type' => false,
-            'outline' => true,
             'dpi' => 96,
             'cover' => [
                 'url' => 'cover.html',
