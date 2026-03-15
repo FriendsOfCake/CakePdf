@@ -36,7 +36,7 @@ jobs:
     - name: Install packages
       uses: awalsh128/cache-apt-pkgs-action@v1
       with:
-        packages: xfonts-base xfonts-75dpi wkhtmltopdf
+        packages: xfonts-base xfonts-75dpi wkhtmltopdf weasyprint
         version: ubuntu-24.04
 
     - name: Composer install

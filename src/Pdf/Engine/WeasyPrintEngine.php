@@ -6,7 +6,7 @@ namespace CakePdf\Pdf\Engine;
 use Cake\Core\Exception\CakeException;
 use CakePdf\Pdf\CakePdf;
 
-class WeasyprintEngine extends AbstractPdfEngine
+class WeasyPrintEngine extends AbstractPdfEngine
 {
     /**
      * Path to the weasyprint executable binary
@@ -41,9 +41,8 @@ class WeasyprintEngine extends AbstractPdfEngine
     /**
      * Generates Pdf from html
      *
-     * @throws \Cake\Core\Exception\CakeException
      * @return string Raw PDF data
-     * @throws \Exception If no output is generated to stdout by weasyprint.
+     * @throws \Cake\Core\Exception\CakeException If no output is generated to stdout by weasyprint.
      */
     public function output(): string
     {
@@ -56,10 +55,9 @@ class WeasyprintEngine extends AbstractPdfEngine
 
         if (!empty($content['stderr'])) {
             throw new CakeException(sprintf(
-                'System error "%s" when executing command "%s". ' .
-                'Try using the binary/package provided on http://weasyprint.org/downloads.html',
+                'System error "%s" when executing command "%s".',
                 $content['stderr'],
-                $command
+                $command,
             ));
         }
 
@@ -71,11 +69,11 @@ class WeasyprintEngine extends AbstractPdfEngine
      *
      * @param string $cmd the command to execute
      * @param string $input Html to pass to weasyprint
-     * @return array the result of running the command to generate the pdf
+     * @return array{stdout: string, stderr: string, return: int} the result of running the command to generate the pdf
      */
     protected function _exec(string $cmd, string $input): array
     {
-        $result = ['stdout' => '', 'stderr' => '', 'return' => ''];
+        $result = ['stdout' => '', 'stderr' => '', 'return' => 0];
 
         $cwd = $this->getConfig('cwd');
 
@@ -109,16 +107,9 @@ class WeasyprintEngine extends AbstractPdfEngine
         $binary = $this->getBinaryPath();
 
         $options = [
-            'dpi'   => 96,
-            
+            'encoding' => $this->_Pdf->encoding(),
         ];
 
-        $margin = $this->_Pdf->margin();
-        foreach ($margin as $key => $value) {
-            if ($value !== null) {
-                $options['margin-' . $key] = $value . 'mm';
-            }
-        }
         $options = array_merge($options, (array)$this->getConfig('options'));
 
         if ($this->_windowsEnvironment) {
@@ -128,26 +119,12 @@ class WeasyprintEngine extends AbstractPdfEngine
         }
 
         foreach ($options as $key => $value) {
-            if (!$value) {
+            if (!$value && $value !== 0 && $value !== '0') {
                 continue;
             }
             $command .= $this->parseOptions($key, $value);
         }
-        /** @var array $footer */
-        $footer = $this->_Pdf->footer();
-        foreach ($footer as $location => $text) {
-            if ($text !== null) {
-                $command .= " --footer-$location \"" . addslashes($text) . '"';
-            }
-        }
 
-        /** @var array $header */
-        $header = $this->_Pdf->header();
-        foreach ($header as $location => $text) {
-            if ($text !== null) {
-                $command .= " --header-$location \"" . addslashes($text) . '"';
-            }
-        }
         $command .= ' - -';
 
         return $command;
@@ -155,47 +132,22 @@ class WeasyprintEngine extends AbstractPdfEngine
 
     /**
      * Parses a value of options to create a part of the command.
-     * Created to reuse logic to parse the cover and toc options.
      *
      * @param string $key the option key name
-     * @param array|string|float|true $value the option value
+     * @param array<string, mixed>|string|float|int|true $value the option value
      * @return string part of the command
      */
-    protected function parseOptions(string $key, string|bool|array|float $value): string
+    protected function parseOptions(string $key, string|bool|array|float|int $value): string
     {
         $command = '';
         if (is_array($value)) {
-            if ($key === 'toc') {
-                $command .= ' toc';
-                foreach ($value as $k => $v) {
-                    $command .= $this->parseOptions($k, $v);
-                }
-            } elseif ($key === 'cover') {
-                if (!isset($value['url'])) {
-                    throw new CakeException('The url for the cover is missing. Use the "url" index.');
-                }
-                $command .= ' cover ' . escapeshellarg((string)$value['url']);
-                unset($value['url']);
-                foreach ($value as $k => $v) {
-                    $command .= $this->parseOptions($k, $v);
-                }
-            } else {
-                foreach ($value as $k => $v) {
-                    $command .= sprintf(' --%s %s %s', $key, escapeshellarg($k), escapeshellarg((string)$v));
-                }
+            foreach ($value as $v) {
+                $command .= sprintf(' --%s %s', $key, escapeshellarg((string)$v));
             }
         } elseif ($value === true) {
-            if ($key === 'toc') {
-                $command .= ' toc';
-            } else {
-                $command .= ' --' . $key;
-            }
+            $command .= ' --' . $key;
         } else {
-            if ($key === 'cover') {
-                $command .= ' cover ' . escapeshellarg((string)$value);
-            } else {
-                $command .= sprintf(' --%s %s', $key, escapeshellarg((string)$value));
-            }
+            $command .= sprintf(' --%s %s', $key, escapeshellarg((string)$value));
         }
 
         return $command;
