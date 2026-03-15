@@ -142,26 +142,21 @@ Configure::write('CakePdf', [
         // Options usable depend on the engine used.
         'options' => [
             'dpi' => 96,
-            'cover' => [
-                'url' => 'cover.html',
-                'enable-smart-shrinking' => true,
-            ],
-            'toc' => true,
         ],
 
         /**
-         * For Mac OS X / Linux by default the `wkhtmltopdf` binary should
+         * For Mac OS X / Linux by default the `weasyprint` binary should
          * be available through environment path or you can specify location as:
          */
-        // 'binary' => '/usr/local/bin/wkhtmltopdf',
+        // 'binary' => '/usr/local/bin/weasyprint',
 
         /**
          * On Windows the engine uses the path shown below as default.
          * You NEED to use the path like old fashioned MS-DOS Paths,
          * otherwise you will get error like:
-         * "WKHTMLTOPDF didn't return any data"
+         * "weasyprint didn't return any data"
          */
-        // 'binary' => 'C:\\Progra~1\\wkhtmltopdf\\bin\\wkhtmltopdf.exe',
+        // 'binary' => 'C:/Progra~1/WeasyPrint/bin/weasyprint.exe',
     ],
 ]);
 ```
