@@ -5,6 +5,10 @@ namespace CakePdf\Pdf\Engine;
 
 use TCPDF;
 
+/**
+ * @deprecated The underlying `tecnickcom/tcpdf` package is deprecated upstream.
+ *   Use {@see \CakePdf\Pdf\Engine\TcLibPdfEngine} (backed by `tecnickcom/tc-lib-pdf`) instead.
+ */
 class TcpdfEngine extends AbstractPdfEngine
 {
     /**
