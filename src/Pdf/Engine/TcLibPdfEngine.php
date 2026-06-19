@@ -79,7 +79,7 @@ class TcLibPdfEngine extends AbstractPdfEngine
             $tcpdf->pon,
             (string)($font['family'] ?? 'helvetica'),
             (string)($font['style'] ?? ''),
-            (float)($font['size'] ?? 10),
+            (int)($font['size'] ?? 10),
         );
 
         $tcpdf->addPage($this->_pageOptions());
