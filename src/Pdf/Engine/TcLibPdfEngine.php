@@ -50,7 +50,7 @@ class TcLibPdfEngine extends AbstractPdfEngine
             'font' => [
                 'family' => 'helvetica',
                 'style' => '',
-                'size' => 10,
+                'size' => 12,
             ],
             'margins' => [
                 'left' => 15,
@@ -79,7 +79,7 @@ class TcLibPdfEngine extends AbstractPdfEngine
             $tcpdf->pon,
             (string)($font['family'] ?? 'helvetica'),
             (string)($font['style'] ?? ''),
-            (int)($font['size'] ?? 10),
+            (int)($font['size'] ?? 12),
         );
 
         $tcpdf->addPage($this->_pageOptions());
