@@ -9,7 +9,8 @@ Plugin containing CakePdf lib which will use a PDF engine to convert HTML to PDF
 Engines included in the plugin:
 * DomPdf (^3.0)
 * Mpdf (^8.0.4)
-* Tcpdf (^6.3)
+* TcLibPdf (^8) - successor of the deprecated Tcpdf engine
+* Tcpdf (^6.3) - **deprecated**, the underlying `tecnickcom/tcpdf` package is deprecated upstream; use TcLibPdf instead
 * WeasyPrint (**Recommended** if you have the privileges to install something on your server)
 * WkHtmlToPdf (project no longer maintained but binaries still available for various environments)
 
@@ -33,13 +34,30 @@ CakePdf does not include any of the supported PDF engines, you need to install
 the ones you intend to use yourself.
 
 Check [WeasyPrint's](https://doc.courtbouillon.org/weasyprint/stable/first_steps.html#installation) installation guide to install it on your system.
-DomPdf, Mpdf and Tcpdf can be installed via composer using one of the following commands:
+DomPdf, Mpdf, TcLibPdf and Tcpdf can be installed via composer using one of the following commands:
 
 ```
 composer require dompdf/dompdf
+composer require tecnickcom/tc-lib-pdf
 composer require tecnickcom/tcpdf
 composer require mpdf/mpdf
 ```
+
+### TcLibPdf font setup
+
+Unlike the deprecated Tcpdf engine, `tecnickcom/tc-lib-pdf` does not bundle any
+fonts. It loads fonts from generated `*.json` font files located in a directory
+referenced by the `K_PATH_FONTS` constant. Define it once during your
+application bootstrap, before any PDF is rendered:
+
+```php
+define('K_PATH_FONTS', '/absolute/path/to/your/fonts');
+```
+
+The directory must contain at least the core fonts you reference (e.g.
+`helvetica.json`). See the
+[tc-lib-pdf-font](https://github.com/tecnickcom/tc-lib-pdf-font) documentation
+for how to generate font files.
 
 ## Setup
 
@@ -81,6 +99,7 @@ Configuration options:
     * `TexToPdfEngine`: The options are passed as CLI arguments
     * `DomPdfEngine`: The options are passed to constructor of `Dompdf` class
     * `MpdfEngine`: The options are passed to constructor of `Mpdf` class
+    * `TcLibPdfEngine`: Supports `unit`, `unicode`, `subsetFont`, `compress`, `mode`, `font` (`['family', 'style', 'size']`), `margins` (`['left', 'top', 'right', 'bottom']`) and `metadata` (`['author', 'creator', 'subject', 'keywords']`)
 * crypto: Crypto engine to be used, or an array of crypto config options
   * className: Crypto class to use
   * binary: Binary file to use
