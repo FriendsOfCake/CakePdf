@@ -14,7 +14,7 @@
         "mpdf/mpdf": "^8.1.6",
         "tecnickcom/tcpdf": "^6.3",
         "cakephp/cakephp-codesniffer": "^5.3",
-        "tecnickcom/tc-lib-pdf": "^8"
+        "tecnickcom/tc-lib-pdf": "^8.5"
     },
     "suggest": {
         "dompdf/dompdf": "If you wish to use the DomPdf engine",

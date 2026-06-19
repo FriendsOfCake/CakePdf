@@ -125,7 +125,7 @@ class TcLibPdfEngine extends AbstractPdfEngine
         $orientation = $this->_Pdf->orientation() === 'landscape' ? 'L' : 'P';
 
         $fallback = (array)$this->getConfig('options.margins');
-        $margin = $this->_Pdf->margin();
+        $margin = (array)$this->_Pdf->margin();
         $left = (float)($margin['left'] ?? $fallback['left'] ?? 0);
         $top = (float)($margin['top'] ?? $fallback['top'] ?? 0);
         $right = (float)($margin['right'] ?? $fallback['right'] ?? 0);
