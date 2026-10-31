@@ -12,7 +12,7 @@ Engines included in the plugin:
 * TcLibPdf (^8) - successor of the deprecated Tcpdf engine
 * Tcpdf (^6.3) - **deprecated**, the underlying `tecnickcom/tcpdf` package is deprecated upstream; use TcLibPdf instead
 * WeasyPrint (**Recommended** if you have the privileges to install something on your server)
-* WkHtmlToPdf (project no longer maintained but binaries still available for various environments)
+* WkHtmlToPdf (project no longer maintained but binaries still available for various environments; [PDFKiln](https://github.com/pdfkiln/pdfkiln) is a maintained drop-in replacement that works with this engine unchanged)
 
 Community maintained engines:
 * [PDFreactor](https://github.com/jmischer/cake-pdfreactor)
