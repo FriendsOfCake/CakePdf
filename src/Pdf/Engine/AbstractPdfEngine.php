@@ -94,8 +94,10 @@ abstract class AbstractPdfEngine
                 }
             }
 
-            foreach ($read as $stream) {
-                $index = array_search($stream, $open, true);
+            foreach ($open as $index => $stream) {
+                if (!in_array($stream, $read, true)) {
+                    continue;
+                }
                 $chunk = fread($stream, 65536);
                 if ($chunk !== false && $chunk !== '') {
                     $outputs[$index] .= $chunk;
