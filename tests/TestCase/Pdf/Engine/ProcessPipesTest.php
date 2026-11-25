@@ -85,6 +85,65 @@ class ProcessPipesTest extends TestCase
     }
 
     /**
+     * A binary that fills its stdout and stderr pipes before it starts reading a stdin larger than a pipe buffer
+     * completes. Writing all of stdin before reading the outputs deadlocks here: PHP blocks writing stdin while
+     * the binary blocks writing stdout.
+     *
+     * @param class-string<\CakePdf\Pdf\Engine\AbstractPdfEngine> $class Engine class
+     */
+    #[DataProvider('stdinEngineProvider')]
+    public function testOutputBeforeLargeInputDoesNotDeadlock(string $class): void
+    {
+        $engine = new $class(new CakePdf([]));
+        $input = str_repeat('<p>html</p>', 50000);
+        $command = escapeshellarg(PHP_BINARY) . ' -r ' . escapeshellarg(
+            'echo str_repeat("x", 300000); fwrite(STDERR, str_repeat("e", 300000));'
+            . ' $in = stream_get_contents(STDIN); echo ":", strlen($in);',
+        );
+
+        $result = $this->exec($engine, $command, $input);
+
+        $this->assertSame(str_repeat('x', 300000) . ':' . strlen($input), $result['stdout']);
+        $this->assertSame(300000, strlen($result['stderr']));
+        $this->assertSame(0, $result['return']);
+    }
+
+    /**
+     * @return array<string, array{string}>
+     */
+    public static function runnerProvider(): array
+    {
+        return [
+            'pipes' => ['_runProcessWithPipes'],
+            'files (Windows)' => ['_runProcessWithFiles'],
+        ];
+    }
+
+    /**
+     * Both process runners pass large input, large stdout, large stderr and the exit code through untouched.
+     */
+    #[DataProvider('runnerProvider')]
+    public function testRunner(string $runner): void
+    {
+        $engine = new WeasyPrintEngine(new CakePdf([]));
+        $input = str_repeat('<p>html</p>', 50000);
+        $command = escapeshellarg(PHP_BINARY) . ' -r ' . escapeshellarg(
+            'echo str_repeat("x", 300000); fwrite(STDERR, str_repeat("e", 300000));'
+            . ' $in = stream_get_contents(STDIN); echo ":", strlen($in); exit(3);',
+        );
+
+        $method = new ReflectionMethod($engine, $runner);
+        $result = $method->invoke($engine, $command, $input, null, 'php');
+
+        $this->assertSame(str_repeat('x', 300000) . ':' . strlen($input), $result['stdout']);
+        $this->assertSame(str_repeat('e', 300000), $result['stderr']);
+        $this->assertSame(3, $result['return']);
+
+        $result = $method->invoke($engine, $command, '', null, 'php');
+        $this->assertSame(str_repeat('x', 300000) . ':0', $result['stdout']);
+    }
+
+    /**
      * The exit code of the binary is returned.
      *
      * @param class-string<\CakePdf\Pdf\Engine\AbstractPdfEngine> $class Engine class
