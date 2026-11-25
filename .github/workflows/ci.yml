@@ -45,6 +45,14 @@ jobs:
         dependency-versions: ${{ matrix.dependencies }}
         composer-options: ${{ matrix.composer-options }}
 
+    - name: Install Fagus
+      if: matrix.php-version != '8.1' && matrix.php-version != '8.2'
+      run: |
+        composer config allow-plugins.nforst/fagus true
+        composer require --dev --no-interaction --no-progress nforst/fagus:^1.1
+      env:
+        FAGUS_INSTALL_STRICT: 1
+
     - name: Setup problem matchers for PHPUnit
       run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
@@ -63,5 +71,46 @@ jobs:
         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   cs-stan:
-    uses: cakephp/.github/.github/workflows/cs-stan.yml@5.x
-    secrets: inherit
+    runs-on: ubuntu-24.04
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        persist-credentials: false
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.3'
+        extensions: mbstring, intl
+        coverage: none
+        tools: phive, cs2pr
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Composer install
+      uses: ramsey/composer-install@v3
+
+    - name: Install Fagus for static analysis
+      run: |
+        composer config allow-plugins.nforst/fagus true
+        composer require --dev --no-interaction --no-progress nforst/fagus:^1.1
+      env:
+        FAGUS_INSTALL_STRICT: 1
+
+    - name: Install PHP tools with phive.
+      run: "phive install --trust-gpg-keys 'CF1A108D0E7AE720,51C67305FFC2E5C0,12CE0F1D262429A5,99BF4D9A33D65E1E,51C67305FFC2E5C0,99BF4D9A33D65E1E'"
+      env:
+        GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Run phpstan
+      if: always()
+      run: tools/phpstan analyse --error-format=github
+
+    - name: Run psalm
+      if: always()
+      run: tools/psalm --output-format=github
+
+    - name: Run phpcs
+      if: always()
+      run: vendor/bin/phpcs --report=checkstyle | cs2pr
