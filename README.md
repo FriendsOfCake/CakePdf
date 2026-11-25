@@ -8,6 +8,7 @@ Plugin containing CakePdf lib which will use a PDF engine to convert HTML to PDF
 
 Engines included in the plugin:
 * DomPdf (^3.0)
+* Fagus (^1.1) - native HTML/CSS renderer, no browser required (PHP 8.3+)
 * Mpdf (^8.0.4)
 * TcLibPdf (^8) - successor of the deprecated Tcpdf engine
 * Tcpdf (^6.3) - **deprecated**, the underlying `tecnickcom/tcpdf` package is deprecated upstream; use TcLibPdf instead
@@ -19,7 +20,7 @@ Community maintained engines:
 
 ## Requirements
 
-* One of the following render engines: DomPdf, Mpdf, Tcpdf, WeasyPrint or wkhtmltopdf
+* One of the following render engines: DomPdf, Fagus, Mpdf, Tcpdf, WeasyPrint or wkhtmltopdf
 * pdftk (optional) See: http://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/
 
 ## Installation
@@ -34,14 +35,20 @@ CakePdf does not include any of the supported PDF engines, you need to install
 the ones you intend to use yourself.
 
 Check [WeasyPrint's](https://doc.courtbouillon.org/weasyprint/stable/first_steps.html#installation) installation guide to install it on your system.
-DomPdf, Mpdf, TcLibPdf and Tcpdf can be installed via composer using one of the following commands:
+DomPdf, Fagus, Mpdf, TcLibPdf and Tcpdf can be installed via composer using one of
+the following commands:
 
 ```
 composer require dompdf/dompdf
+composer require nforst/fagus
 composer require tecnickcom/tc-lib-pdf
 composer require tecnickcom/tcpdf
 composer require mpdf/mpdf
 ```
+
+Fagus requires PHP 8.3 or newer. Its Composer plugin installs the native
+renderer for your platform; Composer asks once whether to trust the plugin,
+answer `y` (or add `"nforst/fagus": true` to `config.allow-plugins`).
 
 ### TcLibPdf font setup
 
@@ -98,18 +105,19 @@ Configuration options:
     * `WeasyPrintEngine`: The options are passed as CLI arguments
     * `TexToPdfEngine`: The options are passed as CLI arguments
     * `DomPdfEngine`: The options are passed to constructor of `Dompdf` class
+    * `FagusEngine`: The `options` are passed to the `Fagus\Engine` constructor (`binary`, `fontDirectories`, `sansSerif`, `serif`, `monospace`, `timeout`, `systemFonts`, `locale`, `maxDocuments`, `maxMemory`, `onWarning`, `sandbox`, `memoryBudget`, `timeLimit`). A `document` array configures the rendered document (`baseDirectory`, `root`, `stylesheet`, `resources`, `pdfA`, `accessible`, `tagged`, `forms`, `strict`, `reportLayout`, `created`)
     * `MpdfEngine`: The options are passed to constructor of `Mpdf` class
     * `TcLibPdfEngine`: Supports `unit`, `unicode`, `subsetFont`, `compress`, `mode`, `font` (`['family', 'style', 'size']`), `margins` (`['left', 'top', 'right', 'bottom']`) and `metadata` (`['author', 'creator', 'subject', 'keywords']`)
 * crypto: Crypto engine to be used, or an array of crypto config options
   * className: Crypto class to use
   * binary: Binary file to use
-* pageSize: Change the default size, defaults to A4 (Needs to be set via CSS for WeasyPrint)
-* orientation: Change the default orientation, defaults to portrait (Needs to be set via CSS for WeasyPrint)
-* margin: Array or margins with the keys: bottom, left, right, top and their values (Needs to be set via CSS for WeasyPrint)
-* title: Title of the document (Needs to be set via CSS for WeasyPrint)
+* pageSize: Change the default size, defaults to A4 (Needs to be set via CSS for WeasyPrint and Fagus)
+* orientation: Change the default orientation, defaults to portrait (Needs to be set via CSS for WeasyPrint and Fagus)
+* margin: Array or margins with the keys: bottom, left, right, top and their values (Needs to be set via CSS for WeasyPrint and Fagus)
+* title: Title of the document (Needs to be set via CSS for WeasyPrint and Fagus)
 * delay: A delay in milliseconds to wait before rendering the pdf (wkhtmltopdf only)
 * windowStatus: The required window status before rendering the pdf (wkhtmltopdf only)
-* encoding: Change the encoding, defaults to UTF-8
+* encoding: Change the encoding, defaults to UTF-8 (Fagus takes the encoding from the document)
 * download: Set to true to force a download, only when using PdfView
 * filename: Filename for the document when using forced download
 
@@ -179,6 +187,36 @@ Configure::write('CakePdf', [
     ],
 ]);
 ```
+
+### Fagus
+
+Fagus renders HTML and CSS like Chrome prints them and needs no browser or
+system libraries. Its engine specific config has two parts: `options` for the
+Fagus worker and `document` for the rendered document.
+
+```php
+Configure::write('CakePdf', [
+    'engine' => [
+        'className' => 'CakePdf.Fagus',
+        // Passed to the Fagus\Engine constructor.
+        'options' => [
+            'fontDirectories' => [WWW_ROOT . 'fonts'],
+            'systemFonts' => true,
+            'locale' => 'en-US',
+        ],
+        // Applied to the Fagus\Document.
+        'document' => [
+            'baseDirectory' => WWW_ROOT . 'pdf',
+            'pdfA' => '3b',
+        ],
+    ],
+]);
+```
+
+Page size, orientation, margins, headers, footers, the title and the encoding
+come from the document's CSS and HTML (`@page`, `<title>`, `<html lang>`), so
+the `pageSize`, `orientation`, `margin`, `title` and `encoding` CakePdf options
+are not used by this engine.
 
 ## Usage
 
